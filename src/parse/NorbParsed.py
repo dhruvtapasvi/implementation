@@ -39,15 +39,15 @@ class NorbParsed:
         self._data = None
 
     @property
-    def type(self) -> UnderlyingType:
+    def underlyingType(self) -> UnderlyingType:
         return self._type
 
-    @type.setter
-    def type(self, value: UnderlyingType):
+    @underlyingType.setter
+    def underlyingType(self, value: UnderlyingType):
         self._type = value
 
-    @type.deleter
-    def type(self):
+    @underlyingType.deleter
+    def underlyingType(self):
         del self._type
 
     @property

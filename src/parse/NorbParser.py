@@ -5,32 +5,26 @@ import numpy as np
 class NorbParser:
     _MIN_NUM_DIMENSIONS = 3
 
-    def __init__(self, fileHandle):
-        self._fileHandle = fileHandle
-        self._norbParsed = NorbParsed()
+    def _readInts(self, fileHandle, numInts):
+        return np.fromfile(fileHandle, dtype=np.uint32, count=numInts)
 
-    def _readInts(self, numInts):
-        return np.fromfile(self._fileHandle, dtype=np.uint32, count=numInts)
+    def _readUnderlyingType(self, fileHandle):
+        return UnderlyingType(self._readInts(fileHandle, 1)[0])
 
-    def _readType(self):
-        self._norbParsed.type = UnderlyingType(self._readInts(1)[0])
+    def _readNumDimensions(self, fileHandle):
+        return self._readInts(fileHandle, 1)[0]
 
-    def _readNumDimensions(self):
-        self._norbParsed.numDimensions = self._readInts(1)[0]
+    def _readDimensions(self, fileHandle, numDimensions: int):
+        return (self._readInts(fileHandle, max(numDimensions, NorbParser._MIN_NUM_DIMENSIONS)))[0:numDimensions]
 
-    def _readDimensions(self):
-        self._norbParsed.dimensions = \
-            (self._readInts(max(self._norbParsed.numDimensions, NorbParser._MIN_NUM_DIMENSIONS)))[0:self._norbParsed.numDimensions]
+    def _readData(self, fileHandle, underlyingType: UnderlyingType, dimensions: np.ndarray):
+        return np.fromfile(fileHandle, dtype=translateUnderlyingTypeToNumpyType(underlyingType))\
+            .reshape(tuple(dimensions))
 
-    def _readData(self):
-        self._norbParsed.data = np.fromfile(
-            self._fileHandle,
-            dtype=translateUnderlyingTypeToNumpyType(self._norbParsed.type)
-        ).reshape(tuple(self._norbParsed.dimensions))
-
-    def parse(self) -> NorbParsed:
-        self._readType()
-        self._readNumDimensions()
-        self._readDimensions()
-        self._readData()
-        return self._norbParsed
+    def parse(self, fileHandle) -> NorbParsed:
+        norbParsed = NorbParsed()
+        norbParsed.underlyingType = self._readUnderlyingType(fileHandle)
+        norbParsed.numDimensions = self._readNumDimensions(fileHandle)
+        norbParsed.dimensions = self._readDimensions(fileHandle, norbParsed.numDimensions)
+        norbParsed.data = self._readData(fileHandle, norbParsed.underlyingType, norbParsed.dimensions)
+        return norbParsed
