@@ -1,1 +1,4 @@
 .idea/*
+res/norb/*
+**/__pycache__/*
+**/.DS_Store
