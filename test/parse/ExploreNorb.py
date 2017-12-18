@@ -2,6 +2,7 @@ from parse.NorbParser import NorbParser
 from parse.NorbParsed import NorbParsed
 import matplotlib.pyplot as plt
 
+
 def parseAndPrintSummary(fileHandle) -> NorbParsed:
     result = norbParser.parse(fileHandle)
     print(result.underlyingType)
@@ -9,6 +10,7 @@ def parseAndPrintSummary(fileHandle) -> NorbParsed:
     print(result.dimensions)
     print(result.data.shape)
     return result
+
 
 numImages = 10
 norbParser = NorbParser()

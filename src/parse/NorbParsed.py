@@ -33,22 +33,22 @@ def translateUnderlyingTypeToNumpyType(underlyingType: UnderlyingType) -> np.dty
 
 class NorbParsed:
     def __init__(self):
-        self._type = None
+        self._underlyingType = None
         self._numDimensions = None
         self._dimensions = None
         self._data = None
 
     @property
     def underlyingType(self) -> UnderlyingType:
-        return self._type
+        return self._underlyingType
 
     @underlyingType.setter
     def underlyingType(self, value: UnderlyingType):
-        self._type = value
+        self._underlyingType = value
 
     @underlyingType.deleter
     def underlyingType(self):
-        del self._type
+        del self._underlyingType
 
     @property
     def numDimensions(self) -> int:
