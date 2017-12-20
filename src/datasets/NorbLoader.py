@@ -32,5 +32,5 @@ class NorbLoader(DatasetLoader):
                     details = self._norbParser.parse(infoFile).data
                     return images, np.concatenate((categories.T, details), 1)
 
-    def loadData(self):
+    def loadData(self) -> ((np.ndarray, np.ndarray), (np.ndarray, np.ndarray)):
         return self._loadData(), self._loadData(True)
