@@ -1,5 +1,3 @@
-from parse.NorbParser import NorbParser
-from parse.NorbParsed import NorbParsed
 import matplotlib.pyplot as plt
 from datasets.NorbLoader import NorbLoader
 
