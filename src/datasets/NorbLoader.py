@@ -1,5 +1,6 @@
 from datasets.DatasetLoader import DatasetLoader
 from parse.NorbParser import NorbParser
+from assemble.NorbAssembler import NorbAssembler
 import numpy as np
 
 
@@ -20,6 +21,7 @@ class NorbLoader(DatasetLoader):
         self._categoryPostfix = categoryPostfix
         self._infoPostfix = infoPostfix
         self._norbParser = NorbParser()
+        self._norbAssembler = NorbAssembler()
 
     def _loadData(self, isTestData: bool = False):
         norbRoot = self._norbPath + '_' + (self._norbTestLabel if isTestData else self._norbTrainLabel) + '_'
@@ -30,7 +32,7 @@ class NorbLoader(DatasetLoader):
                     images = self._norbParser.parse(imageFile).data
                     categories = np.array([self._norbParser.parse(categoryFile).data])
                     details = self._norbParser.parse(infoFile).data
-                    return images, np.concatenate((categories.T, details), 1)
+                    return self._norbAssembler.assemble(images, np.concatenate((categories.T, details), 1))
 
     def loadData(self) -> ((np.ndarray, np.ndarray), (np.ndarray, np.ndarray)):
         return self._loadData(), self._loadData(True)
