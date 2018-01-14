@@ -32,3 +32,6 @@ class Test_NorbAssembler(unittest.TestCase):
 
         np.testing.assert_array_equal(expectedImages, newImages)
         np.testing.assert_array_equal(expectedLabels, newLabels)
+
+if __name__ == "__main__":
+    unittest.main()
