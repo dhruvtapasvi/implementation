@@ -4,9 +4,9 @@ from keras.backend import random_normal, exp, shape
 unitStdDev = 1.0
 
 
-def sampleConstructor(latentDimension):
-    def sample(args):
-        latentMean, latentVariance = args
-        epsilon = random_normal(shape=(shape(latentMean)[0], latentDimension), mean=0., stddev=unitStdDev)
-        return latentMean + exp(latentVariance / 2) * epsilon
-    return sample
+def samplingConstructor(latentRepresentationDimension):
+    def sampling(args):
+        latentRepresentationMean, latentRepresentationLogVariance = args
+        epsilon = random_normal(shape=(shape(latentRepresentationMean)[0], latentRepresentationDimension), mean=0., stddev=unitStdDev)
+        return latentRepresentationMean + exp(latentRepresentationLogVariance / 2) * epsilon
+    return sampling

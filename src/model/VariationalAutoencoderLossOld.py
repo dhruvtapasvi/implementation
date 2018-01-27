@@ -3,13 +3,13 @@ import keras.backend as K
 from keras.metrics import binary_crossentropy
 
 
-class VariationalAutoencoderLoss(Layer):
+class VariationalAutoencoderLossOld(Layer):
     def __init__(self, originalDimension, latentMean, latentVariance, **kwargs):
         self.is_placeholder = True
         self._originalDimension = originalDimension
         self._latentMean = latentMean
         self._latentVariance = latentVariance
-        super(VariationalAutoencoderLoss, self).__init__(**kwargs)
+        super(VariationalAutoencoderLossOld, self).__init__(**kwargs)
 
     def vae_loss(self, x, x_decoded_mean):
         xent_loss = self._originalDimension * binary_crossentropy(x, x_decoded_mean)

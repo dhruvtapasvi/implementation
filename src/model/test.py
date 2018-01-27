@@ -14,7 +14,7 @@ batch_size = 100
 original_dim = 784
 latent_dim = 2
 intermediate_dim = 256
-epochs = 50
+epochs = 2
 epsilon_std = 1.0
 
 

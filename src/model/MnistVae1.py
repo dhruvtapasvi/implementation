@@ -3,8 +3,8 @@ matplotlib.use('Agg')
 
 from keras.layers import Input, Conv2D, Deconv2D, Lambda
 from keras.models import Model
-from model.sampling import sampleConstructor
-from model.VariationalAutoencoderLoss import VariationalAutoencoderLoss
+from model.sampling import samplingConstructor
+from model.VariationalAutoencoderLossOld import VariationalAutoencoderLossOld
 from datasets.MnistLoader import MnistLoader
 import matplotlib.pyplot as plt
 
@@ -39,7 +39,7 @@ intermediateLayer = Conv2D(intermediateDimension, (7, 7), activation='relu', pad
 
 latentMean = Conv2D(latentDimension, (1, 1), activation='relu', padding='valid')(intermediateLayer)
 latentVariance = Conv2D(latentDimension, (1, 1), activation='relu', padding='valid')(intermediateLayer)
-latentLayer = Lambda(sampleConstructor(latentDimension), output_shape=(1, 1, latentDimension))([latentMean, latentVariance])
+latentLayer = Lambda(samplingConstructor(latentDimension), output_shape=(1, 1, latentDimension))([latentMean, latentVariance])
 
 # 1 * 1 * latentDimension
 
@@ -70,7 +70,7 @@ intermediateLayer = Deconv2D(convolutionalDepth, (2, 2), strides=(2, 2), activat
 intermediateLayer = Deconv2D(convolutionalDepth, (3, 3), activation='relu', padding='same')(intermediateLayer)
 convolutionalDepth = 1
 outputLayer = Deconv2D(convolutionalDepth, (3, 3), activation='relu', padding='same')(intermediateLayer)
-lossLayer = VariationalAutoencoderLoss(28 * 28, latentMean, latentVariance)([inputLayer, outputLayer])
+lossLayer = VariationalAutoencoderLossOld(28 * 28, latentMean, latentVariance)([inputLayer, outputLayer])
 
 
 variationalAutoencoder = Model(inputLayer, lossLayer)
