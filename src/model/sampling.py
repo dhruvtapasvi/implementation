@@ -9,4 +9,5 @@ def samplingConstructor(latentRepresentationDimension):
         latentRepresentationMean, latentRepresentationLogVariance = args
         epsilon = random_normal(shape=(shape(latentRepresentationMean)[0], latentRepresentationDimension), mean=0., stddev=unitStdDev)
         return latentRepresentationMean + exp(latentRepresentationLogVariance / 2) * epsilon
+
     return sampling
