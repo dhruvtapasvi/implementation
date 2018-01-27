@@ -9,13 +9,16 @@ import numpy as np
 class MnistDenseAutoencoder(VariationalAutoencoder):
     # Architecture from https://github.com/keras-team/keras/blob/master/examples/variational_autoencoder.py
     def __init__(self, inputRepresentationDimensions, intermediateRepresentationDimension, latentRepresentationDimension):
+        self._inputRepresentationDimensions = inputRepresentationDimensions
+        self._intermediateRepresentationDimension = intermediateRepresentationDimension
+        self._latentRepresentationDimension = latentRepresentationDimension
+
+
         totalNumberOfPixels = inputRepresentationDimensions[0] * inputRepresentationDimensions[1]
 
         inputRepresentation = Input(shape=inputRepresentationDimensions)
-        flattenedInputRepresentation = Flatten()(inputRepresentation)
-        intermediateRepresentation = Dense(intermediateRepresentationDimension, activation='relu')(flattenedInputRepresentation)
-        latentRepresentationMean = Dense(latentRepresentationDimension, activation='relu')(intermediateRepresentation)
-        latentRepresentationLogVariance = Dense(latentRepresentationDimension, activation='relu')(intermediateRepresentation)
+        encoderLayers = self._encoderLayersConstructor()
+        latentRepresentationMean, latentRepresentationLogVariance = encoderLayers(inputRepresentation)
 
         self._encoder = Model(inputRepresentation, latentRepresentationMean)
 
@@ -45,6 +48,23 @@ class MnistDenseAutoencoder(VariationalAutoencoder):
         self._decoder = Model(customLatent, decodedCustomInput)
 
         self._isTrained = False
+
+    def _encoderLayersConstructor(self):
+        inputToFlattenedInput = Flatten()
+        flattenedInputToIntermediate = Dense(self._intermediateRepresentationDimension, activation='relu')
+        intermediateToLatentMean = Dense(self._latentRepresentationDimension, activation='relu')
+        intermediateToLatentLogVariance = Dense(self._latentRepresentationDimension, activation='relu')
+
+        def encoderLayers(inputRepresentation):
+            flattenedInputRepresentation = inputToFlattenedInput(inputRepresentation)
+            intermediateRepresentation = flattenedInputToIntermediate(flattenedInputRepresentation)
+            latentRepresentationMean = intermediateToLatentMean(intermediateRepresentation)
+            latentRepresentationLogVariance = intermediateToLatentLogVariance(intermediateRepresentation)
+            return latentRepresentationMean, latentRepresentationLogVariance
+
+        return encoderLayers
+
+
 
     def encoder(self) -> Model:
         return self._encoder
