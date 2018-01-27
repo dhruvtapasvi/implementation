@@ -15,8 +15,8 @@ class DenseAutoencoder(VariationalAutoencoder):
     def encoderLayersConstructor(self):
         inputToFlattenedInput = Flatten()
         flattenedInputToIntermediate = Dense(self.__intermediateRepresentationDimension, activation='relu')
-        intermediateToLatentMean = Dense(self.__latentRepresentationDimension, activation='relu')
-        intermediateToLatentLogVariance = Dense(self.__latentRepresentationDimension, activation='relu')
+        intermediateToLatentMean = Dense(self.__latentRepresentationDimension)
+        intermediateToLatentLogVariance = Dense(self.__latentRepresentationDimension)
 
         def encoderLayers(inputRepresentation):
             flattenedInputRepresentation = inputToFlattenedInput(inputRepresentation)

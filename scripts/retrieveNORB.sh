@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 cd res
 mkdir norb
 cd norb

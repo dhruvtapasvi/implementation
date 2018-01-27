@@ -1,4 +1,5 @@
-from __future__ import print_function
+import matplotlib
+matplotlib.use('Agg')
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -14,14 +15,14 @@ batch_size = 100
 original_dim = 784
 latent_dim = 2
 intermediate_dim = 256
-epochs = 2
+epochs = 50
 epsilon_std = 1.0
 
 
 x = Input(shape=(original_dim,))
 h = Dense(intermediate_dim, activation='relu')(x)
-z_mean = Dense(latent_dim, activation='relu')(h)
-z_log_var = Dense(latent_dim, activation='relu')(h)
+z_mean = Dense(latent_dim)(h)
+z_log_var = Dense(latent_dim)(h)
 
 
 def sampling(args):
@@ -74,7 +75,7 @@ x_test_encoded = encoder.predict(x_test, batch_size=batch_size)
 plt.figure(figsize=(6, 6))
 plt.scatter(x_test_encoded[:, 0], x_test_encoded[:, 1], c=y_test)
 plt.colorbar()
-plt.show()
+plt.savefig('vae_fig1.png')
 
 # build a digit generator that can sample from the learned distribution
 decoder_input = Input(shape=(latent_dim,))
@@ -101,4 +102,4 @@ for i, yi in enumerate(grid_x):
 
 plt.figure(figsize=(10, 10))
 plt.imshow(figure, cmap='Greys_r')
-plt.show()
+plt.savefig('vae_fig2.png')

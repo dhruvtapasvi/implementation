@@ -16,7 +16,7 @@ class SimpleMnistExperiment(Experiment):
         mnistDenseAutoencoder.summary()
 
         batchSize = 100
-        epochs = 2
+        epochs = 50
         mnistLoader = MnistLoader()
         (x_train, y_train), (x_test, y_test) = mnistLoader.loadData()
         print(x_train.shape, x_test.shape)
