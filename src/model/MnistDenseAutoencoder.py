@@ -6,6 +6,7 @@ from model.variationalAutoencoderLoss import variationalAutoencoderLoss
 from model.AlreadyTrainedError import AlreadyTrainedError
 import numpy as np
 
+
 class MnistDenseAutoencoder(VariationalAutoencoder):
     # Architecture from https://github.com/keras-team/keras/blob/master/examples/variational_autoencoder.py
     def __init__(self, inputRepresentationDimensions, intermediateRepresentationDimension, latentRepresentationDimension):
@@ -13,27 +14,31 @@ class MnistDenseAutoencoder(VariationalAutoencoder):
         self._intermediateRepresentationDimension = intermediateRepresentationDimension
         self._latentRepresentationDimension = latentRepresentationDimension
 
-
-        totalNumberOfPixels = inputRepresentationDimensions[0] * inputRepresentationDimensions[1]
-
-        inputRepresentation = Input(shape=inputRepresentationDimensions)
         encoderLayers = self._encoderLayersConstructor()
+        decoderLayers = self._decoderLayersConstructor()
+
+        self._buildAutoencoder(encoderLayers, decoderLayers)
+        self._buildEncoder(encoderLayers)
+        self._buildDecoder(decoderLayers)
+
+        self._isTrained = False
+
+    def _buildAutoencoder(self, encoderLayers, decoderLayers):
+        # Input to the encoder and autoencoder models:
+        inputRepresentation = Input(shape=self._inputRepresentationDimensions)
+
         latentRepresentationMean, latentRepresentationLogVariance = encoderLayers(inputRepresentation)
+        latentRepresentation = Lambda(
+            samplingConstructor(self._latentRepresentationDimension),
+            output_shape=(self._latentRepresentationDimension,)
+        )([latentRepresentationMean, latentRepresentationLogVariance])
 
-        self._encoder = Model(inputRepresentation, latentRepresentationMean)
+        decodedInputRepresentation = decoderLayers(latentRepresentation)
 
-        latentRepresentation = Lambda(samplingConstructor(latentRepresentationDimension), output_shape=(latentRepresentationDimension,))([latentRepresentationMean, latentRepresentationLogVariance])
-        latentToIntermediate = Dense(intermediateRepresentationDimension, activation='relu')
-        intermediateToFlattenedInput = Dense(totalNumberOfPixels, activation='sigmoid')
-        flattenedInputToInput = Reshape(inputRepresentationDimensions)
-
-        decodedIntermediateRepresentation = latentToIntermediate(latentRepresentation)
-        decodedFlattenedInputRepresentation = intermediateToFlattenedInput(decodedIntermediateRepresentation)
-        decodedInputRepresentation = flattenedInputToInput(decodedFlattenedInputRepresentation)
         self._autoencoder = Model(inputRepresentation, decodedInputRepresentation)
 
         self._autoencoder.add_loss(variationalAutoencoderLoss(
-            inputRepresentationDimensions,
+            self._inputRepresentationDimensions,
             inputRepresentation,
             decodedInputRepresentation,
             latentRepresentationMean,
@@ -41,13 +46,15 @@ class MnistDenseAutoencoder(VariationalAutoencoder):
         ))
         self._autoencoder.compile(optimizer='rmsprop', loss=None)
 
-        customLatent = Input(shape=(latentRepresentationDimension,))
-        decodedCustomIntermediate = latentToIntermediate(customLatent)
-        decodedFlattenedCustomInput = intermediateToFlattenedInput(decodedCustomIntermediate)
-        decodedCustomInput = flattenedInputToInput(decodedFlattenedCustomInput)
-        self._decoder = Model(customLatent, decodedCustomInput)
+    def _buildEncoder(self, encoderLayers):
+        inputRepresentation = Input(shape=self._inputRepresentationDimensions)
+        latentRepresentationMean, _ = encoderLayers(inputRepresentation)
+        self._encoder = Model(inputRepresentation, latentRepresentationMean)
 
-        self._isTrained = False
+    def _buildDecoder(self, decoderLayers):
+        customLatentRepresentation = Input(shape=(self._latentRepresentationDimension,))
+        customDecodedInputRepresentation = decoderLayers(customLatentRepresentation)
+        self._decoder = Model(customLatentRepresentation, customDecodedInputRepresentation)
 
     def _encoderLayersConstructor(self):
         inputToFlattenedInput = Flatten()
@@ -64,7 +71,19 @@ class MnistDenseAutoencoder(VariationalAutoencoder):
 
         return encoderLayers
 
+    def _decoderLayersConstructor(self):
+        totalNumberOfPixels = self._inputRepresentationDimensions[0] * self._inputRepresentationDimensions[1]
+        latentToIntermediate = Dense(self._intermediateRepresentationDimension, activation='relu')
+        intermediateToFlattenedInput = Dense(totalNumberOfPixels, activation='sigmoid')
+        flattenedInputToInput = Reshape(self._inputRepresentationDimensions)
 
+        def decoderLayers(latentRepresentation):
+            decodedIntermediateRepresentation = latentToIntermediate(latentRepresentation)
+            decodedFlattenedInputRepresentation = intermediateToFlattenedInput(decodedIntermediateRepresentation)
+            decodedInputRepresentation = flattenedInputToInput(decodedFlattenedInputRepresentation)
+            return decodedInputRepresentation
+
+        return decoderLayers
 
     def encoder(self) -> Model:
         return self._encoder
