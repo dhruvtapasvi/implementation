@@ -2,10 +2,12 @@ from model.VariationalAutoencoder import VariationalAutoencoder
 from keras.layers import Input, Dense, Lambda, Flatten, Reshape
 from keras.models import Model
 from model.sampling import sampleConstructor
-from model.VariationalAutoencoderLoss import VariationalAutoencoderLoss
+from model.variationalAutoencoderLossConstructor import variationalAutoencoderLossConstructor
 from model.AlreadyTrainedError import AlreadyTrainedError
 import numpy as np
 
+from keras.metrics import binary_crossentropy
+from keras.backend import sum, exp, mean, square, flatten, shape, random_normal
 
 class MnistDenseAutoencoder(VariationalAutoencoder):
     # Architecture from https://github.com/keras-team/keras/blob/master/examples/variational_autoencoder.py
@@ -20,16 +22,36 @@ class MnistDenseAutoencoder(VariationalAutoencoder):
 
         self._encoder = Model(inputImage, latentMean)
 
-        latent = Lambda(sampleConstructor(latentDimension), output_shape=(latentDimension,))([latentMean, latentLogVariance])
+        def sampling(args):
+            z_mean, z_log_var = args
+            epsilon = random_normal(shape=(shape(z_mean)[0], latentDimension), mean=0.,
+                                      stddev=1.0)
+            return z_mean + exp(z_log_var / 2) * epsilon
+
+        # latent = Lambda(sampleConstructor(latentDimension), output_shape=(latentDimension,))([latentMean, latentLogVariance])
+        latent = Lambda(sampling, output_shape=(latentDimension,))([latentMean, latentLogVariance])
         intermediateDecoder = Dense(intermediateDimension, activation='relu')
-        flattenedInputDecoder = Dense(flattenedImageDimension, activation='relu')
+        flattenedInputDecoder = Dense(flattenedImageDimension, activation='sigmoid')
         flattenedInputReshaper = Reshape(originalImageDimensions)
 
         decodedIntermediate = intermediateDecoder(latent)
         decodedFlattenedInput = flattenedInputDecoder(decodedIntermediate)
         decodedInput = flattenedInputReshaper(decodedFlattenedInput)
-        lossLayer = VariationalAutoencoderLoss(flattenedImageDimension, latentMean, latentLogVariance)([inputImage, decodedInput])
-        self._autoencoder = Model(inputImage, lossLayer)
+        self._autoencoder = Model(inputImage, decodedInput)
+
+        crossEntropyLoss = 28 * 28 * binary_crossentropy(flatten(inputImage), flatten(decodedInput))
+        kullbackLeiberLoss = - 0.5 * sum(1 + latentLogVariance - square(latentMean) - exp(latentLogVariance), axis=-1)
+        vae_loss = mean(crossEntropyLoss + kullbackLeiberLoss)
+
+        # self._autoencoder.add_loss(variationalAutoencoderLossConstructor(
+        #     originalImageDimensions,
+        #     inputImage,
+        #     decodedInput,
+        #     latentMean,
+        #     latentLogVariance
+        # ))
+        self._autoencoder.add_loss(vae_loss)
+        self._autoencoder.compile(optimizer='rmsprop', loss=None)
 
         customLatent = Input(shape=(latentDimension,))
         decodedCustomIntermediate = intermediateDecoder(customLatent)
@@ -43,7 +65,7 @@ class MnistDenseAutoencoder(VariationalAutoencoder):
         return self._encoder
 
     def decoder(self) -> Model:
-        return self._autoencoder
+        return self._decoder
 
     def autoencoder(self) -> Model:
         return self._autoencoder
@@ -57,7 +79,6 @@ class MnistDenseAutoencoder(VariationalAutoencoder):
         if self._isTrained:
             raise AlreadyTrainedError
         else:
-            self._autoencoder.compile(optimizer='rmsprop', loss=None)
             self._autoencoder.fit(
                 trainingData,
                 shuffle=True,
