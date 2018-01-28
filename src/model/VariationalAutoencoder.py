@@ -63,6 +63,12 @@ class VariationalAutoencoder(metaclass=ABCMeta):
     def decoderLayersConstructor(self):
         raise NotImplementedError
 
+    def evaluateLayersList(self, layersList, input):
+        intermediateResult = input
+        for layer in layersList:
+            intermediateResult = layer(intermediateResult)
+        return intermediateResult
+
     def encoder(self) -> Model:
         return self._encoder
 

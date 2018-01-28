@@ -1,5 +1,6 @@
 from experiments.Experiment import Experiment
 from model.DenseAutoencoder import DenseAutoencoder
+from model.ConvolutionalAutoencoder import ConvolutionalAutoencoder
 from datasets.MnistLoader import MnistLoader
 import numpy as np
 import matplotlib.pyplot as plt
@@ -11,7 +12,8 @@ class SimpleMnistExperiment(Experiment):
         originalImageDimensions = (28, 28)
         intermediateDimension = 256
         latentDimension = 2
-        mnistDenseAutoencoder = DenseAutoencoder(originalImageDimensions, intermediateDimension, latentDimension)
+        # mnistDenseAutoencoder = DenseAutoencoder(originalImageDimensions, intermediateDimension, latentDimension)
+        mnistDenseAutoencoder = ConvolutionalAutoencoder(originalImageDimensions, 3, 8, intermediateDimension, latentDimension)
         mnistDenseAutoencoder.buildModels()
         mnistDenseAutoencoder.summary()
 
