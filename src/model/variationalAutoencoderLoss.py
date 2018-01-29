@@ -1,10 +1,12 @@
-import numpy as np
-from keras.metrics import binary_crossentropy
-from keras.backend import sum, exp, mean, square, flatten
+from model.reconstructionLoss import reconstructionLossConstructor
+from model.kullbackLeiberLoss import kullbackLeiberLossConstructor
 
 
-def variationalAutoencoderLoss(inputRepresentationDimensions, inputRepresentation, decodedInputRepresentation, latentRepresentationMean, latentRepresentationLogVariance):
-    totalNumberOfPixels = np.prod(inputRepresentationDimensions)
-    crossEntropyLoss = totalNumberOfPixels * binary_crossentropy(flatten(inputRepresentation), flatten(decodedInputRepresentation))
-    kullbackLeiberLoss = - 0.5 * sum(1 + latentRepresentationLogVariance - square(latentRepresentationMean) - exp(latentRepresentationLogVariance), axis=-1)
-    return mean(crossEntropyLoss + kullbackLeiberLoss)
+def variationalAutoencoderLossConstructor(inputRepresentationDimensions, latentRepresentationMean, latentRepresentationLogVariance):
+    reconstructionLoss = reconstructionLossConstructor(inputRepresentationDimensions)
+    kullbackLeiberLoss = kullbackLeiberLossConstructor(latentRepresentationMean, latentRepresentationLogVariance)
+
+    def variationalAutoencoderLoss(inputRepresentation, decodedInputRepresentation):
+        return reconstructionLoss(inputRepresentation, decodedInputRepresentation) + kullbackLeiberLoss(inputRepresentation, decodedInputRepresentation)
+
+    return variationalAutoencoderLoss
