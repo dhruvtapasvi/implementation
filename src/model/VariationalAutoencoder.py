@@ -100,3 +100,9 @@ class VariationalAutoencoder(metaclass=ABCMeta):
 
     def summary(self):
         self.__autoencoder.summary()
+
+    def saveWeights(self, location):
+        self.__autoencoder.save_weights(location)
+
+    def loadWeights(self, location):
+        self.__autoencoder.load_weights(location)

@@ -1,10 +1,10 @@
-from experiments.Experiment import Experiment
-from model.DenseAutoencoder import DenseAutoencoder
-from model.ConvolutionalAutoencoder import ConvolutionalAutoencoder
-from datasets.MnistLoader import MnistLoader
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.stats import norm
+
+from experiments.Experiment import Experiment
+from model.ConvolutionalAutoencoder import ConvolutionalAutoencoder
+from datasets.MnistLoader import MnistLoader
 
 
 class SimpleMnistExperiment(Experiment):
@@ -12,10 +12,10 @@ class SimpleMnistExperiment(Experiment):
         originalImageDimensions = (28, 28)
         intermediateDimension = 256
         latentDimension = 2
-        # mnistDenseAutoencoder = DenseAutoencoder(originalImageDimensions, intermediateDimension, latentDimension)
-        mnistDenseAutoencoder = ConvolutionalAutoencoder(originalImageDimensions, 3, 8, intermediateDimension, latentDimension)
-        mnistDenseAutoencoder.buildModels()
-        mnistDenseAutoencoder.summary()
+
+        mnistConvolutionalAutoencoder = ConvolutionalAutoencoder(originalImageDimensions, 3, 8, intermediateDimension, latentDimension)
+        mnistConvolutionalAutoencoder.buildModels()
+        mnistConvolutionalAutoencoder.summary()
 
         batchSize = 100
         epochs = 50
@@ -24,10 +24,10 @@ class SimpleMnistExperiment(Experiment):
         print(x_train.shape, x_test.shape)
         x_train = x_train.astype('float32') / 255.
         x_test = x_test.astype('float32') / 255.
-        mnistDenseAutoencoder.train(x_train, x_test, epochs, batchSize)
+        mnistConvolutionalAutoencoder.train(x_train, x_test, epochs, batchSize)
 
         # display a 2D plot of the digit classes in the latent space
-        encoder = mnistDenseAutoencoder.encoder()
+        encoder = mnistConvolutionalAutoencoder.encoder()
         x_test_encoded = encoder.predict(x_test, batch_size=batchSize)
         plt.figure(figsize=(6, 6))
         plt.scatter(x_test_encoded[:, 0], x_test_encoded[:, 1], c=y_test)
@@ -35,7 +35,7 @@ class SimpleMnistExperiment(Experiment):
         plt.savefig('vae_fig1.png')
 
         # display a 2D manifold of the digits
-        generator = mnistDenseAutoencoder.decoder()
+        generator = mnistConvolutionalAutoencoder.decoder()
         generator.summary()
         n = 15  # figure with 15x15 digits
         digit_size = 28
