@@ -4,7 +4,9 @@ from keras.layers import Input, Lambda
 from keras.models import Model
 
 from model.sampling import samplingConstructor
-from model.variationalAutoencoderLoss import variationalAutoencoderLoss
+from model.variationalAutoencoderLoss import variationalAutoencoderLossConstructor
+from model.reconstructionLoss import reconstructionLossConstructor
+from model.kullbackLeiberLoss import kullbackLeiberLossConstructor
 from model.AlreadyTrainedError import AlreadyTrainedError
 
 
@@ -36,14 +38,14 @@ class VariationalAutoencoder(metaclass=ABCMeta):
 
         self.__autoencoder = Model(inputRepresentation, decodedInputRepresentation)
 
-        self.__autoencoder.add_loss(variationalAutoencoderLoss(
-            self.__inputRepresentationDimensions,
-            inputRepresentation,
-            decodedInputRepresentation,
-            latentRepresentationMean,
-            latentRepresentationLogVariance
-        ))
-        self.__autoencoder.compile(optimizer='rmsprop', loss=None)
+        self.__autoencoder.compile(
+            optimizer='rmsprop',
+            loss=variationalAutoencoderLossConstructor(self.__inputRepresentationDimensions, latentRepresentationMean, latentRepresentationLogVariance),
+            metrics=[
+                reconstructionLossConstructor(self.__inputRepresentationDimensions),
+                kullbackLeiberLossConstructor(latentRepresentationMean, latentRepresentationLogVariance)
+            ]
+        )
 
     def __buildEncoder(self, encoderLayers):
         inputRepresentation = Input(shape=self.__inputRepresentationDimensions)
@@ -89,10 +91,11 @@ class VariationalAutoencoder(metaclass=ABCMeta):
         else:
             self.__autoencoder.fit(
                 trainingData,
+                trainingData,
                 shuffle=True,
                 epochs=epochs,
                 batch_size=batchSize,
-                validation_data=(validationData, None))
+                validation_data=(validationData, validationData))
             self.__isTrained = True
 
     def summary(self):
