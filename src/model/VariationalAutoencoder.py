@@ -9,9 +9,6 @@ from model.reconstructionLoss import reconstructionLossConstructor
 from model.kullbackLeiberLoss import kullbackLeiberLossConstructor
 from model.AlreadyTrainedError import AlreadyTrainedError
 
-import numpy as np
-from keras.metrics import binary_crossentropy
-from keras.backend import sum, exp, mean, square, flatten
 
 class VariationalAutoencoder(metaclass=ABCMeta):
     def __init__(self, inputRepresentationDimensions, latentRepresentationDimension):
