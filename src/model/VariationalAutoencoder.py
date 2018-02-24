@@ -7,7 +7,6 @@ from model.sampling import samplingConstructor
 from model.variationalAutoencoderLoss import variationalAutoencoderLossConstructor
 from model.reconstructionLoss import reconstructionLossConstructor
 from model.kullbackLeiberLoss import kullbackLeiberLossConstructor
-from model.AlreadyTrainedError import AlreadyTrainedError
 
 
 class VariationalAutoencoder(metaclass=ABCMeta):
@@ -40,7 +39,8 @@ class VariationalAutoencoder(metaclass=ABCMeta):
 
         self.__autoencoder.compile(
             optimizer='rmsprop',
-            loss=variationalAutoencoderLossConstructor(self.__inputRepresentationDimensions, latentRepresentationMean, latentRepresentationLogVariance),
+            loss=variationalAutoencoderLossConstructor(self.__inputRepresentationDimensions, latentRepresentationMean,
+                                                       latentRepresentationLogVariance),
             metrics=[
                 reconstructionLossConstructor(self.__inputRepresentationDimensions),
                 kullbackLeiberLossConstructor(latentRepresentationMean, latentRepresentationLogVariance)
@@ -86,17 +86,14 @@ class VariationalAutoencoder(metaclass=ABCMeta):
             validationData: np.ndarray,
             epochs,
             batchSize):
-        if self.__isTrained:
-            raise AlreadyTrainedError
-        else:
-            self.__autoencoder.fit(
-                trainingData,
-                trainingData,
-                shuffle=True,
-                epochs=epochs,
-                batch_size=batchSize,
-                validation_data=(validationData, validationData))
-            self.__isTrained = True
+        self.__autoencoder.fit(
+            trainingData,
+            trainingData,
+            shuffle=True,
+            epochs=epochs,
+            batch_size=batchSize,
+            validation_data=(validationData, validationData))
+        self.__isTrained = True
 
     def summary(self):
         self.__autoencoder.summary()
