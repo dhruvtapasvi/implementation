@@ -19,7 +19,7 @@ class TrainingNorbExperiment(Experiment):
         intermediateDimension = 256
         latentDimension = 10
         numConvolutions = 6
-        baseConvolutionalDepth = 8
+        baseConvolutionalDepth = 16
 
         # Build model and exhibit summary
         norbConvolutionalAutoencoder = ConvolutionalAutoencoder(

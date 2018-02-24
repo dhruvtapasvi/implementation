@@ -15,7 +15,7 @@ class UseLoadedWeightsNorbExperiment(Experiment):
         intermediateDimension = 256
         latentDimension = 10
         numConvolutions = 6
-        baseConvolutionalDepth = 8
+        baseConvolutionalDepth = 16
 
         # Build modehttp://bjlkeng.github.io/posts/a-variational-autoencoder-on-the-svnh-dataset/l and exhibit summary
         norbConvolutionalAutoencoder = ConvolutionalAutoencoder(
@@ -58,6 +58,25 @@ class UseLoadedWeightsNorbExperiment(Experiment):
             num.get_xaxis().set_visible(False)
             num.get_yaxis().set_visible(False)
         plt.savefig('vae_fig5.png')
+
+        # Display reconstructions
+        numberExamplesReconstructions = 100
+        autoencoder = norbConvolutionalAutoencoder.autoencoder()
+        xTestReconstructedExamples = autoencoder.predict(xTest[0:numberExamplesReconstructions], batch_size=numberExamplesReconstructions)
+        plt.figure(figsize=(2, numberExamplesReconstructions))
+        for i in range(numberExamplesReconstructions):
+            num = plt.subplot(numberExamplesReconstructions, 2, 2 * i + 1)
+            plt.imshow(xTest[i])
+            plt.gray()
+            num.get_xaxis().set_visible(False)
+            num.get_yaxis().set_visible(False)
+
+            num = plt.subplot(numberExamplesReconstructions, 2, 2 * i + 2)
+            plt.imshow(xTestReconstructedExamples[i])
+            plt.gray()
+            num.get_xaxis().set_visible(False)
+            num.get_yaxis().set_visible(False)
+        plt.savefig('vae_fig6.png')
 
         # # Obtain datasets and carry out normalisation
         # mnistLoader = MnistLoader()
