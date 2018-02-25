@@ -4,3 +4,4 @@ res/norb/*
 **/.DS_Store
 *.pyc
 *.png
+*.h5
