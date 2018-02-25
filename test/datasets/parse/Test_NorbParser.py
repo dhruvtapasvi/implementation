@@ -2,7 +2,7 @@ import os
 import unittest
 
 import numpy as np
-from parse.NorbParser import NorbParser
+from datasets.parse.NorbParser import NorbParser
 
 from datasets.parse.NorbParsed import NorbParsed, UnderlyingType
 
