@@ -1,9 +1,10 @@
-import unittest
 import os
+import unittest
+
 import numpy as np
 from parse.NorbParser import NorbParser
-from parse.NorbParsed import NorbParsed, UnderlyingType
 
+from datasets.parse.NorbParsed import NorbParsed, UnderlyingType
 
 mockFilePath = "./Test_NorbParser_Scratch"
 

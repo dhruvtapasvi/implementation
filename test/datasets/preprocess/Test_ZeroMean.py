@@ -1,6 +1,8 @@
 import unittest
-from preprocess.ZeroMean import ZeroMean
+
 import numpy as np
+
+from datasets.preprocess import ZeroMean
 
 
 class Test_ZeroMean(unittest.TestCase):

@@ -1,5 +1,6 @@
-from preprocess.Preprocessor import Preprocessor
 import numpy as np
+
+from datasets.preprocess import Preprocessor
 
 
 class Normalise(Preprocessor):
