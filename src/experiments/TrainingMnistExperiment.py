@@ -1,10 +1,6 @@
-import numpy as np
-import matplotlib.pyplot as plt
-from scipy.stats import norm
-
+from datasets.basicLoaders.MnistLoader import MnistLoader
 from experiments.Experiment import Experiment
 from model.ConvolutionalAutoencoder import ConvolutionalAutoencoder
-from datasets.MnistLoader import MnistLoader
 
 
 class TrainingMnistExperiment(Experiment):

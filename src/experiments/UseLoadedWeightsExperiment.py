@@ -1,10 +1,10 @@
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 import scipy as sp
 
+from datasets.basicLoaders.MnistLoader import MnistLoader
 from experiments.Experiment import Experiment
 from model.ConvolutionalAutoencoder import ConvolutionalAutoencoder
-from datasets.MnistLoader import MnistLoader
 
 
 class UseLoadedWeightsExperiment(Experiment):

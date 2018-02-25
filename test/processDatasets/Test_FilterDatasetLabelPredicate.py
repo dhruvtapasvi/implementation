@@ -1,6 +1,8 @@
 import unittest
+
 import numpy as np
-from processDatasets.FilterDatasetLabelPredicate import FilterDatasetLabelPredicate
+
+from datasets.process.FilterDatasetLabelPredicate import FilterDatasetLabelPredicate
 
 
 class Test_FilterDatasetLabelPredicate(unittest.TestCase):

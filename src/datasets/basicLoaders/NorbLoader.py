@@ -1,8 +1,9 @@
-from datasets.DatasetLoader import DatasetLoader
-from parse.NorbParser import NorbParser
-from assemble.NorbAssembler import NorbAssembler
-from processDatasets.FilterDatasetLabelPredicate import FilterDatasetLabelPredicate
 import numpy as np
+
+from datasets.DatasetLoader import DatasetLoader
+from datasets.assemble.NorbAssembler import NorbAssembler
+from datasets.process.FilterDatasetLabelPredicate import FilterDatasetLabelPredicate
+from parse.NorbParser import NorbParser
 
 
 class NorbLoader(DatasetLoader):

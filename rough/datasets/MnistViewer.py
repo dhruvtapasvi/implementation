@@ -1,6 +1,6 @@
-from datasets.MnistLoader import MnistLoader
 import matplotlib.pyplot as plt
 
+from datasets.basicLoaders.MnistLoader import MnistLoader
 
 mnistLoader = MnistLoader()
 (_, _), (xTest, yTest) = mnistLoader.loadData()
