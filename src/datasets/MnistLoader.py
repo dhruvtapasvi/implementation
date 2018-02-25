@@ -9,6 +9,6 @@ class MnistLoader(DatasetLoader):
     def loadData(self) -> ((np.ndarray, np.ndarray), (np.ndarray, np.ndarray), (np.ndarray, np.ndarray)):
         (XTest, YTest), (XTrain, YTrain) = mnist.load_data()
         return\
-            (XTrain[:self.__MNIST_VALIDATION_SPLIT], YTrain[:self.__MNIST_VALIDATION_SPLIT]),\
-            (XTrain[self.__MNIST_VALIDATION_SPLIT:], YTrain[self.__MNIST_VALIDATION_SPLIT:]),\
+            (XTrain[:MnistLoader.__MNIST_VALIDATION_SPLIT], YTrain[:MnistLoader.__MNIST_VALIDATION_SPLIT]),\
+            (XTrain[MnistLoader.__MNIST_VALIDATION_SPLIT:], YTrain[MnistLoader.__MNIST_VALIDATION_SPLIT:]),\
             (XTest, YTest)
