@@ -4,7 +4,6 @@ import numpy as np
 from keras.layers import Input, Lambda
 from keras.models import Model
 
-from model.AlreadyTrainedError import AlreadyTrainedError
 from model.loss.kullbackLeiberLoss import kullbackLeiberLossConstructor
 from model.loss.variationalAutoencoderLoss import variationalAutoencoderLossConstructor
 from model.loss.binaryCrossEntropyLoss import binaryCrossEntropyLossConstructor
@@ -15,7 +14,6 @@ class VariationalAutoencoder(metaclass=ABCMeta):
     def __init__(self, inputRepresentationDimensions, latentRepresentationDimension):
         self.__inputRepresentationDimensions = inputRepresentationDimensions
         self.__latentRepresentationDimension = latentRepresentationDimension
-        self.__isTrained = False
 
     def buildModels(self):
         encoderLayers = self.encoderLayersConstructor()
@@ -91,17 +89,13 @@ class VariationalAutoencoder(metaclass=ABCMeta):
             validationData: np.ndarray,
             epochs,
             batchSize):
-        if self.__isTrained:
-            raise AlreadyTrainedError
-        else:
-            self.__autoencoder.fit(
-                trainingData,
-                trainingData,
-                shuffle=True,
-                epochs=epochs,
-                batch_size=batchSize,
-                validation_data=(validationData, validationData))
-            self.__isTrained = True
+        self.__autoencoder.fit(
+            trainingData,
+            trainingData,
+            shuffle=True,
+            epochs=epochs,
+            batch_size=batchSize,
+            validation_data=(validationData, validationData))
 
     def summary(self):
         self.__autoencoder.summary()

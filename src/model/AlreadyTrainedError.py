@@ -1,2 +1,0 @@
-class AlreadyTrainedError(Exception):
-    pass
