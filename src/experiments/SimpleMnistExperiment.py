@@ -1,10 +1,11 @@
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 from scipy.stats import norm
 
+from datasets.basicLoaders.MnistLoader import MnistLoader
+from datasets.preprocessLoaders.ScaleBetweenZeroAndOne import ScaleBetweenZeroAndOne
 from experiments.Experiment import Experiment
 from model.ConvolutionalAutoencoder import ConvolutionalAutoencoder
-from datasets.MnistLoader import MnistLoader
 
 
 class SimpleMnistExperiment(Experiment):
@@ -19,12 +20,10 @@ class SimpleMnistExperiment(Experiment):
 
         batchSize = 100
         epochs = 50
-        mnistLoader = MnistLoader()
-        (x_train, y_train), (x_test, y_test) = mnistLoader.loadData()
-        print(x_train.shape, x_test.shape)
-        x_train = x_train.astype('float32') / 255.
-        x_test = x_test.astype('float32') / 255.
-        mnistConvolutionalAutoencoder.train(x_train, x_test, epochs, batchSize)
+        mnistLoader = ScaleBetweenZeroAndOne(MnistLoader(), 0, 255)
+        (x_train, y_train), (x_val, y_val), (x_test, y_test) = mnistLoader.loadData()
+        print(x_train.shape, x_val.shape, x_test.shape)
+        mnistConvolutionalAutoencoder.train(x_train, x_val, epochs, batchSize)
 
         # display a 2D plot of the digit classes in the latent space
         encoder = mnistConvolutionalAutoencoder.encoder()

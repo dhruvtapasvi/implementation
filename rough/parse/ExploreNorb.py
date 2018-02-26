@@ -1,23 +1,20 @@
 import matplotlib.pyplot as plt
-from datasets.NorbLoader import NorbLoader
 
+from datasets.basicLoaders.NorbLoader import NorbLoader
 
 numImages = 10
 norbLoader = NorbLoader('../../res/norb')
 
-(x_norbTrain, y_norbTrain), _ = norbLoader.loadData()
+(XTrain, YTrain), (XValidation, YValidation), (XTest, YTest) = norbLoader.loadData()
+print(XTrain.shape, YTrain.shape, XValidation.shape, YValidation.shape, XTest.shape, YTest.shape)
 
-print(x_norbTrain.shape)
-print(y_norbTrain.shape)
+y_norbTrain_trunc = YTrain[0:numImages]
 
-x_norbTrain = x_norbTrain[0:numImages]
-y_norbTrain = y_norbTrain[0:numImages]
-
-print(y_norbTrain)
+print(y_norbTrain_trunc)
 
 plt.figure(figsize=(numImages, 1))
 for i in range(numImages):
-    image = (x_norbTrain[i]).astype('float') / 255.
+    image = (XTrain[i]).astype('float') / 255.
     num = plt.subplot(1, numImages, i + 1)
     plt.imshow(image)
     plt.gray()

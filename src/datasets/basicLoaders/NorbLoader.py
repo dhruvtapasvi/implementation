@@ -1,10 +1,16 @@
-from datasets.DatasetLoader import DatasetLoader
-from parse.NorbParser import NorbParser
-from assemble.NorbAssembler import NorbAssembler
 import numpy as np
+
+from datasets.DatasetLoader import DatasetLoader
+from datasets.assemble.NorbAssembler import NorbAssembler
+from datasets.parse.NorbParser import NorbParser
+from datasets.process.FilterDatasetLabelPredicate import FilterDatasetLabelPredicate
 
 
 class NorbLoader(DatasetLoader):
+    __NORB_VALIDATION_INSTANCES = 7
+    __NORB_TEST_INSTANCES = 9
+    __NORB_INSTANCE_ATTRIBUTE = 2
+
     def __init__(
             self,
             norbHome,
@@ -23,7 +29,7 @@ class NorbLoader(DatasetLoader):
         self._norbParser = NorbParser()
         self._norbAssembler = NorbAssembler()
 
-    def _loadData(self, isTestData: bool = False):
+    def __loadData(self, isTestData: bool = False):
         norbRoot = self._norbPath + '_' + (self._norbTestLabel if isTestData else self._norbTrainLabel) + '_'
         readFlag = 'r'
         with open(norbRoot + self._imagePostfix, readFlag) as imageFile:
@@ -34,5 +40,14 @@ class NorbLoader(DatasetLoader):
                     details = self._norbParser.parse(infoFile).data
                     return self._norbAssembler.assemble(images, np.concatenate((categories.T, details), 1))
 
-    def loadData(self) -> ((np.ndarray, np.ndarray), (np.ndarray, np.ndarray)):
-        return self._loadData(), self._loadData(True)
+    def loadData(self) -> ((np.ndarray, np.ndarray), (np.ndarray, np.ndarray), (np.ndarray, np.ndarray)):
+        XTrain, YTrain = self.__loadData(False)
+        XTest, YTest = self.__loadData(True)
+        datasetFilter = FilterDatasetLabelPredicate()
+
+        test, (XRemaining, YRemaining) =\
+            datasetFilter.split(XTrain, YTrain, lambda row: row[NorbLoader.__NORB_INSTANCE_ATTRIBUTE] >= NorbLoader.__NORB_TEST_INSTANCES)
+        validation, (XExtraTrain, YExtraTrain) =\
+            datasetFilter.split(XRemaining, YRemaining, lambda row: row[NorbLoader.__NORB_INSTANCE_ATTRIBUTE] >= NorbLoader.__NORB_VALIDATION_INSTANCES)
+        train = np.concatenate((XTest, XExtraTrain)), np.concatenate((YTest, YExtraTrain))
+        return train, validation, test

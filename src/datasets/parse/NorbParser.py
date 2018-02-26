@@ -1,5 +1,6 @@
-from parse.NorbParsed import UnderlyingType, NorbParsed, translateUnderlyingTypeToNumpyType
 import numpy as np
+
+from datasets.parse.NorbParsed import UnderlyingType, NorbParsed, translateUnderlyingTypeToNumpyType
 
 
 class NorbParser:

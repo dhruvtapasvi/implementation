@@ -4,5 +4,5 @@ import numpy as np
 
 class DatasetLoader(metaclass=ABCMeta):
     @abstractclassmethod
-    def loadData(self) -> ((np.ndarray, np.ndarray), (np.ndarray, np.ndarray)):
+    def loadData(self) -> ((np.ndarray, np.ndarray), (np.ndarray, np.ndarray), (np.ndarray, np.ndarray)):
         raise NotImplementedError
