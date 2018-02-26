@@ -12,9 +12,20 @@ class MockDatasetLoader_NonnegativeData(DatasetLoader):
         self.__testSize = testSize
 
     def loadData(self) -> ((np.ndarray, np.ndarray), (np.ndarray, np.ndarray), (np.ndarray, np.ndarray)):
-        train = self.__createXandY(self.__trainSize)
-        validation = self.__createXandY(self.__validationSize)
-        test = self.__createXandY(self.__testSize)
+        flattenedImageDimension = np.prod(self.__imageDimensions)
+
+        XTrain = np.array([np.arange(flattenedImageDimension).reshape(self.__imageDimensions) for _ in range(self.__trainSize)])
+        YTrain = np.arange(self.__trainSize)
+        train = XTrain, YTrain
+
+        XValidation = np.array([np.zeros(self.__imageDimensions) for _ in range(self.__validationSize)])
+        YValidation = np.arange(self.__validationSize)
+        validation = XValidation, YValidation
+
+        XTest = np.array([np.full(self.__imageDimensions, flattenedImageDimension - 1) for _ in range(self.__testSize)])
+        YTest = np.arange(self.__testSize)
+        test = XTest, YTest
+
 
         return train, validation, test
 
@@ -48,10 +59,15 @@ class Test_ScaleBetweenZeroAndOnePreprocessLoader(unittest.TestCase):
         self.assertTrue(XValidationLiesInRange)
         self.assertTrue(XTestLiesInRange)
 
-        expectedImage = np.array([[0., 0.125, 0.25], [0.375, 0.5, 0.625], [0.75, 0.875, 1.]])
-        expectedXTrain = np.array([expectedImage for _ in range(self.__trainSize)])
-        expectedXValidation = np.array([expectedImage for _ in range(self.__validationSize)])
-        expectedXTest = np.array([expectedImage for _ in range(self.__testSize)])
+        flattenedImageDimension = np.prod(self.__imageDimensions)
+        expectedTrainImage = np.arange(flattenedImageDimension).reshape(self.__imageDimensions) / (flattenedImageDimension - 1)
+        expectedXTrain = np.array([expectedTrainImage for _ in range(self.__trainSize)])
+
+        expectedValidationImage = np.full(self.__imageDimensions, 0.)
+        expectedXValidation = np.array([expectedValidationImage for _ in range(self.__validationSize)])
+
+        expectedTestImage = np.full(self.__imageDimensions, 1.)
+        expectedXTest = np.array([expectedTestImage for _ in range(self.__testSize)])
 
         np.testing.assert_almost_equal(expectedXTrain, XTrain)
         np.testing.assert_almost_equal(expectedXValidation, XValidation)
