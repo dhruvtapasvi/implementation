@@ -6,7 +6,7 @@ from keras.models import Model
 
 from model.loss.kullbackLeiberLoss import kullbackLeiberLossConstructor
 from model.loss.variationalAutoencoderLoss import variationalAutoencoderLossConstructor
-from model.sampling import samplingConstructor
+from model.supplementary.sampling import samplingConstructor
 
 
 class VariationalAutoencoder(metaclass=ABCMeta):

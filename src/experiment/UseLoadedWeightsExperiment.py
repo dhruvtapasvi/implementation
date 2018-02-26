@@ -5,7 +5,7 @@ import scipy as sp
 from dataset.basicLoader.MnistLoader import MnistLoader
 from dataset.preprocessLoader.ScaleBetweenZeroAndOne import ScaleBetweenZeroAndOne
 from experiment.Experiment import Experiment
-from model.ConvolutionalAutoencoder import ConvolutionalAutoencoder
+from model.architecture.ConvolutionalAutoencoder import ConvolutionalAutoencoder
 
 
 class UseLoadedWeightsExperiment(Experiment):
