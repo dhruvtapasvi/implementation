@@ -15,5 +15,5 @@ class ScaleBetweenZeroAndOne(DatasetLoader):
         XTest = self.__scaleAndAdjustMinimum(XTest)
         return (XTrain, YTrain), (XValidation, YValidation), (XTest, YTest)
 
-    def __scaleAndAdjustMinimum(self, unscaled: np.ndArray):
+    def __scaleAndAdjustMinimum(self, unscaled: np.ndarray):
         return unscaled.astype('float64') / self.__maxrange + self.__minimum

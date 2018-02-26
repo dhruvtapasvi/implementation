@@ -1,7 +1,5 @@
 import unittest
-
 import numpy as np
-
 from datasets.process.FilterDatasetLabelPredicate import FilterDatasetLabelPredicate
 
 
