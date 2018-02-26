@@ -1,13 +1,14 @@
 from abc import ABCMeta, abstractclassmethod
+
 import numpy as np
 from keras.layers import Input, Lambda
 from keras.models import Model
 
-from model.sampling import samplingConstructor
-from model.variationalAutoencoderLoss import variationalAutoencoderLossConstructor
-from model.reconstructionLoss import reconstructionLossConstructor
-from model.kullbackLeiberLoss import kullbackLeiberLossConstructor
 from model.AlreadyTrainedError import AlreadyTrainedError
+from model.loss.kullbackLeiberLoss import kullbackLeiberLossConstructor
+from model.loss.binaryCrossEntropyLoss import binaryCrossEntropyLossConstructor
+from model.loss.variationalAutoencoderLoss import variationalAutoencoderLossConstructor
+from model.sampling import samplingConstructor
 
 
 class VariationalAutoencoder(metaclass=ABCMeta):
@@ -42,7 +43,7 @@ class VariationalAutoencoder(metaclass=ABCMeta):
             optimizer='rmsprop',
             loss=variationalAutoencoderLossConstructor(self.__inputRepresentationDimensions, latentRepresentationMean, latentRepresentationLogVariance),
             metrics=[
-                reconstructionLossConstructor(self.__inputRepresentationDimensions),
+                binaryCrossEntropyLossConstructor(self.__inputRepresentationDimensions),
                 kullbackLeiberLossConstructor(latentRepresentationMean, latentRepresentationLogVariance)
             ]
         )

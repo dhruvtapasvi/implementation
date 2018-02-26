@@ -1,9 +1,9 @@
-from model.reconstructionLoss import reconstructionLossConstructor
-from model.kullbackLeiberLoss import kullbackLeiberLossConstructor
+from model.loss.kullbackLeiberLoss import kullbackLeiberLossConstructor
+from model.loss.binaryCrossEntropyLoss import binaryCrossEntropyLossConstructor
 
 
 def variationalAutoencoderLossConstructor(inputRepresentationDimensions, latentRepresentationMean, latentRepresentationLogVariance):
-    reconstructionLoss = reconstructionLossConstructor(inputRepresentationDimensions)
+    reconstructionLoss = binaryCrossEntropyLossConstructor(inputRepresentationDimensions)
     kullbackLeiberLoss = kullbackLeiberLossConstructor(latentRepresentationMean, latentRepresentationLogVariance)
 
     def variationalAutoencoderLoss(inputRepresentation, decodedInputRepresentation):
