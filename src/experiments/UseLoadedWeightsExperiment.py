@@ -3,6 +3,7 @@ import numpy as np
 import scipy as sp
 
 from datasets.basicLoaders.MnistLoader import MnistLoader
+from datasets.preprocessLoaders.ScaleBetweenZeroAndOne import ScaleBetweenZeroAndOne
 from experiments.Experiment import Experiment
 from model.ConvolutionalAutoencoder import ConvolutionalAutoencoder
 
@@ -36,9 +37,8 @@ class UseLoadedWeightsExperiment(Experiment):
         decoder = mnistConvolutionalAutoencoder.decoder()
 
         # Obtain datasets and carry out normalisation
-        mnistLoader = MnistLoader()
-        (xTrain, yTrain), (xTest, yTest) = mnistLoader.loadData()
-        xTest = xTest.astype('float32') / 255.
+        mnistLoader = ScaleBetweenZeroAndOne(MnistLoader(), 0, 255)
+        _, _, (xTest, yTest) = mnistLoader.loadData()
 
         # Display the latent space:
         batchSizeLatentSpace = 100

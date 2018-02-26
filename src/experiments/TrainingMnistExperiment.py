@@ -1,4 +1,5 @@
 from datasets.basicLoaders.MnistLoader import MnistLoader
+from datasets.preprocessLoaders.ScaleBetweenZeroAndOne import ScaleBetweenZeroAndOne
 from experiments.Experiment import Experiment
 from model.ConvolutionalAutoencoder import ConvolutionalAutoencoder
 
@@ -24,16 +25,14 @@ class TrainingMnistExperiment(Experiment):
         mnistConvolutionalAutoencoder.summary()
 
         # Obtain datasets and carry out normalisation
-        mnistLoader = MnistLoader()
-        (xTrain, yTrain), (xTest, yTrain) = mnistLoader.loadData()
-        print(xTrain.shape, xTest.shape)
-        xTrain = xTrain.astype('float32') / 255.
-        xTest = xTest.astype('float32') / 255.
+        mnistLoader = ScaleBetweenZeroAndOne(MnistLoader(), 0, 255)
+        (xTrain, yTrain), (xValidation, yValidation), _ = mnistLoader.loadData()
+        print(xTrain.shape, xValidation.shape)
 
         # Train model
         batchSize = 100
         epochs = 50
-        mnistConvolutionalAutoencoder.train(xTrain, xTest, epochs, batchSize)
+        mnistConvolutionalAutoencoder.train(xTrain, xValidation, epochs, batchSize)
 
         # Save network weights:
         mnistConvolutionalAutoencoder.saveWeights("convolutionalTrainingWeights.h5")
