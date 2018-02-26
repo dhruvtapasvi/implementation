@@ -7,6 +7,6 @@ def meanSquaredErrorLossConstructor(inputRepresentationDimensions):
     totalNumberOfPixels = np.prod(inputRepresentationDimensions)
 
     def meanSquaredErrorLoss(inputRepresentation, decodedInputRepresentation):
-        return mean(totalNumberOfPixels * mean_squared_error(flatten(inputRepresentation, flatten(decodedInputRepresentation))))
+        return mean(totalNumberOfPixels * mean_squared_error(flatten(inputRepresentation), flatten(decodedInputRepresentation)))
 
     return meanSquaredErrorLoss
