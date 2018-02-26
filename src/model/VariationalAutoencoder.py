@@ -1,20 +1,20 @@
 from abc import ABCMeta, abstractclassmethod
+
 import numpy as np
 from keras.layers import Input, Lambda
 from keras.models import Model
 
-from model.sampling import samplingConstructor
-from model.variationalAutoencoderLoss import variationalAutoencoderLossConstructor
-from model.reconstructionLoss import reconstructionLossConstructor
-from model.kullbackLeiberLoss import kullbackLeiberLossConstructor
-from model.AlreadyTrainedError import AlreadyTrainedError
+from model.loss.kullbackLeiberLoss import kullbackLeiberLossConstructor
+from model.loss.variationalAutoencoderLoss import variationalAutoencoderLossConstructor
+from model.supplementary.sampling import samplingConstructor
 
 
 class VariationalAutoencoder(metaclass=ABCMeta):
-    def __init__(self, inputRepresentationDimensions, latentRepresentationDimension):
+    def __init__(self, reconstructionLossConstructor, klLossWeight, inputRepresentationDimensions, latentRepresentationDimension):
+        self.__reconstructionLossConstructor = reconstructionLossConstructor
+        self.__klLossWeight = klLossWeight
         self.__inputRepresentationDimensions = inputRepresentationDimensions
         self.__latentRepresentationDimension = latentRepresentationDimension
-        self.__isTrained = False
 
     def buildModels(self):
         encoderLayers = self.encoderLayersConstructor()
@@ -40,9 +40,14 @@ class VariationalAutoencoder(metaclass=ABCMeta):
 
         self.__autoencoder.compile(
             optimizer='rmsprop',
-            loss=variationalAutoencoderLossConstructor(self.__inputRepresentationDimensions, latentRepresentationMean, latentRepresentationLogVariance),
+            loss=variationalAutoencoderLossConstructor(
+                self.__reconstructionLossConstructor,
+                self.__klLossWeight,
+                self.__inputRepresentationDimensions,
+                latentRepresentationMean,
+                latentRepresentationLogVariance),
             metrics=[
-                reconstructionLossConstructor(self.__inputRepresentationDimensions),
+                self.__reconstructionLossConstructor(self.__inputRepresentationDimensions),
                 kullbackLeiberLossConstructor(latentRepresentationMean, latentRepresentationLogVariance)
             ]
         )
@@ -86,17 +91,13 @@ class VariationalAutoencoder(metaclass=ABCMeta):
             validationData: np.ndarray,
             epochs,
             batchSize):
-        if self.__isTrained:
-            raise AlreadyTrainedError
-        else:
-            self.__autoencoder.fit(
-                trainingData,
-                trainingData,
-                shuffle=True,
-                epochs=epochs,
-                batch_size=batchSize,
-                validation_data=(validationData, validationData))
-            self.__isTrained = True
+        self.__autoencoder.fit(
+            trainingData,
+            trainingData,
+            shuffle=True,
+            epochs=epochs,
+            batch_size=batchSize,
+            validation_data=(validationData, validationData))
 
     def summary(self):
         self.__autoencoder.summary()

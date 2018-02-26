@@ -2,7 +2,7 @@ import unittest
 
 import numpy as np
 
-from datasets.assemble.NorbAssembler import NorbAssembler
+from dataset.assemble.NorbAssembler import NorbAssembler
 
 
 class Test_NorbAssembler(unittest.TestCase):

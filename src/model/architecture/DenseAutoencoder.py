@@ -6,8 +6,8 @@ from model.VariationalAutoencoder import VariationalAutoencoder
 
 class DenseAutoencoder(VariationalAutoencoder):
     # Architecture from https://github.com/keras-team/keras/blob/master/examples/variational_autoencoder.py
-    def __init__(self, inputRepresentationDimensions, intermediateRepresentationDimension, latentRepresentationDimension):
-        super().__init__(inputRepresentationDimensions, latentRepresentationDimension)
+    def __init__(self, reconstructionLossConstructor, klLossWeight, inputRepresentationDimensions, intermediateRepresentationDimension, latentRepresentationDimension):
+        super().__init__(reconstructionLossConstructor, klLossWeight, inputRepresentationDimensions, latentRepresentationDimension)
         self.__inputRepresentationDimensions = inputRepresentationDimensions
         self.__intermediateRepresentationDimension = intermediateRepresentationDimension
         self.__latentRepresentationDimension = latentRepresentationDimension

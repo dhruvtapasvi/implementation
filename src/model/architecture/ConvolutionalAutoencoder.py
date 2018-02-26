@@ -6,8 +6,8 @@ from model.VariationalAutoencoder import VariationalAutoencoder
 
 class ConvolutionalAutoencoder(VariationalAutoencoder):
     # Architecture from https://github.com/keras-team/keras/blob/master/examples/variational_autoencoder.py
-    def __init__(self, inputRepresentationDimensions, numberConvolutions, baseConvolutionalDepth, intermediateRepresentationDimension, latentRepresentationDimension):
-        super().__init__(inputRepresentationDimensions, latentRepresentationDimension)
+    def __init__(self, reconstructionLossConstructor, klLossWeight, inputRepresentationDimensions, numberConvolutions, baseConvolutionalDepth, intermediateRepresentationDimension, latentRepresentationDimension):
+        super().__init__(reconstructionLossConstructor, klLossWeight, inputRepresentationDimensions, latentRepresentationDimension)
         self.__baseConvolutionalDepth = baseConvolutionalDepth
         self.__numberConvolutions = numberConvolutions
         self.__inputRepresentationDimensions = inputRepresentationDimensions

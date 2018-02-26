@@ -2,10 +2,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.stats import norm
 
-from datasets.basicLoaders.MnistLoader import MnistLoader
-from datasets.preprocessLoaders.ScaleBetweenZeroAndOne import ScaleBetweenZeroAndOne
-from experiments.Experiment import Experiment
-from model.ConvolutionalAutoencoder import ConvolutionalAutoencoder
+from dataset.basicLoader.MnistLoader import MnistLoader
+from dataset.preprocessLoader.ScaleBetweenZeroAndOne import ScaleBetweenZeroAndOne
+from experiment.Experiment import Experiment
+from model.architecture.ConvolutionalAutoencoder import ConvolutionalAutoencoder
+from model.loss.binaryCrossEntropyLoss import binaryCrossEntropyLossConstructor
 
 
 class SimpleMnistExperiment(Experiment):
@@ -14,7 +15,14 @@ class SimpleMnistExperiment(Experiment):
         intermediateDimension = 256
         latentDimension = 2
 
-        mnistConvolutionalAutoencoder = ConvolutionalAutoencoder(originalImageDimensions, 3, 8, intermediateDimension, latentDimension)
+        mnistConvolutionalAutoencoder = ConvolutionalAutoencoder(
+            binaryCrossEntropyLossConstructor,
+            1.0,
+            originalImageDimensions,
+            3,
+            8,
+            intermediateDimension,
+            latentDimension)
         mnistConvolutionalAutoencoder.buildModels()
         mnistConvolutionalAutoencoder.summary()
 
