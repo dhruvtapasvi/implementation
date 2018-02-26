@@ -6,12 +6,13 @@ from keras.models import Model
 
 from model.loss.kullbackLeiberLoss import kullbackLeiberLossConstructor
 from model.loss.variationalAutoencoderLoss import variationalAutoencoderLossConstructor
-from model.loss.binaryCrossEntropyLoss import binaryCrossEntropyLossConstructor
 from model.sampling import samplingConstructor
 
 
 class VariationalAutoencoder(metaclass=ABCMeta):
-    def __init__(self, inputRepresentationDimensions, latentRepresentationDimension):
+    def __init__(self, reconstructionLossConstructor, klLossWeight, inputRepresentationDimensions, latentRepresentationDimension):
+        self.__reconstructionLossConstructor = reconstructionLossConstructor
+        self.__klLossWeight = klLossWeight
         self.__inputRepresentationDimensions = inputRepresentationDimensions
         self.__latentRepresentationDimension = latentRepresentationDimension
 
@@ -40,12 +41,13 @@ class VariationalAutoencoder(metaclass=ABCMeta):
         self.__autoencoder.compile(
             optimizer='rmsprop',
             loss=variationalAutoencoderLossConstructor(
-                binaryCrossEntropyLossConstructor,
+                self.__reconstructionLossConstructor,
+                self.__klLossWeight,
                 self.__inputRepresentationDimensions,
                 latentRepresentationMean,
                 latentRepresentationLogVariance),
             metrics=[
-                binaryCrossEntropyLossConstructor(self.__inputRepresentationDimensions),
+                self.__reconstructionLossConstructor(self.__inputRepresentationDimensions),
                 kullbackLeiberLossConstructor(latentRepresentationMean, latentRepresentationLogVariance)
             ]
         )
