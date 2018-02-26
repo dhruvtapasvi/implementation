@@ -6,8 +6,8 @@ from keras.models import Model
 
 from model.AlreadyTrainedError import AlreadyTrainedError
 from model.loss.kullbackLeiberLoss import kullbackLeiberLossConstructor
-from model.loss.binaryCrossEntropyLoss import binaryCrossEntropyLossConstructor
 from model.loss.variationalAutoencoderLoss import variationalAutoencoderLossConstructor
+from model.loss.binaryCrossEntropyLoss import binaryCrossEntropyLossConstructor
 from model.sampling import samplingConstructor
 
 
@@ -41,7 +41,11 @@ class VariationalAutoencoder(metaclass=ABCMeta):
 
         self.__autoencoder.compile(
             optimizer='rmsprop',
-            loss=variationalAutoencoderLossConstructor(self.__inputRepresentationDimensions, latentRepresentationMean, latentRepresentationLogVariance),
+            loss=variationalAutoencoderLossConstructor(
+                binaryCrossEntropyLossConstructor,
+                self.__inputRepresentationDimensions,
+                latentRepresentationMean,
+                latentRepresentationLogVariance),
             metrics=[
                 binaryCrossEntropyLossConstructor(self.__inputRepresentationDimensions),
                 kullbackLeiberLossConstructor(latentRepresentationMean, latentRepresentationLogVariance)
