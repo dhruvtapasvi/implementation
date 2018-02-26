@@ -1,4 +1,4 @@
-from datasets.DatasetLoader import DatasetLoader
+from dataset.DatasetLoader import DatasetLoader
 import numpy as np
 from keras.datasets import mnist
 

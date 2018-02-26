@@ -2,9 +2,9 @@ import matplotlib
 matplotlib.use('Agg')
 
 
-from experiments.TrainingMnistExperiment import TrainingMnistExperiment
-from experiments.UseLoadedWeightsExperiment import UseLoadedWeightsExperiment
-from experiments.SimpleMnistExperiment import SimpleMnistExperiment
+from experiment.TrainingMnistExperiment import TrainingMnistExperiment
+from experiment.UseLoadedWeightsExperiment import UseLoadedWeightsExperiment
+from experiment.SimpleMnistExperiment import SimpleMnistExperiment
 
 
 if __name__ == '__main__':
