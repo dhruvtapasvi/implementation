@@ -3,3 +3,4 @@ keras
 nose
 matplotlib
 h5py
+jsonschema

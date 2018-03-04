@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Convolutional Variational Autoencoder Parameters",
+  "description": "Parameters for a Convolutional Variational Autoencoder",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "../vae/vae.schema.json"
+    },
+    {
+      "properties": {
+        "numberConvolutions": {
+          "description": "The number of triple convolutional blocks",
+          "type": "integer",
+          "minimum": 0,
+          "exclusiveMinimum": true
+        },
+        "intermediateRepresentationDimension": {
+          "description": "The size of the intermediate dimension",
+          "type": "integer",
+          "minimum": 0,
+          "exclusiveMinimum": true
+        }
+      }
+    }
+  ]
+}
