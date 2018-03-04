@@ -4,6 +4,10 @@
   "description": "Parameters for a Variational Autoencoder",
   "type": "object",
   "properties": {
+    "descriptor": {
+      "description": "An identifier of this configuration, e.g. to use as a file name",
+      "type": "string"
+    },
     "reconstructionLoss": {
       "description": "The function used to compute reconstruction loss",
       "type": "string",
@@ -35,6 +39,7 @@
     }
   },
   "required": [
+    "descriptor",
     "reconstructionLoss",
     "klLossWeight",
     "inputRepresentationDimensions",
