@@ -1,11 +1,11 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$schema": "file:config/schema/json-schema-draft-04.schema.json",
   "title": "Convolutional Variational Autoencoder Parameters",
   "description": "Parameters for a Convolutional Variational Autoencoder",
   "type": "object",
   "allOf": [
     {
-      "$ref": "../vae/vae.schema.json"
+      "$ref": "file:config/schema/vae.schema.json"
     },
     {
       "properties": {
@@ -20,8 +20,19 @@
           "type": "integer",
           "minimum": 0,
           "exclusiveMinimum": true
+        },
+        "baseConvolutionalDepth": {
+          "description": "The default number of kernels of the first convolutional layers; doubled at every halving of image size",
+          "type": "integer",
+          "minimum": 0,
+          "exclusiveMinimum": true
         }
-      }
+      },
+      "required": [
+        "numberConvolutions",
+        "intermediateRepresentationDimension",
+        "baseConvolutionalDepth"
+      ]
     }
   ]
 }

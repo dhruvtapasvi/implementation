@@ -1,5 +1,5 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$schema": "file:config/schema/json-schema-draft-04.schema.json",
   "title": "Variational Autoencoder Parameters",
   "description": "Parameters for a Variational Autoencoder",
   "type": "object",
@@ -24,7 +24,6 @@
         "type": "integer",
         "minimum": 0,
         "exclusiveMinimum": true
-
       },
       "minItems": 1
     },

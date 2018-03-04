@@ -6,6 +6,7 @@ from dataset.basicLoader.MnistLoader import MnistLoader
 from dataset.preprocessLoader.ScaleBetweenZeroAndOne import ScaleBetweenZeroAndOne
 from experiment.Experiment import Experiment
 from model.architecture.ConvolutionalAutoencoder import ConvolutionalAutoencoder
+from model.loss.binaryCrossEntropyLoss import binaryCrossEntropyLossConstructor
 
 
 class UseLoadedWeightsExperiment(Experiment):
@@ -19,6 +20,8 @@ class UseLoadedWeightsExperiment(Experiment):
 
         # Build model and exhibit summary
         mnistConvolutionalAutoencoder = ConvolutionalAutoencoder(
+            binaryCrossEntropyLossConstructor,
+            1.0,
             originalImageDimensions,
             numConvolutions,
             baseConvolutionalDepth,

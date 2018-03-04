@@ -1,0 +1,15 @@
+{
+  "$schema": "file:config/schema/convolutional.schema.json",
+
+  "reconstructionLoss": "binaryCrossEntropy",
+  "klLossWeight": 1.0,
+  "inputRepresentationDimensions": [
+    28,
+    28
+  ],
+  "latentRepresentationDimension": 2,
+
+  "numberConvolutions": 3,
+  "intermediateRepresentationDimension": 256,
+  "baseConvolutionalDepth": 8
+}
