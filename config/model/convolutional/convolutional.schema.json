@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "Convolutional Variational Autoencoder Parameters",
   "description": "Parameters for a Convolutional Variational Autoencoder",
-  "type": "object",
+  "type": "objeasdct",
   "allOf": [
     {
       "$ref": "../vae/vae.schema.json"
