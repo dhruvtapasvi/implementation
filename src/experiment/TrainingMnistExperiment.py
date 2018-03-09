@@ -1,31 +1,16 @@
 from dataset.basicLoader.MnistLoader import MnistLoader
 from dataset.preprocessLoader.ScaleBetweenZeroAndOne import ScaleBetweenZeroAndOne
 from experiment.Experiment import Experiment
-from model.architecture.ConvolutionalAutoencoder import ConvolutionalAutoencoder
-from model.loss.binaryCrossEntropyLoss import binaryCrossEntropyLossConstructor
+from config.ConvolutionAutoencoderConfig import ConvolutionalAutoencoderConfig
 
 
 class TrainingMnistExperiment(Experiment):
     def run(self):
-        # Hyperparameters
-        originalImageDimensions = (28, 28)
-        intermediateDimension = 256
-        latentDimension = 2
-        numConvolutions = 3
-        baseConvolutionalDepth = 8
+        config = ConvolutionalAutoencoderConfig("./config/model/convolutional/mnist_conv_bce_2.json")
 
-        # Build model and exhibit summary
-        mnistConvolutionalAutoencoder = ConvolutionalAutoencoder(
-            binaryCrossEntropyLossConstructor,
-            1.0,
-            originalImageDimensions,
-            numConvolutions,
-            baseConvolutionalDepth,
-            intermediateDimension,
-            latentDimension
-        )
-        mnistConvolutionalAutoencoder.buildModels()
-        mnistConvolutionalAutoencoder.summary()
+        mnistAutoencoder = config.fromConfig()
+        mnistAutoencoder.buildModels()
+        mnistAutoencoder.summary()
 
         # Obtain datasets and carry out normalisation
         mnistLoader = ScaleBetweenZeroAndOne(MnistLoader(), 0, 255)
@@ -35,7 +20,7 @@ class TrainingMnistExperiment(Experiment):
         # Train model
         batchSize = 100
         epochs = 50
-        mnistConvolutionalAutoencoder.train(xTrain, xValidation, epochs, batchSize)
+        mnistAutoencoder.train(xTrain, xValidation, epochs, batchSize)
 
         # Save network weights:
-        mnistConvolutionalAutoencoder.saveWeights("convolutionalTrainingWeights.h5")
+        mnistAutoencoder.saveWeights(config.stringDescriptor() + "_trainingWeights.h5")

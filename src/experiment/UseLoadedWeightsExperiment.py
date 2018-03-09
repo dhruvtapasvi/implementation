@@ -5,39 +5,25 @@ import scipy as sp
 from dataset.basicLoader.MnistLoader import MnistLoader
 from dataset.preprocessLoader.ScaleBetweenZeroAndOne import ScaleBetweenZeroAndOne
 from experiment.Experiment import Experiment
-from model.architecture.ConvolutionalAutoencoder import ConvolutionalAutoencoder
-from model.loss.binaryCrossEntropyLoss import binaryCrossEntropyLossConstructor
+from config.ConvolutionAutoencoderConfig import ConvolutionalAutoencoderConfig
 
 
 class UseLoadedWeightsExperiment(Experiment):
     def run(self):
-        # Hyperparameters
-        originalImageDimensions = (28, 28)
-        intermediateDimension = 256
         latentDimension = 2
-        numConvolutions = 3
-        baseConvolutionalDepth = 8
+        config = ConvolutionalAutoencoderConfig("./config/model/convolutional/mnist_conv_bce_2.json")
 
-        # Build model and exhibit summary
-        mnistConvolutionalAutoencoder = ConvolutionalAutoencoder(
-            binaryCrossEntropyLossConstructor,
-            1.0,
-            originalImageDimensions,
-            numConvolutions,
-            baseConvolutionalDepth,
-            intermediateDimension,
-            latentDimension
-        )
-        mnistConvolutionalAutoencoder.buildModels()
-        mnistConvolutionalAutoencoder.summary()
+        mnistAutoencoder = config.fromConfig()
+        mnistAutoencoder.buildModels()
+        mnistAutoencoder.summary()
 
         # Load network weights
-        mnistConvolutionalAutoencoder.loadWeights("convolutionalTrainingWeights.h5")
+        mnistAutoencoder.loadWeights("convolutionalTrainingWeights.h5")
 
         # Obtain models
-        encoder = mnistConvolutionalAutoencoder.encoder()
-        autoencoder = mnistConvolutionalAutoencoder.autoencoder()
-        decoder = mnistConvolutionalAutoencoder.decoder()
+        encoder = mnistAutoencoder.encoder()
+        autoencoder = mnistAutoencoder.autoencoder()
+        decoder = mnistAutoencoder.decoder()
 
         # Obtain datasets and carry out normalisation
         mnistLoader = ScaleBetweenZeroAndOne(MnistLoader(), 0, 255)
@@ -49,11 +35,11 @@ class UseLoadedWeightsExperiment(Experiment):
         plt.figure(figsize=(6,6))
         plt.scatter(xTestEncodedExamples[:, 0], xTestEncodedExamples[:, 1], c=yTest)
         plt.colorbar()
-        plt.savefig('vae_fig1.png')
+        plt.savefig(config.stringDescriptor() + '_fig1.png')
 
         # Display reconstructions
         numberExamplesReconstructions = 100
-        autoencoder = mnistConvolutionalAutoencoder.autoencoder()
+        autoencoder = mnistAutoencoder.autoencoder()
         xTestReconstructedExamples = autoencoder.predict(xTest[0:numberExamplesReconstructions], batch_size=numberExamplesReconstructions)
         plt.figure(figsize=(2, numberExamplesReconstructions))
         for i in range(numberExamplesReconstructions):
@@ -68,7 +54,7 @@ class UseLoadedWeightsExperiment(Experiment):
             plt.gray()
             num.get_xaxis().set_visible(False)
             num.get_yaxis().set_visible(False)
-        plt.savefig('vae_fig2.png')
+        plt.savefig(config.stringDescriptor() + '_fig2.png')
 
         # Random Sampling
         numSamplesSqrt = 10
@@ -81,7 +67,7 @@ class UseLoadedWeightsExperiment(Experiment):
             plt.gray()
             num.get_xaxis().set_visible(False)
             num.get_yaxis().set_visible(False)
-        plt.savefig('vae_fig3.png')
+        plt.savefig(config.stringDescriptor() + '_fig3.png')
 
         # Interpolation
         selectedPairs = [
@@ -128,4 +114,4 @@ class UseLoadedWeightsExperiment(Experiment):
             plt.gray()
             num.get_xaxis().set_visible(False)
             num.get_yaxis().set_visible(False)
-        plt.savefig('vae_fig4.png')
+        plt.savefig(config.stringDescriptor() + '_fig4.png')

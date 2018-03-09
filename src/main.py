@@ -8,7 +8,7 @@ from experiment.SimpleMnistExperiment import SimpleMnistExperiment
 
 
 if __name__ == '__main__':
-    experiment = SimpleMnistExperiment()
+    # experiment = SimpleMnistExperiment()
     # experiment = TrainingMnistExperiment()
-    # experiment = UseLoadedWeightsExperiment()
+    experiment = UseLoadedWeightsExperiment()
     experiment.run()
