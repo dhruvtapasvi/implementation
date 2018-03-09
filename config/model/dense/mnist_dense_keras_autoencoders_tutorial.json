@@ -1,0 +1,14 @@
+{
+  "$schema": "file:config/schema/dense.schema.json",
+
+  "descriptor": "mnist_dense_keras_autoencoders_tutorial",
+  "reconstructionLoss": "binaryCrossEntropy",
+  "klLossWeight": 1.0,
+  "inputRepresentationDimensions": [
+    28,
+    28
+  ],
+  "latentRepresentationDimension": 2,
+
+  "intermediateRepresentationDimension": 256
+}

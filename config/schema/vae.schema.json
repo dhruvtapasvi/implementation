@@ -1,0 +1,48 @@
+{
+  "$schema": "file:config/schema/json-schema-draft-04.schema.json",
+  "title": "Variational Autoencoder Parameters",
+  "description": "Parameters for a Variational Autoencoder",
+  "type": "object",
+  "properties": {
+    "descriptor": {
+      "description": "An identifier of this configuration, e.g. to use as a file name",
+      "type": "string"
+    },
+    "reconstructionLoss": {
+      "description": "The function used to compute reconstruction loss",
+      "type": "string",
+      "enum": [
+        "meanSquaredError",
+        "binaryCrossEntropy"
+      ]
+    },
+    "klLossWeight": {
+      "description": "The relative coefficient of the KL-Divergence term of the loss function; disentanglement parameter",
+      "type": "number",
+      "minimum": 0
+    },
+    "inputRepresentationDimensions": {
+      "description": "The dimensions of the input",
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": 0,
+        "exclusiveMinimum": true
+      },
+      "minItems": 1
+    },
+    "latentRepresentationDimension": {
+      "description": "The size of the latent dimension",
+      "type": "integer",
+        "minimum": 0,
+        "exclusiveMinimum": true
+    }
+  },
+  "required": [
+    "descriptor",
+    "reconstructionLoss",
+    "klLossWeight",
+    "inputRepresentationDimensions",
+    "latentRepresentationDimension"
+  ]
+}
