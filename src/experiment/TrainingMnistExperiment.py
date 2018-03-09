@@ -23,4 +23,4 @@ class TrainingMnistExperiment(Experiment):
         mnistAutoencoder.train(xTrain, xValidation, epochs, batchSize)
 
         # Save network weights:
-        mnistAutoencoder.saveWeights(config.stringDescriptor() + "_trainingWeights.h5")
+        mnistAutoencoder.saveWeights(config.stringDescriptor + "_trainingWeights.h5")

@@ -1,37 +1,42 @@
 import json
-from config.ConfigParser import ConfigParser
+from config.VaeConfig import VaeConfig
 
 from model.loss.binaryCrossEntropyLoss import binaryCrossEntropyLossConstructor
 from model.loss.meanSquaredErrorLoss import meanSquaredErrorLossConstructor
 from model.architecture.ConvolutionalAutoencoder import ConvolutionalAutoencoder
 
-class ConvolutionalAutoencoderConfig(ConfigParser):
+
+class ConvolutionalAutoencoderConfig(VaeConfig):
     def __init__(self, file):
         with open(file) as file:
             parameters = json.load(file)
+            super().__init__(parameters)
             self.__setParameters(parameters)
 
     def __setParameters(self, parameters):
-        self.__reconstructionLossConstructor = binaryCrossEntropyLossConstructor \
-            if parameters["reconstructionLoss"] == "binaryCrossEntropy" else meanSquaredErrorLossConstructor
-        self.__klLossWeight = parameters["klLossWeight"]
-        self.__inputRepresentationDimensions = tuple(parameters["inputRepresentationDimensions"])
         self.__numberConvolutions = parameters["numberConvolutions"]
         self.__baseConvolutionalDepth = parameters["baseConvolutionalDepth"]
         self.__intermediateRepresentationDimension = parameters["intermediateRepresentationDimension"]
-        self.__latentRepresentationDimension = parameters["latentRepresentationDimension"]
-        self.__descriptor = parameters["descriptor"]
 
-    def stringDescriptor(self):
-        return self.__descriptor
+    @property
+    def numberConvolutions(self):
+        return self.__numberConvolutions
+
+    @property
+    def baseConvolutionalDepth(self):
+        return self.__baseConvolutionalDepth
+
+    @property
+    def intermediateRepresentationDimension(self):
+        return self.__intermediateRepresentationDimension
 
     def fromConfig(self):
         return ConvolutionalAutoencoder(
-            self.__reconstructionLossConstructor,
-            self.__klLossWeight,
-            self.__inputRepresentationDimensions,
-            self.__numberConvolutions,
-            self.__baseConvolutionalDepth,
-            self.__intermediateRepresentationDimension,
-            self.__latentRepresentationDimension
+            self.reconstructionLossConstructor,
+            self.klLossWeight,
+            self.inputRepresentationDimensions,
+            self.numberConvolutions,
+            self.baseConvolutionalDepth,
+            self.intermediateRepresentationDimension,
+            self.latentRepresentationDimension
         )

@@ -10,7 +10,6 @@ from config.ConvolutionAutoencoderConfig import ConvolutionalAutoencoderConfig
 
 class UseLoadedWeightsExperiment(Experiment):
     def run(self):
-        latentDimension = 2
         config = ConvolutionalAutoencoderConfig("./config/model/convolutional/mnist_conv_bce_2.json")
 
         mnistAutoencoder = config.fromConfig()
@@ -35,7 +34,7 @@ class UseLoadedWeightsExperiment(Experiment):
         plt.figure(figsize=(6,6))
         plt.scatter(xTestEncodedExamples[:, 0], xTestEncodedExamples[:, 1], c=yTest)
         plt.colorbar()
-        plt.savefig(config.stringDescriptor() + '_fig1.png')
+        plt.savefig(config.stringDescriptor + '_fig1.png')
 
         # Display reconstructions
         numberExamplesReconstructions = 100
@@ -54,11 +53,11 @@ class UseLoadedWeightsExperiment(Experiment):
             plt.gray()
             num.get_xaxis().set_visible(False)
             num.get_yaxis().set_visible(False)
-        plt.savefig(config.stringDescriptor() + '_fig2.png')
+        plt.savefig(config.stringDescriptor + '_fig2.png')
 
         # Random Sampling
         numSamplesSqrt = 10
-        randomSamples = sp.randn(numSamplesSqrt * numSamplesSqrt, latentDimension)
+        randomSamples = sp.randn(numSamplesSqrt * numSamplesSqrt, config.latentRepresentationDimension)
         randomDecoded = decoder.predict(randomSamples, batch_size=numSamplesSqrt*numSamplesSqrt)
         plt.figure(figsize=(numSamplesSqrt, numSamplesSqrt))
         for i in range(numSamplesSqrt * numSamplesSqrt):
@@ -67,7 +66,7 @@ class UseLoadedWeightsExperiment(Experiment):
             plt.gray()
             num.get_xaxis().set_visible(False)
             num.get_yaxis().set_visible(False)
-        plt.savefig(config.stringDescriptor() + '_fig3.png')
+        plt.savefig(config.stringDescriptor + '_fig3.png')
 
         # Interpolation
         selectedPairs = [
@@ -114,4 +113,4 @@ class UseLoadedWeightsExperiment(Experiment):
             plt.gray()
             num.get_xaxis().set_visible(False)
             num.get_yaxis().set_visible(False)
-        plt.savefig(config.stringDescriptor() + '_fig4.png')
+        plt.savefig(config.stringDescriptor + '_fig4.png')

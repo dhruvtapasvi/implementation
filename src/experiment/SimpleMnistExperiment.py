@@ -51,4 +51,4 @@ class SimpleMnistExperiment(Experiment):
 
         plt.figure(figsize=(10, 10))
         plt.imshow(figure, cmap='Greys_r')
-        plt.savefig(config.stringDescriptor() + '_fig2.png')
+        plt.savefig(config.stringDescriptor + '_fig2.png')
