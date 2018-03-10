@@ -91,7 +91,7 @@ class VariationalAutoencoder(metaclass=ABCMeta):
             validationData: np.ndarray,
             epochs,
             batchSize):
-        self.__autoencoder.fit(
+        return self.__autoencoder.fit(
             trainingData,
             trainingData,
             shuffle=True,

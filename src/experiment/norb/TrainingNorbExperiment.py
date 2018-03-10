@@ -1,3 +1,5 @@
+import pickle
+
 from experiment.Experiment import Experiment
 from config.ConvolutionAutoencoderConfig import ConvolutionalAutoencoderConfig
 from dataset.basicLoader.NorbLoader import NorbLoader
@@ -22,7 +24,8 @@ class TrainingNorbExperiment(Experiment):
         # Train model
         batchSize = 100
         epochs = 50
-        norbAutoencoder.train(xTrain, xVal, epochs, batchSize)
+        trainingHistory = norbAutoencoder.train(xTrain, xVal, epochs, batchSize)
 
-        # Save network weights:
-        norbAutoencoder.saveWeights("./cacheWeights/" + config.stringDescriptor + "weights.h5")
+        # Save training history and network weights:
+        pickle.dump(trainingHistory.history, open("./modelTrainingHistory/" + config.stringDescriptor + ".history.p", "wb"))
+        norbAutoencoder.saveWeights("./cacheWeights/" + config.stringDescriptor + ".weights.h5")

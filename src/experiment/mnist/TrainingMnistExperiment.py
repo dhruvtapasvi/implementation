@@ -1,3 +1,4 @@
+import pickle
 from dataset.basicLoader.MnistLoader import MnistLoader
 from dataset.preprocessLoader.ScaleBetweenZeroAndOne import ScaleBetweenZeroAndOne
 from experiment.Experiment import Experiment
@@ -20,7 +21,8 @@ class TrainingMnistExperiment(Experiment):
         # Train model
         batchSize = 100
         epochs = 50
-        mnistAutoencoder.train(xTrain, xValidation, epochs, batchSize)
+        trainingHistory = mnistAutoencoder.train(xTrain, xValidation, epochs, batchSize)
 
-        # Save network weights:
+        # Save training history and network weights:
+        pickle.dump(trainingHistory.history, open("./modelTrainingHistory/" + config.stringDescriptor + ".history.p", "wb"))
         mnistAutoencoder.saveWeights("cacheWeights/" + config.stringDescriptor + ".weights.h5")
