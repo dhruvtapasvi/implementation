@@ -10,7 +10,7 @@ from config.ConvolutionAutoencoderConfig import ConvolutionalAutoencoderConfig
 
 class SimpleMnistExperiment(Experiment):
     def run(self):
-        config = ConvolutionalAutoencoderConfig("./config/model/convolutional/mnist_conv_bce_2.json")
+        config = ConvolutionalAutoencoderConfig("./config/model/convolutional/mnist_conv_3_8_256_2_bce.json")
 
         mnistAutoencoder = config.fromConfig()
         mnistAutoencoder.buildModels()
@@ -29,7 +29,7 @@ class SimpleMnistExperiment(Experiment):
         plt.figure(figsize=(6, 6))
         plt.scatter(x_test_encoded[:, 0], x_test_encoded[:, 1], c=y_test)
         plt.colorbar()
-        plt.savefig(config.stringDescriptor() + '_fig1.png')
+        plt.savefig("out/" + config.stringDescriptor + '_fig1.png')
 
         # display a 2D manifold of the digits
         generator = mnistAutoencoder.decoder()
@@ -51,4 +51,4 @@ class SimpleMnistExperiment(Experiment):
 
         plt.figure(figsize=(10, 10))
         plt.imshow(figure, cmap='Greys_r')
-        plt.savefig(config.stringDescriptor + '_fig2.png')
+        plt.savefig("out/" + config.stringDescriptor + '_fig2.png')

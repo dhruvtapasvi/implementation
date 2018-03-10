@@ -6,7 +6,7 @@ from config.ConvolutionAutoencoderConfig import ConvolutionalAutoencoderConfig
 
 class TrainingMnistExperiment(Experiment):
     def run(self):
-        config = ConvolutionalAutoencoderConfig("./config/model/convolutional/mnist_conv_bce_2.json")
+        config = ConvolutionalAutoencoderConfig("config/model/convolutional/mnist_conv_3_8_256_2_bce.json")
 
         mnistAutoencoder = config.fromConfig()
         mnistAutoencoder.buildModels()
@@ -23,4 +23,4 @@ class TrainingMnistExperiment(Experiment):
         mnistAutoencoder.train(xTrain, xValidation, epochs, batchSize)
 
         # Save network weights:
-        mnistAutoencoder.saveWeights(config.stringDescriptor + "_trainingWeights.h5")
+        mnistAutoencoder.saveWeights("cacheWeights/" + config.stringDescriptor + ".weights.h5")
