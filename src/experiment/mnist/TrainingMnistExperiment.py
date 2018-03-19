@@ -1,3 +1,4 @@
+import pickle
 from dataset.basicLoader.MnistLoader import MnistLoader
 from dataset.preprocessLoader.ScaleBetweenZeroAndOne import ScaleBetweenZeroAndOne
 from experiment.Experiment import Experiment
@@ -6,7 +7,7 @@ from config.ConvolutionAutoencoderConfig import ConvolutionalAutoencoderConfig
 
 class TrainingMnistExperiment(Experiment):
     def run(self):
-        config = ConvolutionalAutoencoderConfig("./config/model/convolutional/mnist_conv_bce_2.json")
+        config = ConvolutionalAutoencoderConfig("config/model/convolutional/mnist_conv_3_8_256_2_bce.json")
 
         mnistAutoencoder = config.fromConfig()
         mnistAutoencoder.buildModels()
@@ -20,7 +21,8 @@ class TrainingMnistExperiment(Experiment):
         # Train model
         batchSize = 100
         epochs = 50
-        mnistAutoencoder.train(xTrain, xValidation, epochs, batchSize)
+        trainingHistory = mnistAutoencoder.train(xTrain, xValidation, epochs, batchSize)
 
-        # Save network weights:
-        mnistAutoencoder.saveWeights(config.stringDescriptor + "_trainingWeights.h5")
+        # Save training history and network weights:
+        pickle.dump(trainingHistory.history, open("./modelTrainingHistory/" + config.stringDescriptor + ".history.p", "wb"))
+        mnistAutoencoder.saveWeights("cacheWeights/" + config.stringDescriptor + ".weights.h5")

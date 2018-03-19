@@ -10,14 +10,14 @@ from config.ConvolutionAutoencoderConfig import ConvolutionalAutoencoderConfig
 
 class UseLoadedWeightsExperiment(Experiment):
     def run(self):
-        config = ConvolutionalAutoencoderConfig("./config/model/convolutional/mnist_conv_bce_2.json")
+        config = ConvolutionalAutoencoderConfig("config/model/convolutional/mnist_conv_3_8_256_2_bce.json")
 
         mnistAutoencoder = config.fromConfig()
         mnistAutoencoder.buildModels()
         mnistAutoencoder.summary()
 
         # Load network weights
-        mnistAutoencoder.loadWeights("convolutionalTrainingWeights.h5")
+        mnistAutoencoder.loadWeights("cacheWeights/" + config.stringDescriptor + ".weights.h5")
 
         # Obtain models
         encoder = mnistAutoencoder.encoder()
@@ -34,7 +34,7 @@ class UseLoadedWeightsExperiment(Experiment):
         plt.figure(figsize=(6,6))
         plt.scatter(xTestEncodedExamples[:, 0], xTestEncodedExamples[:, 1], c=yTest)
         plt.colorbar()
-        plt.savefig(config.stringDescriptor + '_fig1.png')
+        plt.savefig("out/" + config.stringDescriptor + '_fig1.png')
 
         # Display reconstructions
         numberExamplesReconstructions = 100
@@ -53,7 +53,7 @@ class UseLoadedWeightsExperiment(Experiment):
             plt.gray()
             num.get_xaxis().set_visible(False)
             num.get_yaxis().set_visible(False)
-        plt.savefig(config.stringDescriptor + '_fig2.png')
+        plt.savefig("out/" + config.stringDescriptor + '_fig2.png')
 
         # Random Sampling
         numSamplesSqrt = 10
@@ -66,7 +66,7 @@ class UseLoadedWeightsExperiment(Experiment):
             plt.gray()
             num.get_xaxis().set_visible(False)
             num.get_yaxis().set_visible(False)
-        plt.savefig(config.stringDescriptor + '_fig3.png')
+        plt.savefig("out/" + config.stringDescriptor + '_fig3.png')
 
         # Interpolation
         selectedPairs = [
@@ -113,4 +113,4 @@ class UseLoadedWeightsExperiment(Experiment):
             plt.gray()
             num.get_xaxis().set_visible(False)
             num.get_yaxis().set_visible(False)
-        plt.savefig(config.stringDescriptor + '_fig4.png')
+        plt.savefig("out/" + config.stringDescriptor + '_fig4.png')
