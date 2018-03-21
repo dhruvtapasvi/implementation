@@ -8,7 +8,7 @@ from dataset.preprocessLoader.ScaleBetweenZeroAndOne import ScaleBetweenZeroAndO
 
 class TrainingNorbExperiment(Experiment):
     def run(self):
-        config = ConvolutionalAutoencoderConfig("./config/model/convolutional/norb_conv_6_8_256_10_bce.json")
+        config = ConvolutionalAutoencoderConfig("../config/model/convolutional/norb_conv_6_8_256_10_bce.json")
 
         # Build model and exhibit summary
         norbAutoencoder = config.fromConfig()
@@ -16,7 +16,7 @@ class TrainingNorbExperiment(Experiment):
         norbAutoencoder.summary()
 
         # Obtain datasets and carry out normalisation
-        norbLoader = ScaleBetweenZeroAndOne(NorbLoader("./res/norb"), 0, 255)
+        norbLoader = ScaleBetweenZeroAndOne(NorbLoader("../res/norb"), 0, 255)
         (xTrain, _), (xVal, _), _ = norbLoader.loadData()
 
         # Train model
@@ -25,5 +25,5 @@ class TrainingNorbExperiment(Experiment):
         trainingHistory = norbAutoencoder.train(xTrain, xVal, epochs, batchSize)
 
         # Save training history and network weights:
-        pickle.dump(trainingHistory.history, open("./modelTrainingHistory/" + config.stringDescriptor + ".history.p", "wb"))
-        norbAutoencoder.saveWeights("./cacheWeights/" + config.stringDescriptor + ".weights.h5")
+        pickle.dump(trainingHistory.history, open(config.stringDescriptor + ".history.p", "wb"))
+        norbAutoencoder.saveWeights(config.stringDescriptor + ".weights.h5")

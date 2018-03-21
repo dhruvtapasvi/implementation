@@ -8,9 +8,10 @@ def variationalAutoencoderLossConstructor(
         latentRepresentationMean,
         latentRepresentationLogVariance):
     reconstructionLoss = reconstructionLossConstructor(inputRepresentationDimensions)
-    kullbackLeiberLoss = kullbackLeiberLossConstructor(latentRepresentationMean, latentRepresentationLogVariance)
+    # kullbackLeiberLoss = kullbackLeiberLossConstructor(latentRepresentationMean, latentRepresentationLogVariance)
 
     def variationalAutoencoderLoss(inputRepresentation, decodedInputRepresentation):
-        return reconstructionLoss(inputRepresentation, decodedInputRepresentation) + klLossWeight * kullbackLeiberLoss(inputRepresentation, decodedInputRepresentation)
+        # return reconstructionLoss(inputRepresentation, decodedInputRepresentation) + klLossWeight * kullbackLeiberLoss(inputRepresentation, decodedInputRepresentation)
+        return reconstructionLoss(inputRepresentation, decodedInputRepresentation)
 
     return variationalAutoencoderLoss
