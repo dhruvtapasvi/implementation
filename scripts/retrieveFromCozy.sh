@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
-scp -o "GSSAPIAuthentication=yes" ddt21@cozy.cl.cam.ac.uk:~/implementation/src/*.h5 cacheWeights/
-scp -o "GSSAPIAuthentication=yes" ddt21@cozy.cl.cam.ac.uk:~/implementation/src/*.p modelTrainingHistory/
+# Actual
+#scp -o "GSSAPIAuthentication=yes" ddt21@cozy.cl.cam.ac.uk:~/implementation/src/*.h5 cacheWeights/
+#scp -o "GSSAPIAuthentication=yes" ddt21@cozy.cl.cam.ac.uk:~/implementation/src/*.p modelTrainingHistory/
 
+# Rough
+scp -o "GSSAPIAuthentication=yes" ddt21@cozy.cl.cam.ac.uk:~/implementation/src/*.png out/
