@@ -16,6 +16,6 @@ if __name__ == '__main__':
     # experiment = UseLoadedWeightsExperiment()
     # experiment = TrainingNorbExperiment()
     # experiment = UseLoadedWeightsNorbExperiment()
-    # experiment = TrainingPcaNorbExperiment()
-    experiment = UseLoadedWeightsPcaNorbExperiment()
+    experiment = TrainingPcaNorbExperiment()
+    # experiment = UseLoadedWeightsPcaNorbExperiment()
     experiment.run()

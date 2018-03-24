@@ -1,12 +1,19 @@
 import numpy as np
 from keras.metrics import mean_squared_error
-from keras.backend import mean, flatten
+from keras.backend import mean, flatten, log, square, sum
 
 
-def meanSquaredErrorLossConstructor(inputRepresentationDimensions):
+def meanSquaredErrorLossConstructor(inputRepresentationDimensions, decodedInputRepresentationVariance=None):
     totalNumberOfPixels = np.prod(inputRepresentationDimensions)
+    epsilon = 0.01
 
     def meanSquaredErrorLoss(inputRepresentation, decodedInputRepresentation):
-        return mean(totalNumberOfPixels * mean_squared_error(flatten(inputRepresentation), flatten(decodedInputRepresentation)))
+        if decodedInputRepresentationVariance is not None:
+            lossPerPixel = 0.5 * log(decodedInputRepresentationVariance + epsilon) + 0.5 * square(decodedInputRepresentation - inputRepresentation) / (decodedInputRepresentationVariance + epsilon)
+            # lossPerPixel = square(decodedInputRepresentation - inputRepresentation)
+            imageLoss = sum(lossPerPixel, axis=-1)
+            return mean(imageLoss)
+        else:
+            return mean(totalNumberOfPixels * mean_squared_error(flatten(inputRepresentation), flatten(decodedInputRepresentation)))
 
     return meanSquaredErrorLoss

@@ -3,7 +3,7 @@ from keras.metrics import binary_crossentropy
 from keras.backend import mean, flatten
 
 
-def binaryCrossEntropyLossConstructor(inputRepresentationDimensions):
+def binaryCrossEntropyLossConstructor(inputRepresentationDimensions, decodedInputRepresentationVariance=None):
     totalNumberOfPixels = np.prod(inputRepresentationDimensions)
 
     def binaryCrossEntropyLoss(inputRepresentation, decodedInputRepresentation):

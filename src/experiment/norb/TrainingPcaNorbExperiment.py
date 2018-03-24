@@ -6,13 +6,13 @@ from dataset.basicLoader.NorbLoader import NorbLoader
 from dataset.preprocessLoader.ScaleBetweenZeroAndOne import ScaleBetweenZeroAndOne
 
 from model.loss.meanSquaredErrorLoss import meanSquaredErrorLossConstructor
-from model.architecture.PcaAutoencoder import PcaAutoencoder
+from model.architecture.PcaAutoencoderFittedVariance import PcaAutoencoderFittedVariance
 
 
 class TrainingPcaNorbExperiment(Experiment):
     def run(self):
         config = {  }
-        config["stringDescriptor"] = "norb_pca_500_512_4_128_0"
+        config["stringDescriptor"] = "norb_pca_500_512_4_128_0_fitted_variance"
 
         # Build model and exhibit summary
         reconstructionLossConstructor = meanSquaredErrorLossConstructor
@@ -22,14 +22,14 @@ class TrainingPcaNorbExperiment(Experiment):
         numIntermediateDimensions = 4
         latentRepresentationDimension = 128
         dropout = 0.0
-        norbAutoencoder = PcaAutoencoder(reconstructionLossConstructor, klLossWeight, inputRepresentationDimensions, intermediateRepresentationDimension, numIntermediateDimensions,latentRepresentationDimension, dropout)
+        norbAutoencoder = PcaAutoencoderFittedVariance(reconstructionLossConstructor, klLossWeight, inputRepresentationDimensions, intermediateRepresentationDimension, numIntermediateDimensions,latentRepresentationDimension, dropout)
         norbAutoencoder.buildModels()
         norbAutoencoder.summary()
 
         # Obtain datasets and carry out normalisation and pca
         norbLoader = ScaleBetweenZeroAndOne(NorbLoader("../res/norb"), 0, 255)
         (xTrain, _), (xVal, _), _ = norbLoader.loadData()
-        pca500 = pickle.load(open("../pca/norb_pca_500.p", "rb"))
+        pca500 = pickle.load(open("./norb_pca_500.p", "rb"))
         xTrain = pca500.transform(xTrain.reshape((xTrain.shape[0], -1)))
         xVal = pca500.transform(xVal.reshape((xVal.shape[0], -1)))
 
@@ -38,7 +38,7 @@ class TrainingPcaNorbExperiment(Experiment):
 
         # Train model
         batchSize = 100
-        epochs = 50
+        epochs = 150
         trainingHistory = norbAutoencoder.train(xTrain, xVal, epochs, batchSize)
 
         # Save training history and network weights:
