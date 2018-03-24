@@ -13,7 +13,7 @@ norbLoader = ScaleBetweenZeroAndOne(NorbLoader("../res/norb"), 0, 255)
 xTrain = xTrain.reshape(xTrain.shape[0],xTrain.shape[1]*xTrain.shape[2])
 print(xTrain.shape)
 
-pca = PCA(n_components=xTrain.shape[1]*xTrain.shape[2])
+pca = PCA(n_components=xTrain.shape[1])
 pca.fit(xTrain)
 
 plt.plot(np.cumsum(pca.explained_variance_ratio_))
