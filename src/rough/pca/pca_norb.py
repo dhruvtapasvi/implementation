@@ -24,6 +24,6 @@ print("Time elapsed: {}".format(elapsed))
 
 plt.plot(np.cumsum(pca.explained_variance_ratio_))
 plt.xlabel('Number of components')
-plt.xlim(0, 1.0)
+plt.ylim(0, 1.0)
 plt.ylabel('Cumulative explained variance)')
 plt.savefig('norb_pca_graph')
