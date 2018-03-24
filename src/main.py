@@ -8,6 +8,7 @@ from experiment.mnist.UseLoadedWeightsMnistExperiment import UseLoadedWeightsExp
 from experiment.norb.TrainingNorbExperiment import TrainingNorbExperiment
 from experiment.norb.UseLoadedWeightsNorbExperiment import UseLoadedWeightsNorbExperiment
 from experiment.norb.TrainingPcaNorbExperiment import TrainingPcaNorbExperiment
+from experiment.norb.UseLoadedWeightsPcaNorbExperiment import UseLoadedWeightsPcaNorbExperiment
 
 if __name__ == '__main__':
     # experiment = SimpleMnistExperiment()
@@ -15,5 +16,6 @@ if __name__ == '__main__':
     # experiment = UseLoadedWeightsExperiment()
     # experiment = TrainingNorbExperiment()
     # experiment = UseLoadedWeightsNorbExperiment()
-    experiment = TrainingPcaNorbExperiment()
+    # experiment = TrainingPcaNorbExperiment()
+    experiment = UseLoadedWeightsPcaNorbExperiment()
     experiment.run()
