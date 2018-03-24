@@ -1,3 +1,6 @@
+import matplotlib
+matplotlib.use('Agg')
+
 from dataset.basicLoader.MnistLoader import MnistLoader
 from dataset.preprocessLoader.ScaleBetweenZeroAndOne import ScaleBetweenZeroAndOne
 import numpy as np
@@ -10,10 +13,10 @@ mnistLoader = ScaleBetweenZeroAndOne(MnistLoader(), 0, 255)
 xTrain = xTrain.reshape(xTrain.shape[0],xTrain.shape[1]*xTrain.shape[2])
 print(xTrain.shape)
 
-pca = PCA(n_components=100)
+pca = PCA(n_components=500)
 pca.fit(xTrain)
 
 plt.plot(np.cumsum(pca.explained_variance_ratio_))
 plt.xlabel('Number of components')
 plt.ylabel('Cumulative explained variance)')
-plt.show()
+plt.savefig('mnist_pca_graph')
