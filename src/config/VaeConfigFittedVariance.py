@@ -5,7 +5,7 @@ from model.loss.binaryCrossEntropyLoss import binaryCrossEntropyLossConstructor
 from model.loss.meanSquaredErrorLoss import meanSquaredErrorLossConstructor
 
 
-class VaeConfig(ConfigParser, metaclass=ABCMeta):
+class VaeConfigFittedVariance(ConfigParser, metaclass=ABCMeta):
     def __init__(self, parameters):
         self.__setParameters(parameters)
 

@@ -1,7 +1,7 @@
 {
   "$schema": "file:config/schema/convolutional.schema.json",
 
-  "descriptor": "norb_conv_6_16_256_10_bce",
+  "descriptor": "norb_conv_6_16_256_100_mse",
   "reconstructionLoss": "meanSquaredError",
   "klLossWeight": 1.0,
   "inputRepresentationDimensions": [

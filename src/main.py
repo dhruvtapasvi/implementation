@@ -10,6 +10,7 @@ from experiment.norb.UseLoadedWeightsNorbExperiment import UseLoadedWeightsNorbE
 from experiment.norb.TrainingPcaNorbExperiment import TrainingPcaNorbExperiment
 from experiment.norb.UseLoadedWeightsPcaNorbExperiment import UseLoadedWeightsPcaNorbExperiment
 from experiment.norb.TrainingNorbExperimentFittedVariance import TrainingNorbExperimentFittedVariance
+from experiment.norb.UseLoadedWeightsNorbExperimentFittedVariance import UseLoadedWeightsNorbExperimentFittedVariance
 
 
 if __name__ == '__main__':
@@ -21,4 +22,5 @@ if __name__ == '__main__':
     # experiment = TrainingPcaNorbExperiment()
     # experiment = UseLoadedWeightsPcaNorbExperiment()
     experiment = TrainingNorbExperimentFittedVariance()
+    # experiment = UseLoadedWeightsNorbExperimentFittedVariance()
     experiment.run()

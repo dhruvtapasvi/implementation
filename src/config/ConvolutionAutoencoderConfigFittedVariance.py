@@ -1,10 +1,10 @@
 import json
-from config.VaeConfig import VaeConfig
+from config.VaeConfigFittedVariance import VaeConfigFittedVariance
 
 from model.architecture.ConvolutionalAutoencoderFittedVariance import ConvolutionalAutoencoderFittedVariance
 
 
-class ConvolutionalAutoencoderConfigFittedVariance(VaeConfig):
+class ConvolutionalAutoencoderConfigFittedVariance(VaeConfigFittedVariance):
     def __init__(self, file):
         with open(file) as file:
             parameters = json.load(file)
