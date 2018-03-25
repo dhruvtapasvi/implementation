@@ -5,7 +5,7 @@ from keras.backend import mean, flatten, log, square, sum
 
 def meanSquaredErrorLossConstructor(inputRepresentationDimensions, decodedInputRepresentationVariance=None):
     totalNumberOfPixels = np.prod(inputRepresentationDimensions)
-    epsilon = 0.01
+    epsilon = 0.001
 
     def meanSquaredErrorLoss(inputRepresentation, decodedInputRepresentation):
         if decodedInputRepresentationVariance is not None:

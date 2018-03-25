@@ -9,13 +9,16 @@ from experiment.norb.TrainingNorbExperiment import TrainingNorbExperiment
 from experiment.norb.UseLoadedWeightsNorbExperiment import UseLoadedWeightsNorbExperiment
 from experiment.norb.TrainingPcaNorbExperiment import TrainingPcaNorbExperiment
 from experiment.norb.UseLoadedWeightsPcaNorbExperiment import UseLoadedWeightsPcaNorbExperiment
+from experiment.norb.TrainingNorbExperimentFittedVariance import TrainingNorbExperimentFittedVariance
+
 
 if __name__ == '__main__':
     # experiment = SimpleMnistExperiment()
     # experiment = TrainingMnistExperiment()
     # experiment = UseLoadedWeightsExperiment()
-    experiment = TrainingNorbExperiment()
+    # experiment = TrainingNorbExperiment()
     # experiment = UseLoadedWeightsNorbExperiment()
     # experiment = TrainingPcaNorbExperiment()
     # experiment = UseLoadedWeightsPcaNorbExperiment()
+    experiment = TrainingNorbExperimentFittedVariance()
     experiment.run()
