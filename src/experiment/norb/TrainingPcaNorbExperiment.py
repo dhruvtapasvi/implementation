@@ -7,29 +7,30 @@ from dataset.preprocessLoader.ScaleBetweenZeroAndOne import ScaleBetweenZeroAndO
 
 from model.loss.meanSquaredErrorLoss import meanSquaredErrorLossConstructor
 from model.architecture.PcaAutoencoderFittedVariance import PcaAutoencoderFittedVariance
+from model.architecture.PcaAutoencoder import PcaAutoencoder
 
 
 class TrainingPcaNorbExperiment(Experiment):
     def run(self):
         config = {  }
-        config["stringDescriptor"] = "norb_pca_500_512_4_128_0_fitted_variance"
+        config["stringDescriptor"] = "norb_pca_500_1024_10_512_0"
 
         # Build model and exhibit summary
         reconstructionLossConstructor = meanSquaredErrorLossConstructor
         klLossWeight = 1.0
         inputRepresentationDimensions = (500,)
-        intermediateRepresentationDimension = 512
-        numIntermediateDimensions = 4
-        latentRepresentationDimension = 128
+        intermediateRepresentationDimension = 1024
+        numIntermediateDimensions = 10
+        latentRepresentationDimension = 512
         dropout = 0.0
-        norbAutoencoder = PcaAutoencoderFittedVariance(reconstructionLossConstructor, klLossWeight, inputRepresentationDimensions, intermediateRepresentationDimension, numIntermediateDimensions,latentRepresentationDimension, dropout)
+        norbAutoencoder = PcaAutoencoder(reconstructionLossConstructor, klLossWeight, inputRepresentationDimensions, intermediateRepresentationDimension, numIntermediateDimensions,latentRepresentationDimension, dropout)
         norbAutoencoder.buildModels()
         norbAutoencoder.summary()
 
         # Obtain datasets and carry out normalisation and pca
         norbLoader = ScaleBetweenZeroAndOne(NorbLoader("../res/norb"), 0, 255)
         (xTrain, _), (xVal, _), _ = norbLoader.loadData()
-        pca500 = pickle.load(open("./norb_pca_500.p", "rb"))
+        pca500 = pickle.load(open("../pca/norb_pca_500.p", "rb"))
         xTrain = pca500.transform(xTrain.reshape((xTrain.shape[0], -1)))
         xVal = pca500.transform(xVal.reshape((xVal.shape[0], -1)))
 
@@ -37,8 +38,8 @@ class TrainingPcaNorbExperiment(Experiment):
 
 
         # Train model
-        batchSize = 100
-        epochs = 150
+        batchSize = 1000
+        epochs = 300
         trainingHistory = norbAutoencoder.train(xTrain, xVal, epochs, batchSize)
 
         # Save training history and network weights:
