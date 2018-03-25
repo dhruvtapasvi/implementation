@@ -8,7 +8,7 @@ from dataset.preprocessLoader.ScaleBetweenZeroAndOne import ScaleBetweenZeroAndO
 
 class TrainingNorbExperiment(Experiment):
     def run(self):
-        config = ConvolutionalAutoencoderConfig("../config/model/convolutional/norb_conv_6_8_256_10_bce.json")
+        config = ConvolutionalAutoencoderConfig("../config/model/convolutional/norb_conv_6_16_256_10_bce.json")
 
         # Build model and exhibit summary
         norbAutoencoder = config.fromConfig()

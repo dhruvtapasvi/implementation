@@ -1,5 +1,5 @@
 import numpy as np
-from keras.layers import Dense, Flatten, Reshape, Conv2D, Deconv2D
+from keras.layers import Dense, Flatten, Reshape, Conv2D, Deconv2D, BatchNormalization
 
 from model.VariationalAutoencoder import VariationalAutoencoder
 
@@ -18,9 +18,11 @@ class ConvolutionalAutoencoder(VariationalAutoencoder):
         convolutionalShape = self.__inputRepresentationDimensions + (1,)
         encoderLayersList = [
             Reshape(convolutionalShape),
+            BatchNormalization(),
             self.__buildConvolutionalsAndDownSamplings(),
             Flatten(),
-            Dense(self.__intermediateRepresentationDimension, activation='relu')
+            Dense(self.__intermediateRepresentationDimension, activation='relu'),
+            BatchNormalization()
         ]
         intermediateToLatentMean = Dense(self.__latentRepresentationDimension)
         intermediateToLatentLogVariance = Dense(self.__latentRepresentationDimension)
@@ -41,7 +43,9 @@ class ConvolutionalAutoencoder(VariationalAutoencoder):
 
         decoderLayersList = [
             Dense(self.__intermediateRepresentationDimension, activation='relu'),
+            BatchNormalization(),
             Dense(totalNumberOfNodes, activation='relu'),
+            BatchNormalization(),
             Reshape(convolutionalTransposeDimensions),
             self.__buildConvolutionalTransposesAndUpsampling(),
             Reshape(self.__inputRepresentationDimensions)
@@ -57,9 +61,11 @@ class ConvolutionalAutoencoder(VariationalAutoencoder):
         convolutionalLayers = []
         for i in range(self.__numberConvolutions):
             for j in range(2):
-                convolutionalLayers.append(Conv2D(convolutionalDepth, (3, 3), activation='relu', padding='same'))
+                convolutionalLayers.append(Conv2D(convolutionalDepth, (3, 3), activation='relu', padding='same', kernel_initializer='he_normal', bias_initializer='uniform'))
+                convolutionalLayers.append(BatchNormalization())
             if i < self.__numberConvolutions - 1:
-                convolutionalLayers.append(Conv2D(convolutionalDepth, (2, 2), strides=(2, 2), activation='relu', padding='same'))
+                convolutionalLayers.append(Conv2D(convolutionalDepth, (2, 2), strides=(2, 2), activation='relu', padding='same', kernel_initializer='he_normal', bias_initializer='uniform'))
+                convolutionalLayers.append(BatchNormalization())
                 convolutionalDepth *= 2
 
         def convolutionsAndDownsampling(preconvolutionalRepresentation):
@@ -72,14 +78,17 @@ class ConvolutionalAutoencoder(VariationalAutoencoder):
         convolutionalTransposeLayers = []
         for i in range(self.__numberConvolutions):
             if i > 0:
-                convolutionalTransposeLayers.append(Deconv2D(convolutionalTransposeDepth, (2, 2), strides=(2, 2), activation='relu', padding='same'))
-            convolutionalTransposeLayers.append(Deconv2D(convolutionalTransposeDepth, (3, 3), activation='relu', padding='same'))
+                convolutionalTransposeLayers.append(Deconv2D(convolutionalTransposeDepth, (2, 2), strides=(2, 2), activation='relu', padding='same', kernel_initializer='he_normal', bias_initializer='uniform'))
+                convolutionalTransposeLayers.append(BatchNormalization())
+            convolutionalTransposeLayers.append(Deconv2D(convolutionalTransposeDepth, (3, 3), activation='relu', padding='same', kernel_initializer='he_normal', bias_initializer='uniform'))
+            convolutionalTransposeLayers.append(BatchNormalization())
             if i < self.__numberConvolutions - 1:
                 convolutionalTransposeDepth //= 2
             else:
                 convolutionalTransposeDepth = 1
-            convolutionalTransposeLayers.append(Deconv2D(convolutionalTransposeDepth, (3, 3), activation='relu', padding='same'))
-
+            convolutionalTransposeLayers.append(Deconv2D(convolutionalTransposeDepth, (3, 3), activation='relu', padding='same', kernel_initializer='he_normal', bias_initializer='uniform'))
+            convolutionalTransposeLayers.append(BatchNormalization())
+        convolutionalTransposeLayers.append(Deconv2D(1, (3,3), activation='sigmoid', padding='same', kernel_initializer='he_normal', bias_initializer='uniform'))
 
         def convolutionalTransposesAndUpSampling(predeconvolutionalRepresentation):
             return self.evaluateLayersList(convolutionalTransposeLayers, predeconvolutionalRepresentation)
