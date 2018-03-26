@@ -25,7 +25,7 @@ class UseLoadedWeightsPcaNorbExperiment(Experiment):
 
     def run(self):
         config = {  }
-        config["stringDescriptor"] = "norb_pca_500_2048_1_128_0_fitted_variance"
+        config["stringDescriptor"] = "norb_pca_500_2048_1_64_0_fitted_variance"
 
         # Build model and exhibit summary
         reconstructionLossConstructor = meanSquaredErrorLossConstructor
@@ -33,7 +33,7 @@ class UseLoadedWeightsPcaNorbExperiment(Experiment):
         inputRepresentationDimensions = (500,)
         intermediateRepresentationDimension = 2048
         numIntermediateDimensions = 1
-        latentRepresentationDimension = 128
+        latentRepresentationDimension = 64
         dropout = 0.0
         norbAutoencoder = PcaAutoencoderFittedVariance(reconstructionLossConstructor, klLossWeight, inputRepresentationDimensions, intermediateRepresentationDimension, numIntermediateDimensions,latentRepresentationDimension, dropout)
         norbAutoencoder.buildModels()

@@ -18,7 +18,7 @@ class PcaAutoencoderFittedVariance(VariationalAutoencoderFittedVariance):
         inputBatchNormalisation = BatchNormalization()
         encoderLayer = self.__compoundLayerConstructor()
         intermediateToLatentMean = Dense(self.__latentRepresentationDimension, kernel_initializer="he_normal")
-        intermediateToLatentLogVariance = Dense(self.__latentRepresentationDimension, activation="relu", kernel_initializer="he_normal")
+        intermediateToLatentLogVariance = Dense(self.__latentRepresentationDimension, kernel_initializer="he_normal")
 
         def encoderLayers(inputRepresentation):
             # intermediateRepresentation = inputToFlattenedInput(inputRepresentation)
