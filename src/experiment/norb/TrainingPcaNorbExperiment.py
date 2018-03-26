@@ -13,7 +13,7 @@ from model.architecture.PcaAutoencoder import PcaAutoencoder
 class TrainingPcaNorbExperiment(Experiment):
     def run(self):
         config = {  }
-        config["stringDescriptor"] = "norb_pca_500_2048_1_128_0"
+        config["stringDescriptor"] = "norb_pca_500_2048_1_128_0_fitted_variance"
 
         # Build model and exhibit summary
         reconstructionLossConstructor = meanSquaredErrorLossConstructor
@@ -23,7 +23,7 @@ class TrainingPcaNorbExperiment(Experiment):
         numIntermediateDimensions = 1
         latentRepresentationDimension = 128
         dropout = 0.0
-        norbAutoencoder = PcaAutoencoder(reconstructionLossConstructor, klLossWeight, inputRepresentationDimensions, intermediateRepresentationDimension, numIntermediateDimensions,latentRepresentationDimension, dropout)
+        norbAutoencoder = PcaAutoencoderFittedVariance(reconstructionLossConstructor, klLossWeight, inputRepresentationDimensions, intermediateRepresentationDimension, numIntermediateDimensions,latentRepresentationDimension, dropout)
         norbAutoencoder.buildModels()
         norbAutoencoder.summary()
 

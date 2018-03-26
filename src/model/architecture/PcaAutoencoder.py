@@ -43,11 +43,11 @@ class PcaAutoencoder(VariationalAutoencoder):
 
         return decoderLayers
 
-
     def __compoundLayerConstructor(self):
         denseLayer = Dense(self.__intermediateRepresentationDimension, activation="relu", kernel_initializer="he_normal", bias_initializer="uniform")
         batchNormalisationLayer = BatchNormalization()
         dropoutLayer = Dropout(self.__dropout)
+
         def compoundLayer(compoundLayerInput):
             return dropoutLayer(batchNormalisationLayer(denseLayer(compoundLayerInput)))
 
