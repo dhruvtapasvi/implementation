@@ -17,8 +17,8 @@ class PcaAutoencoderFittedVariance(VariationalAutoencoderFittedVariance):
         # inputToFlattenedInput = Flatten()
         inputBatchNormalisation = BatchNormalization()
         encoderLayer = self.__compoundLayerConstructor()
-        intermediateToLatentMean = Dense(self.__latentRepresentationDimension)
-        intermediateToLatentLogVariance = Dense(self.__latentRepresentationDimension)
+        intermediateToLatentMean = Dense(self.__latentRepresentationDimension, kernel_initializer="he_normal")
+        intermediateToLatentLogVariance = Dense(self.__latentRepresentationDimension, activation="relu", kernel_initializer="he_normal")
 
         def encoderLayers(inputRepresentation):
             # intermediateRepresentation = inputToFlattenedInput(inputRepresentation)
@@ -34,9 +34,9 @@ class PcaAutoencoderFittedVariance(VariationalAutoencoderFittedVariance):
     def decoderLayersConstructor(self):
         totalNumberOfPixels = np.prod(self.__inputRepresentationDimensions)
         decoderLayer = self.__compoundLayerConstructor()
-        intermediateToFlattenedInput = Dense(totalNumberOfPixels)
+        intermediateToFlattenedInput = Dense(totalNumberOfPixels, kernel_initializer="he_normal")
         flattenedInputToInput = Reshape(self.__inputRepresentationDimensions)
-        intermediateToFlattenedInputVariance = Dense(totalNumberOfPixels,activation="relu")
+        intermediateToFlattenedInputVariance = Dense(totalNumberOfPixels,activation="relu", kernel_initializer="he_normal")
         flattenedInputVarianceToInputVariance = Reshape(self.__inputRepresentationDimensions)
 
         def decoderLayers(latentRepresentation):
@@ -54,7 +54,7 @@ class PcaAutoencoderFittedVariance(VariationalAutoencoderFittedVariance):
 
     def __compoundLayerConstructor(self):
         def compoundLayer(compoundLayerInput):
-            denseResult = (Dense(self.__intermediateRepresentationDimension))(compoundLayerInput)
+            denseResult = (Dense(self.__intermediateRepresentationDimension, kernel_initializer="he_normal"))(compoundLayerInput)
             batchNormalisationResult = (BatchNormalization())(denseResult)
             activationResult = (Activation("relu"))(batchNormalisationResult)
             dropoutResult = (Dropout(self.__dropout))(activationResult)

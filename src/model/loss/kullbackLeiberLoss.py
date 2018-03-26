@@ -2,7 +2,7 @@ from keras.backend import sum, square, mean, log
 
 
 def kullbackLeiberLossConstructor(latentRepresentationMean, latentRepresentationVarianceInput):
-    epsilon = 1e-10
+    epsilon = 1e-5
     latentRepresentationVariance = latentRepresentationVarianceInput + epsilon
 
     def kullbackLeiberLoss(inputRepresentation, decodedInputRepresentation):

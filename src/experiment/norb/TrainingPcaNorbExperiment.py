@@ -28,9 +28,9 @@ class TrainingPcaNorbExperiment(Experiment):
         norbAutoencoder.summary()
 
         # Obtain datasets and carry out normalisation and pca
-        norbLoader = ScaleBetweenZeroAndOne(NorbLoader("../res/norb"), 0, 255)
+        norbLoader = ScaleBetweenZeroAndOne(NorbLoader("./res/norb"), 0, 255)
         (xTrain, _), (xVal, _), _ = norbLoader.loadData()
-        pca500 = pickle.load(open("../pca/norb_pca_500.p", "rb"))
+        pca500 = pickle.load(open("./pca/norb_pca_500.p", "rb"))
         xTrain = pca500.transform(xTrain.reshape((xTrain.shape[0], -1)))
         xVal = pca500.transform(xVal.reshape((xVal.shape[0], -1)))
 
