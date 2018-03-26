@@ -5,4 +5,4 @@
 #scp -o "GSSAPIAuthentication=yes" -r scripts ddt21@cozy.cl.cam.ac.uk:~/implementation
 #scp -o "GSSAPIAuthentication=yes" -r config ddt21@cozy.cl.cam.ac.uk:~/implementation
 
-scp -o "GSSAPIAuthentication=yes" pca/norb_pca_500.p ddt21@cozy.cl.cam.ac.uk:~/implementation/pca/
+scp -o "GSSAPIAuthentication=yes" cacheWeights/norb_pca_500_2048_1_10_0_fitted_variance.weights.h5 ddt21@cozy.cl.cam.ac.uk:~/implementation/src/

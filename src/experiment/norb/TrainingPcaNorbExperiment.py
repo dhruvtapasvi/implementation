@@ -13,17 +13,17 @@ from model.architecture.PcaAutoencoder import PcaAutoencoder
 class TrainingPcaNorbExperiment(Experiment):
     def run(self):
         config = {  }
-        config["stringDescriptor"] = "norb_pca_500_1024_10_512_0"
+        config["stringDescriptor"] = "norb_pca_500_2048_1_64_0_fitted_variance"
 
         # Build model and exhibit summary
         reconstructionLossConstructor = meanSquaredErrorLossConstructor
         klLossWeight = 1.0
         inputRepresentationDimensions = (500,)
-        intermediateRepresentationDimension = 1024
-        numIntermediateDimensions = 10
-        latentRepresentationDimension = 512
+        intermediateRepresentationDimension = 2048
+        numIntermediateDimensions = 1
+        latentRepresentationDimension = 64
         dropout = 0.0
-        norbAutoencoder = PcaAutoencoder(reconstructionLossConstructor, klLossWeight, inputRepresentationDimensions, intermediateRepresentationDimension, numIntermediateDimensions,latentRepresentationDimension, dropout)
+        norbAutoencoder = PcaAutoencoderFittedVariance(reconstructionLossConstructor, klLossWeight, inputRepresentationDimensions, intermediateRepresentationDimension, numIntermediateDimensions,latentRepresentationDimension, dropout)
         norbAutoencoder.buildModels()
         norbAutoencoder.summary()
 
@@ -38,8 +38,8 @@ class TrainingPcaNorbExperiment(Experiment):
 
 
         # Train model
-        batchSize = 1000
-        epochs = 300
+        batchSize = 100
+        epochs = 200
         trainingHistory = norbAutoencoder.train(xTrain, xVal, epochs, batchSize)
 
         # Save training history and network weights:

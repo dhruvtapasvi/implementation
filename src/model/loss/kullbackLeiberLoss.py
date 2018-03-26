@@ -1,8 +1,11 @@
-from keras.backend import sum, exp, square, mean
+from keras.backend import sum, square, mean, log
 
 
-def kullbackLeiberLossConstructor(latentRepresentationMean, latentRepresentationLogVariance):
+def kullbackLeiberLossConstructor(latentRepresentationMean, latentRepresentationVarianceInput):
+    epsilon = 1e-10
+    latentRepresentationVariance = latentRepresentationVarianceInput + epsilon
+
     def kullbackLeiberLoss(inputRepresentation, decodedInputRepresentation):
-        return mean(- 0.5 * sum(1 + latentRepresentationLogVariance - square(latentRepresentationMean) - exp(latentRepresentationLogVariance), axis=-1))
+        return mean(- 0.5 * sum(1 + log(latentRepresentationVariance) - square(latentRepresentationMean) - latentRepresentationVariance, axis=-1))
 
     return kullbackLeiberLoss

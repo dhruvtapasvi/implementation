@@ -9,6 +9,7 @@ from dataset.preprocessLoader.ScaleBetweenZeroAndOne import ScaleBetweenZeroAndO
 
 from model.loss.meanSquaredErrorLoss import meanSquaredErrorLossConstructor
 from model.architecture.PcaAutoencoder import PcaAutoencoder
+from model.architecture.PcaAutoencoderFittedVariance import PcaAutoencoderFittedVariance
 import pickle
 
 
@@ -24,17 +25,17 @@ class UseLoadedWeightsPcaNorbExperiment(Experiment):
 
     def run(self):
         config = {  }
-        config["stringDescriptor"] = "norb_pca_500_1024_5_128_0_fitted_variance"
+        config["stringDescriptor"] = "norb_pca_500_2048_1_128_0_fitted_variance"
 
         # Build model and exhibit summary
         reconstructionLossConstructor = meanSquaredErrorLossConstructor
         klLossWeight = 1.0
         inputRepresentationDimensions = (500,)
-        intermediateRepresentationDimension = 1024
-        numIntermediateDimensions = 5
+        intermediateRepresentationDimension = 2048
+        numIntermediateDimensions = 1
         latentRepresentationDimension = 128
         dropout = 0.0
-        norbAutoencoder = PcaAutoencoder(reconstructionLossConstructor, klLossWeight, inputRepresentationDimensions, intermediateRepresentationDimension, numIntermediateDimensions,latentRepresentationDimension, dropout)
+        norbAutoencoder = PcaAutoencoderFittedVariance(reconstructionLossConstructor, klLossWeight, inputRepresentationDimensions, intermediateRepresentationDimension, numIntermediateDimensions,latentRepresentationDimension, dropout)
         norbAutoencoder.buildModels()
         norbAutoencoder.summary()
 
