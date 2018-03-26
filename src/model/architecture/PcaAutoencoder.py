@@ -14,17 +14,14 @@ class PcaAutoencoder(VariationalAutoencoder):
         self.__dropout = dropout
 
     def encoderLayersConstructor(self):
-        # inputToFlattenedInput = Flatten()
         inputBatchNormalisation = BatchNormalization()
-        encoderLayer = self.__compoundLayerConstructor()
+        encoderLayersList = [self.__compoundLayerConstructor() for _ in range(self.__depth)]
         intermediateToLatentMean = Dense(self.__latentRepresentationDimension)
         intermediateToLatentLogVariance = Dense(self.__latentRepresentationDimension)
 
         def encoderLayers(inputRepresentation):
-            # intermediateRepresentation = inputToFlattenedInput(inputRepresentation)
             intermediateRepresentation = inputBatchNormalisation(inputRepresentation)
-            for i in range(self.__depth):
-                intermediateRepresentation = encoderLayer(intermediateRepresentation)
+            intermediateRepresentation = self.evaluateLayersList(encoderLayersList, intermediateRepresentation)
             latentRepresentationMean = intermediateToLatentMean(intermediateRepresentation)
             latentRepresentationVariance = intermediateToLatentLogVariance(intermediateRepresentation)
             return latentRepresentationMean, latentRepresentationVariance
@@ -33,14 +30,13 @@ class PcaAutoencoder(VariationalAutoencoder):
 
     def decoderLayersConstructor(self):
         totalNumberOfPixels = np.prod(self.__inputRepresentationDimensions)
-        decoderLayer = self.__compoundLayerConstructor()
+        decoderLayersList = [self.__compoundLayerConstructor() for _ in range(self.__depth)]
         intermediateToFlattenedInput = Dense(totalNumberOfPixels)
         flattenedInputToInput = Reshape(self.__inputRepresentationDimensions)
 
         def decoderLayers(latentRepresentation):
             intermediateRepresentation = latentRepresentation
-            for i in range(self.__depth):
-                intermediateRepresentation = decoderLayer(intermediateRepresentation)
+            intermediateRepresentation = self.evaluateLayersList(decoderLayersList, intermediateRepresentation)
             decodedFlattenedInputRepresentation = intermediateToFlattenedInput(intermediateRepresentation)
             decodedInputRepresentation = flattenedInputToInput(decodedFlattenedInputRepresentation)
             return decodedInputRepresentation
@@ -49,11 +45,10 @@ class PcaAutoencoder(VariationalAutoencoder):
 
 
     def __compoundLayerConstructor(self):
+        denseLayer = Dense(self.__intermediateRepresentationDimension, activation="relu", kernel_initializer="he_normal", bias_initializer="uniform")
+        batchNormalisationLayer = BatchNormalization()
+        dropoutLayer = Dropout(self.__dropout)
         def compoundLayer(compoundLayerInput):
-            denseResult = (Dense(self.__intermediateRepresentationDimension))(compoundLayerInput)
-            batchNormalisationResult = (BatchNormalization())(denseResult)
-            activationResult = (Activation("relu"))(batchNormalisationResult)
-            dropoutResult = (Dropout(self.__dropout))(activationResult)
-            return dropoutResult
+            return dropoutLayer(batchNormalisationLayer(denseLayer(compoundLayerInput)))
 
         return compoundLayer
