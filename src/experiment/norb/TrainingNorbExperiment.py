@@ -2,18 +2,20 @@ import pickle
 
 from experiment.Experiment import Experiment
 from config.ConvolutionAutoencoderConfig import ConvolutionalAutoencoderConfig
+from config.ConvolutionAutoencoderConfigUnetConnections import ConvolutionalAutoencoderConfigUnetConnections
 from dataset.basicLoader.NorbLoader import NorbLoader
 from dataset.preprocessLoader.ScaleBetweenZeroAndOne import ScaleBetweenZeroAndOne
 
 
 class TrainingNorbExperiment(Experiment):
     def run(self):
-        config = ConvolutionalAutoencoderConfig("../config/model/convolutional/norb_conv_6_16_256_10_bce.json")
+        config = ConvolutionalAutoencoderConfigUnetConnections("./config/model/convolutional/norb_conv_6_16_256_10_bce.json")
 
         # Build model and exhibit summary
         norbAutoencoder = config.fromConfig()
         norbAutoencoder.buildModels()
         norbAutoencoder.summary()
+        quit()
 
         # Obtain datasets and carry out normalisation
         norbLoader = ScaleBetweenZeroAndOne(NorbLoader("../res/norb"), 0, 255)

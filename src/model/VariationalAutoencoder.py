@@ -20,11 +20,11 @@ class VariationalAutoencoder(metaclass=ABCMeta):
         encoderLayers = self.encoderLayersConstructor()
         decoderLayers = self.decoderLayersConstructor()
 
-        self.__buildAutoencoder(encoderLayers, decoderLayers)
-        self.__buildEncoder(encoderLayers)
-        self.__buildDecoder(decoderLayers)
+        self.buildAutoencoder(encoderLayers, decoderLayers)
+        self.buildEncoder(encoderLayers)
+        self.buildDecoder(decoderLayers)
 
-    def __buildAutoencoder(self, encoderLayers, decoderLayers):
+    def buildAutoencoder(self, encoderLayers, decoderLayers):
         # Input to the encoder and autoencoder models:
         inputRepresentation = Input(shape=self.__inputRepresentationDimensions)
 
@@ -52,12 +52,12 @@ class VariationalAutoencoder(metaclass=ABCMeta):
             ]
         )
 
-    def __buildEncoder(self, encoderLayers):
+    def buildEncoder(self, encoderLayers):
         inputRepresentation = Input(shape=self.__inputRepresentationDimensions)
         latentRepresentationMean, _ = encoderLayers(inputRepresentation)
         self._encoder = Model(inputRepresentation, latentRepresentationMean)
 
-    def __buildDecoder(self, decoderLayers):
+    def buildDecoder(self, decoderLayers):
         customLatentRepresentation = Input(shape=(self.__latentRepresentationDimension,))
         customDecodedInputRepresentation = decoderLayers(customLatentRepresentation)
         self.__decoder = Model(customLatentRepresentation, customDecodedInputRepresentation)
