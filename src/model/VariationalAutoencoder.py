@@ -76,6 +76,12 @@ class VariationalAutoencoder(metaclass=ABCMeta):
             intermediateResult = layer(intermediateResult)
         return intermediateResult
 
+    def combineLayersIntoSingleLayer(self, layersList):
+        def combinedLayer(layerInput):
+            return self.evaluateLayersList(layersList, layerInput)
+
+        return combinedLayer
+
     def encoder(self) -> Model:
         return self._encoder
 

@@ -1,28 +1,39 @@
 import numpy as np
-from keras.layers import Dense, Flatten, Reshape, Conv2D, Deconv2D, BatchNormalization
+from keras.layers import Dense, Flatten, Reshape, Conv2D, Deconv2D, BatchNormalization, Dropout
 
 from model.VariationalAutoencoder import VariationalAutoencoder
 
 
 class ConvolutionalAutoencoder(VariationalAutoencoder):
     # Architecture from https://github.com/keras-team/keras/blob/master/examples/variational_autoencoder.py
-    def __init__(self, reconstructionLossConstructor, klLossWeight, inputRepresentationDimensions, numberConvolutions, baseConvolutionalDepth, intermediateRepresentationDimension, latentRepresentationDimension):
+    def __init__(
+            self,
+            reconstructionLossConstructor,
+            klLossWeight,
+            inputRepresentationDimensions,
+            numberConvolutions,
+            baseConvolutionalDepth,
+            intermediateRepresentationDimension,
+            latentRepresentationDimension,
+            dropout=0.0):
         super().__init__(reconstructionLossConstructor, klLossWeight, inputRepresentationDimensions, latentRepresentationDimension)
         self.__baseConvolutionalDepth = baseConvolutionalDepth
         self.__numberConvolutions = numberConvolutions
         self.__inputRepresentationDimensions = inputRepresentationDimensions
         self.__intermediateRepresentationDimension = intermediateRepresentationDimension
         self.__latentRepresentationDimension = latentRepresentationDimension
+        self.__dropout = dropout
 
     def encoderLayersConstructor(self):
         convolutionalShape = self.__inputRepresentationDimensions + (1,)
         encoderLayersList = [
             Reshape(convolutionalShape),
             BatchNormalization(),
-            self.__buildConvolutionalsAndDownSamplings(),
+            self.__buildContractionPhaseLayer(),
             Flatten(),
-            Dense(self.__intermediateRepresentationDimension, activation='relu'),
-            BatchNormalization()
+            Dense(self.__intermediateRepresentationDimension, activation='relu', kernel_initializer="he_normal", bias_initializer="uniform"),
+            BatchNormalization(),
+            Dropout(self.__dropout)
         ]
         intermediateToLatentMean = Dense(self.__latentRepresentationDimension)
         intermediateToLatentLogVariance = Dense(self.__latentRepresentationDimension)
@@ -38,59 +49,68 @@ class ConvolutionalAutoencoder(VariationalAutoencoder):
     def decoderLayersConstructor(self):
         shrinkFactor = 2 ** (self.__numberConvolutions - 1)
         convolutionalTransposeDimensions = tuple(map(lambda x: x // shrinkFactor, self.__inputRepresentationDimensions)) + (shrinkFactor * self.__baseConvolutionalDepth,)
-        print(convolutionalTransposeDimensions)
         totalNumberOfNodes = np.prod(convolutionalTransposeDimensions)
 
         decoderLayersList = [
-            Dense(self.__intermediateRepresentationDimension, activation='relu'),
+            Dense(self.__intermediateRepresentationDimension, activation='relu', kernel_initializer="he_normal", bias_initializer="uniform"),
             BatchNormalization(),
-            Dense(totalNumberOfNodes, activation='relu'),
+            Dropout(self.__dropout),
+            Dense(totalNumberOfNodes, activation='relu', kernel_initializer="he_normal", bias_initializer="uniform"),
             BatchNormalization(),
+            Dropout(self.__dropout),
             Reshape(convolutionalTransposeDimensions),
-            self.__buildConvolutionalTransposesAndUpsampling(),
+            self.__buildExpansionPhaseLayer(),
+            Deconv2D(1, (3, 3), padding="same", activation="sigmoid", kernel_initializer="glorot_normal", bias_initializer="uniform"),
             Reshape(self.__inputRepresentationDimensions)
         ]
 
-        def decoderLayers(latentRepresentation):
-            return self.evaluateLayersList(decoderLayersList, latentRepresentation)
+        return self.combineLayersIntoSingleLayer(decoderLayersList)
 
-        return decoderLayers
+    def __buildContractionPhaseLayer(self):
+        layersList = [
+            self.__buildDownsamplingAndConvolutionalsLayer(
+                self.__baseConvolutionalDepth * (2 ** i),
+                downsample=(i != 0)
+            ) for i in range(self.__numberConvolutions)
+        ]
+        return self.combineLayersIntoSingleLayer(layersList)
 
-    def __buildConvolutionalsAndDownSamplings(self):
-        convolutionalDepth = self.__baseConvolutionalDepth
-        convolutionalLayers = []
-        for i in range(self.__numberConvolutions):
-            for j in range(2):
-                convolutionalLayers.append(Conv2D(convolutionalDepth, (3, 3), activation='relu', padding='same', kernel_initializer='he_normal', bias_initializer='uniform'))
-                convolutionalLayers.append(BatchNormalization())
-            if i < self.__numberConvolutions - 1:
-                convolutionalLayers.append(Conv2D(convolutionalDepth, (2, 2), strides=(2, 2), activation='relu', padding='same', kernel_initializer='he_normal', bias_initializer='uniform'))
-                convolutionalLayers.append(BatchNormalization())
-                convolutionalDepth *= 2
+    def __buildDownsamplingAndConvolutionalsLayer(self, filters, numConvAfterDownsampling=2, downsample=True):
+        downsampling = [self.__buildDeepConvolutionalLayer(filters // 2, (2, 2), (2, 2))] if downsample else []
+        convolutions = [self.__buildDeepConvolutionalLayer(filters) for _ in range(numConvAfterDownsampling)]
+        layersList = downsampling + convolutions
+        return self.combineLayersIntoSingleLayer(layersList)
 
-        def convolutionsAndDownsampling(preconvolutionalRepresentation):
-            return self.evaluateLayersList(convolutionalLayers, preconvolutionalRepresentation)
 
-        return convolutionsAndDownsampling
+    def __buildDeepConvolutionalLayer(self, filters, kernelSize=(3, 3), strides=(1, 1)):
+        layersList = [
+            Conv2D(filters, kernelSize, strides=strides, activation="relu", padding="same", kernel_initializer="he_normal", bias_initializer="uniform"),
+            BatchNormalization(),
+            Dropout(self.__dropout)
+        ]
+        return self.combineLayersIntoSingleLayer(layersList)
 
-    def __buildConvolutionalTransposesAndUpsampling(self):
-        convolutionalTransposeDepth = self.__baseConvolutionalDepth * (2 ** (self.__numberConvolutions - 1))
-        convolutionalTransposeLayers = []
-        for i in range(self.__numberConvolutions):
-            if i > 0:
-                convolutionalTransposeLayers.append(Deconv2D(convolutionalTransposeDepth, (2, 2), strides=(2, 2), activation='relu', padding='same', kernel_initializer='he_normal', bias_initializer='uniform'))
-                convolutionalTransposeLayers.append(BatchNormalization())
-            convolutionalTransposeLayers.append(Deconv2D(convolutionalTransposeDepth, (3, 3), activation='relu', padding='same', kernel_initializer='he_normal', bias_initializer='uniform'))
-            convolutionalTransposeLayers.append(BatchNormalization())
-            if i < self.__numberConvolutions - 1:
-                convolutionalTransposeDepth //= 2
-            else:
-                convolutionalTransposeDepth = 1
-            convolutionalTransposeLayers.append(Deconv2D(convolutionalTransposeDepth, (3, 3), activation='relu', padding='same', kernel_initializer='he_normal', bias_initializer='uniform'))
-            convolutionalTransposeLayers.append(BatchNormalization())
-        convolutionalTransposeLayers.append(Deconv2D(1, (3,3), activation='sigmoid', padding='same', kernel_initializer='he_normal', bias_initializer='uniform'))
+    def __buildExpansionPhaseLayer(self):
+        layersList = [
+            self.__buildDeconvolutionsAndUpsamplingLayer(
+                self.__baseConvolutionalDepth * (2 ** i),
+                upsample=(i != self.__numberConvolutions - 1)
+            ) for i in range(self.__numberConvolutions - 1, -1, -1)
+        ]
+        return self.combineLayersIntoSingleLayer(layersList)
 
-        def convolutionalTransposesAndUpSampling(predeconvolutionalRepresentation):
-            return self.evaluateLayersList(convolutionalTransposeLayers, predeconvolutionalRepresentation)
 
-        return convolutionalTransposesAndUpSampling
+    def __buildDeconvolutionsAndUpsamplingLayer(self, filters, numDeconvAfterUpsamping=2, upsample=True):
+        upsampling = [self.__buildDeepDeconvolutionalLayer(filters, (2, 2), (2, 2))] if upsample else []
+        convolutions = [self.__buildDeepDeconvolutionalLayer(filters) for _ in range(numDeconvAfterUpsamping)]
+        layersList = upsampling + convolutions
+        return self.combineLayersIntoSingleLayer(layersList)
+
+
+    def __buildDeepDeconvolutionalLayer(self, filters, kernelSize=(3, 3), strides=(1, 1)):
+        layersList =[
+            Deconv2D(filters, kernelSize, strides=strides, activation="relu", padding="same", kernel_initializer="he_normal", bias_initializer="uniform"),
+            BatchNormalization(),
+            Dropout(self.__dropout)
+        ]
+        return self.combineLayersIntoSingleLayer(layersList)
