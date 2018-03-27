@@ -20,7 +20,7 @@ from dataset.preprocessLoader.ScaleBetweenZeroAndOne import ScaleBetweenZeroAndO
 
 # Set route to "implementation" folder
 route = ".."
-outRoute = route + "/outRough"
+outRoute = route + "/outRoughNoVar"
 if not os.path.exists(outRoute):
     os.mkdir(outRoute)
 
@@ -86,7 +86,7 @@ var_epsilon = 0.010
 learning_rate = 0.0001
 
 # Encoder network
-x = Input(shape=(n_components,))
+x = Input(shape=(n_components,)) #Modified from original
 
 batch_1 = BatchNormalization()(x)
 hidden1_dense = Dense(intermediate_dim)(batch_1)
@@ -130,7 +130,7 @@ z_log_var = Dense(latent_dim)(z_log_var_dropout_2)
 def sampling(args, latent_dim=latent_dim, epsilon_std=epsilon_std):
     z_mean, z_log_var = args
 
-    epsilon = K.random_normal(shape=(K.shape(z_mean)[0], latent_dim),
+    epsilon = K.random_normal(shape=(K.shape(z_mean)[0], latent_dim), # modified from original
                               mean=0., stddev=epsilon_std)
 
     return z_mean + K.exp(z_log_var) * epsilon
@@ -200,12 +200,16 @@ def logx_loss(x, x_decoded_mean):
 
 
 def vae_loss(x, x_decoded_mean):
-    return logx_loss(x, x_decoded_mean) + kl_loss(x, x_decoded_mean)
+    # return logx_loss(x, x_decoded_mean) + kl_loss(x, x_decoded_mean)
+    return logx_loss(x, x_decoded_mean)
 
 # Compile Model
 vae = Model(x, _output)
 optimizer = Adam(lr=learning_rate)
-vae.compile(optimizer=optimizer, loss=vae_loss, metrics=[logx_loss ,kl_loss])
+vae.compile(optimizer=optimizer, loss=vae_loss,
+            # metrics=[logx_loss ,kl_loss])
+            )
+
 vae.summary()
 
 # Fit Model
@@ -213,6 +217,7 @@ start = time.time()
 
 early_stopping = EarlyStopping('loss', min_delta=0.1, patience=100)
 
+# Modified from original:
 history = vae.fit(
     x=xTrainPca,
     y=xTrainPca,
