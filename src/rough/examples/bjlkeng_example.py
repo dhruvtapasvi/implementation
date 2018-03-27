@@ -216,6 +216,7 @@ early_stopping = EarlyStopping('loss', min_delta=0.1, patience=100)
 history = vae.fit(
     x=xTrainPca,
     y=xTrainPca,
+    batch_size=batch_size,
     epochs=epochs,
     callbacks=[early_stopping],
     validation_data=(xValPca, xValPca)
