@@ -15,6 +15,9 @@ def meanSquaredErrorLossConstructor(inputRepresentationDimensions, decodedInputR
             imageLoss = sum(lossPerPixel, axis=-1)
             return mean(imageLoss)
         else:
-            return mean(totalNumberOfPixels * mean_squared_error(flatten(inputRepresentation), flatten(decodedInputRepresentation)))
+            # Assume variance is 1
+            return mean(totalNumberOfPixels * 0.5 * (
+                math.log(math.pi) + mean_squared_error(flatten(inputRepresentation), flatten(decodedInputRepresentation))
+            ))
 
     return meanSquaredErrorLoss
