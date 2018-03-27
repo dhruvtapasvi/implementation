@@ -20,7 +20,7 @@ from dataset.preprocessLoader.ScaleBetweenZeroAndOne import ScaleBetweenZeroAndO
 
 # Set route to "implementation" folder
 route = ".."
-outRoute = route + "/outRoughNoVar"
+outRoute = route + "/outRough"
 if not os.path.exists(outRoute):
     os.mkdir(outRoute)
 
@@ -200,15 +200,13 @@ def logx_loss(x, x_decoded_mean):
 
 
 def vae_loss(x, x_decoded_mean):
-    # return logx_loss(x, x_decoded_mean) + kl_loss(x, x_decoded_mean)
-    return logx_loss(x, x_decoded_mean)
+    return logx_loss(x, x_decoded_mean) + kl_loss(x, x_decoded_mean)
 
 # Compile Model
 vae = Model(x, _output)
 optimizer = Adam(lr=learning_rate)
 vae.compile(optimizer=optimizer, loss=vae_loss,
-            # metrics=[logx_loss ,kl_loss])
-            )
+            metrics=[logx_loss ,kl_loss])
 
 vae.summary()
 
