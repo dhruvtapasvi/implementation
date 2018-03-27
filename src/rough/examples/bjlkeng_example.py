@@ -86,7 +86,7 @@ var_epsilon = 0.010
 learning_rate = 0.0001
 
 # Encoder network
-x = Input(batch_shape=(batch_size,) + (n_components,))
+x = Input(shape=(n_components,))
 
 batch_1 = BatchNormalization()(x)
 hidden1_dense = Dense(intermediate_dim)(batch_1)
@@ -127,10 +127,10 @@ z_log_var_dropout_2 = Dropout(dropout)(z_log_var_2)
 z_log_var = Dense(latent_dim)(z_log_var_dropout_2)
 
 # Reparameterisation trick
-def sampling(args, batch_size=batch_size, latent_dim=latent_dim, epsilon_std=epsilon_std):
+def sampling(args, latent_dim=latent_dim, epsilon_std=epsilon_std):
     z_mean, z_log_var = args
 
-    epsilon = K.random_normal(shape=(batch_size, latent_dim),
+    epsilon = K.random_normal(shape=(K.shape(z_mean)[0], latent_dim),
                               mean=0., stddev=epsilon_std)
 
     return z_mean + K.exp(z_log_var) * epsilon
@@ -205,7 +205,7 @@ def vae_loss(x, x_decoded_mean):
 # Compile Model
 vae = Model(x, _output)
 optimizer = Adam(lr=learning_rate)
-vae.compile(optimizer=optimizer, loss=vae_loss)
+vae.compile(optimizer=optimizer, loss=vae_loss, metrics=[logx_loss ,kl_loss])
 vae.summary()
 
 # Fit Model
