@@ -1,29 +1,19 @@
-import math
+import numpy as np
+from keras.metrics import mean_squared_error
 from keras.backend import mean, flatten, log, square, sum
 
 
-def meanSquaredErrorLossConstructor(
-        decodedInputRepresentationVariance=None,
-        outputVarianceFixed=1.0,
-        minimumVarianceEpsilon=10e-3):
+def meanSquaredErrorLossConstructor(inputRepresentationDimensions, decodedInputRepresentationVariance=None):
+    totalNumberOfPixels = np.prod(inputRepresentationDimensions)
+    epsilon = 0.001
 
     def meanSquaredErrorLoss(inputRepresentation, decodedInputRepresentation):
-        flattenedInputRepresentation = flatten(inputRepresentation)
-        flattenedDecodedInputRepresentation = flatten(decodedInputRepresentation)
-
-        constantLossPerPixel = 0.5 * math.log(2 * math.pi)
-        varianceLossPerPixel = (
-            0.5 * math.log(outputVarianceFixed + minimumVarianceEpsilon)
-        ) if decodedInputRepresentationVariance is None else (
-            0.5 * log(flatten(decodedInputRepresentationVariance) + minimumVarianceEpsilon)
-        )
-        reconstructionLossPerPixel = (
-            0.5 * square(flattenedDecodedInputRepresentation - flattenedInputRepresentation) / (outputVarianceFixed + minimumVarianceEpsilon)
-        ) if decodedInputRepresentationVariance is None else (
-            0.5 * square(flattenedDecodedInputRepresentation - flattenedInputRepresentation) / (flatten(decodedInputRepresentationVariance) + minimumVarianceEpsilon)
-        )
-        totalLossPerPixel = constantLossPerPixel + varianceLossPerPixel + reconstructionLossPerPixel
-        imageLoss = sum(totalLossPerPixel, axis=-1)
-        return mean(imageLoss)
+        if decodedInputRepresentationVariance is not None:
+            lossPerPixel = 0.5 * log(decodedInputRepresentationVariance + epsilon) + 0.5 * square(decodedInputRepresentation - inputRepresentation) / (decodedInputRepresentationVariance + epsilon)
+            # lossPerPixel = square(decodedInputRepresentation - inputRepresentation)
+            imageLoss = sum(lossPerPixel, axis=-1)
+            return mean(imageLoss)
+        else:
+            return mean(totalNumberOfPixels * mean_squared_error(flatten(inputRepresentation), flatten(decodedInputRepresentation)))
 
     return meanSquaredErrorLoss

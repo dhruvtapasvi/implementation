@@ -38,8 +38,8 @@ class TrainingPcaNorbExperiment(Experiment):
 
 
         # Train model
-        batchSize = 100
-        epochs = 150
+        batchSize = 1000
+        epochs = 300
         trainingHistory = norbAutoencoder.train(xTrain, xVal, epochs, batchSize)
 
         # Save training history and network weights:
