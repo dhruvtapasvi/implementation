@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 import time
 
 
-norbLoader = Downsample(ScaleBetweenZeroAndOne(NorbLoader("../res/norb"), 0, 255), 32, 32)
+norbLoader = Downsample(ScaleBetweenZeroAndOne(NorbLoader("./res/norb"), 0, 255), 32, 32)
 (xTrain, yTrain), (xVal, yVal), (xTest, yTest) = norbLoader.loadData()
 xTrain = xTrain.reshape(xTrain.shape[0],xTrain.shape[1]*xTrain.shape[2])
 print(xTrain.shape)
@@ -31,6 +31,6 @@ plt.plot(np.cumsum(pca.explained_variance_ratio_))
 plt.xlabel('Number of components')
 plt.ylim(0, 1.0)
 plt.ylabel('Cumulative explained variance)')
-plt.savefig('norb_pca_downsampled_graph')
+plt.savefig('./pcaDownsample/norb_pca_downsampled_graph')
 
-pickle.dump(pca, open("./norb_pca_downsampled_100.p", "wb"))
+pickle.dump(pca, open("./pcaDownsample/norb_pca_downsampled_100.p", "wb"))

@@ -17,20 +17,21 @@ from keras.callbacks import EarlyStopping
 # Imports from project
 from dataset.basicLoader.NorbLoader import NorbLoader
 from dataset.preprocessLoader.ScaleBetweenZeroAndOne import ScaleBetweenZeroAndOne
+from dataset.preprocessLoader.Downsample import Downsample
 
 # Set route to "implementation" folder
 route = ".."
-outRoute = route + "/outRough"
+outRoute = route + "/outRoughDownsampled"
 if not os.path.exists(outRoute):
     os.mkdir(outRoute)
 
 # Load NORB
-norbLoader = ScaleBetweenZeroAndOne(NorbLoader(route + "/res/norb"), 0, 255)
+norbLoader = Downsample(ScaleBetweenZeroAndOne(NorbLoader(route + "/res/norb"), 0, 255), 32, 32)
 (xTrain, yTrain), (xVal, yVal), (xTest, yTest) = norbLoader.loadData()
-norbShape = (96, 96)
+norbShape = (32, 32)
 
 # Load PCA and define PCA transform functions
-pca = pickle.load(open(route + "/pca/norb_pca_500.p", "rb"))
+pca = pickle.load(open(route + "/pcaDownsample/norb_pca_downsampled_100.p", "rb"))
 n_components = pca.n_components_
 
 def pcaForwardTransform(xData):
@@ -76,10 +77,10 @@ for (xData, xDataPca, _, splitName) in dataSplits:
 
 # Define network and training parameters
 batch_size = 1000
-latent_dim = 512
-intermediate_dim = 2048
+latent_dim = 128
+intermediate_dim = 256
 epsilon_std = 1.0
-epochs = 2000
+epochs = 200
 activation = 'relu'
 dropout = 0.2
 var_epsilon = 0.010
@@ -209,7 +210,7 @@ vae.compile(optimizer=optimizer, loss=vae_loss,
             metrics=[logx_loss ,kl_loss])
 
 vae.summary()
-
+quit()
 # Fit Model
 start = time.time()
 
