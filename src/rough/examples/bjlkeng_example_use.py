@@ -210,46 +210,21 @@ vae.compile(optimizer=optimizer, loss=vae_loss,
 
 vae.summary()
 
-# Fit Model
-start = time.time()
-
-early_stopping = EarlyStopping('loss', min_delta=0.1, patience=100)
-
-# Modified from original:
-history = vae.fit(
-    x=xTrainPca,
-    y=xTrainPca,
-    batch_size=batch_size,
-    epochs=epochs,
-    callbacks=[early_stopping],
-    validation_data=(xValPca, xValPca)
-)
-# The author instead had:
-# history = vae.fit_generator(
-#     data_generator(X_train, pca, batch_size),
-#     steps_per_epoch=len(X_train) // batch_size,
-#     epochs=epochs,
-#     validation_data=(xValPca, xValPca),
-#     callbacks=[early_stopping],
-#     verbose=0
-# )
-
-done = time.time()
-elapsed = done - start
-print("Elapsed: ", elapsed)
+vae_path = outRoute + "/vae.hdf5"
+vae.load_weights(vae_path)
 
 # Breakdown loss components:
-vae_kl = Model(x, _output)
-vae_kl.compile(optimizer='rmsprop', loss=kl_loss)
-kl = vae_kl.evaluate(xTestPca, xTestPca, batch_size=batch_size)
-
-vae_logx = Model(x, _output)
-vae_logx.compile(optimizer='rmsprop', loss=logx_loss)
-logx = vae_logx.evaluate(xTestPca, xTestPca, batch_size=batch_size)
-
-print()
-print("KL loss: {}".format(kl))
-print("xent loss: {}".format(logx))
+# vae_kl = Model(x, _output)
+# vae_kl.compile(optimizer='rmsprop', loss=kl_loss)
+# kl = vae_kl.evaluate(xTestPca, xTestPca, batch_size=batch_size)
+#
+# vae_logx = Model(x, _output)
+# vae_logx.compile(optimizer='rmsprop', loss=logx_loss)
+# logx = vae_logx.evaluate(xTestPca, xTestPca, batch_size=batch_size)
+#
+# print()
+# print("KL loss: {}".format(kl))
+# print("xent loss: {}".format(logx))
 
 # Generator model
 decoder_input = Input(shape=(latent_dim,))
@@ -262,15 +237,6 @@ _decoder_5 = decoder_dropout_5(decoder_5(decoder_5_batch(decoder_5_dense(_decode
 _decoder_output = x_decoded_mean(_decoder_5)
 
 generator = Model(decoder_input, _decoder_output)
-
-# Save models and history
-vae_path = outRoute + "/vae.hdf5"
-vae.save(vae_path)
-
-generator_path = outRoute + "/generator.hdf5"
-generator.save(generator_path)
-
-pickle.dump(history.history, open(outRoute + "/trainingHistory.p", "wb"))
 
 # Test dataset reconstructions
 numReconstructions = 20

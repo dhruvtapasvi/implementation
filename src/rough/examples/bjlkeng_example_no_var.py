@@ -236,7 +236,7 @@ vae.save(vae_path)
 generator_path = outRoute + "/generator.hdf5"
 generator.save(generator_path)
 
-pickle.dump(history, open(outRoute + "/trainingHistory.p", "wb"))
+pickle.dump(history.history, open(outRoute + "/trainingHistory.p", "wb"))
 
 # Test dataset reconstructions
 numReconstructions = 20
