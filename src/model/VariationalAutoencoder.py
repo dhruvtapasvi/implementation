@@ -4,12 +4,13 @@ import numpy as np
 from keras.layers import Input, Lambda
 from keras.models import Model
 
+from model.Autoencoder import Autoencoder
 from model.loss.kullbackLeiberLoss import kullbackLeiberLossConstructor
 from model.loss.variationalAutoencoderLoss import variationalAutoencoderLossConstructor
 from model.supplementary.sampling import samplingConstructor
 
 
-class VariationalAutoencoder(metaclass=ABCMeta):
+class VariationalAutoencoder(Autoencoder, metaclass=ABCMeta):
     def __init__(self, reconstructionLossConstructor, klLossWeight, inputRepresentationDimensions, latentRepresentationDimension):
         self.__reconstructionLossConstructor = reconstructionLossConstructor
         self.__klLossWeight = klLossWeight
