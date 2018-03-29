@@ -6,3 +6,4 @@ res/norb/*
 *.png
 *.h5
 *.p
+*.hdf5
