@@ -80,11 +80,11 @@ batch_size = 1000
 latent_dim = 128
 intermediate_dim = 256
 epsilon_std = 1.0
-epochs = 200
+epochs = 500
 activation = 'relu'
-dropout = 0.2
+dropout = 0.0
 var_epsilon = 0.010
-learning_rate = 0.0001
+learning_rate = 0.001
 
 # Encoder network
 x = Input(shape=(n_components,)) #Modified from original
