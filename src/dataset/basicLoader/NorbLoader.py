@@ -41,6 +41,7 @@ class NorbLoader(DatasetLoader):
                     return self._norbAssembler.assemble(images, np.concatenate((categories.T, details), 1))
 
     def loadData(self) -> ((np.ndarray, np.ndarray), (np.ndarray, np.ndarray), (np.ndarray, np.ndarray)):
+        print("Loading Norb...")
         XTrain, YTrain = self.__loadData(False)
         XTest, YTest = self.__loadData(True)
         datasetFilter = FilterDatasetLabelPredicate()
@@ -50,4 +51,5 @@ class NorbLoader(DatasetLoader):
         validation, (XExtraTrain, YExtraTrain) =\
             datasetFilter.split(XRemaining, YRemaining, lambda row: row[NorbLoader.__NORB_INSTANCE_ATTRIBUTE] >= NorbLoader.__NORB_VALIDATION_INSTANCES)
         train = np.concatenate((XTest, XExtraTrain)), np.concatenate((YTest, YExtraTrain))
+        print("Norb Loaded!")
         return train, validation, test

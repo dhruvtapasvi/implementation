@@ -9,10 +9,12 @@ class ScaleBetweenZeroAndOne(DatasetLoader):
         self.__maxrange = float(maximum - minimum)
 
     def loadData(self) -> ((np.ndarray, np.ndarray), (np.ndarray, np.ndarray), (np.ndarray, np.ndarray)):
+        print("Scaling...")
         (XTrain, YTrain), (XValidation, YValidation), (XTest, YTest) = self.__baseDatasetLoader.loadData()
         XTrain = self.__scaleAndAdjustMinimum(XTrain)
         XValidation = self.__scaleAndAdjustMinimum(XValidation)
         XTest = self.__scaleAndAdjustMinimum(XTest)
+        print("Scaled!")
         return (XTrain, YTrain), (XValidation, YValidation), (XTest, YTest)
 
     def __scaleAndAdjustMinimum(self, unscaled: np.ndarray):
