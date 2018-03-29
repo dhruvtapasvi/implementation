@@ -210,7 +210,7 @@ vae.compile(optimizer=optimizer, loss=vae_loss,
             metrics=[logx_loss ,kl_loss])
 
 vae.summary()
-quit()
+
 # Fit Model
 start = time.time()
 
