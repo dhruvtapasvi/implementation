@@ -21,17 +21,17 @@ from dataset.preprocessLoader.Downsample import Downsample
 
 # Set route to "implementation" folder
 route = ".."
-outRoute = route + "/outRough"
+outRoute = route + "/outRoughDownsampled"
 if not os.path.exists(outRoute):
     os.mkdir(outRoute)
 
 # Load NORB
 norbLoader = Downsample(ScaleBetweenZeroAndOne(NorbLoader(route + "/res/norb"), 0, 255), 32, 32)
 (xTrain, yTrain), (xVal, yVal), (xTest, yTest) = norbLoader.loadData()
-norbShape = (96, 96)
+norbShape = (32, 32)
 
 # Load PCA and define PCA transform functions
-pca = pickle.load(open(route + "/pca/norb_pca_500.p", "rb"))
+pca = pickle.load(open(route + "/pcaDownsample/norb_pca_downsampled_100.p", "rb"))
 n_components = pca.n_components_
 
 def pcaForwardTransform(xData):
@@ -77,10 +77,10 @@ for (xData, xDataPca, _, splitName) in dataSplits:
 
 # Define network and training parameters
 batch_size = 1000
-latent_dim = 512
-intermediate_dim = 2048
+latent_dim = 128
+intermediate_dim = 256
 epsilon_std = 1.0
-epochs = 500
+epochs = 2000
 activation = 'relu'
 dropout = 0.0
 var_epsilon = 0.00001

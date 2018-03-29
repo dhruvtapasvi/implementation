@@ -89,54 +89,54 @@ learning_rate = 0.0001
 x = Input(shape=(n_components,)) #Modified from original
 
 batch_1 = BatchNormalization()(x)
-hidden1_dense = Dense(intermediate_dim)(batch_1)
+hidden1_dense = Dense(intermediate_dim, kernel_initializer="he_normal", bias_initializer="uniform")(batch_1)
 hidden1_batch = BatchNormalization()(hidden1_dense)
 hidden1 = Activation(activation)(hidden1_batch)
 dropout_1 = Dropout(dropout)(hidden1)
 
-hidden2_dense = Dense(intermediate_dim)(dropout_1)
+hidden2_dense = Dense(intermediate_dim, kernel_initializer="he_normal", bias_initializer="uniform")(dropout_1)
 hidden2_batch = BatchNormalization()(hidden2_dense)
 hidden2 = Activation(activation)(hidden2_batch)
 dropout_2 = Dropout(dropout)(hidden2)
 
-hidden3_dense = Dense(intermediate_dim)(dropout_2)
+hidden3_dense = Dense(intermediate_dim, kernel_initializer="he_normal", bias_initializer="uniform")(dropout_2)
 hidden3_batch = BatchNormalization()(hidden3_dense)
 hidden3 = Activation(activation)(hidden3_batch)
 dropout_3 = Dropout(dropout)(hidden3)
 
-z_mean_1_dense = Dense(intermediate_dim)(dropout_3)
+z_mean_1_dense = Dense(intermediate_dim, kernel_initializer="he_normal", bias_initializer="uniform")(dropout_3)
 z_mean_1_batch = BatchNormalization()(z_mean_1_dense)
 z_mean_1 = Activation(activation)(z_mean_1_batch)
 z_mean_dropout_1 = Dropout(dropout)(z_mean_1)
 
-z_mean_2_dense = Dense(intermediate_dim)(z_mean_dropout_1)
+z_mean_2_dense = Dense(intermediate_dim, kernel_initializer="he_normal", bias_initializer="uniform")(z_mean_dropout_1)
 z_mean_2_batch = BatchNormalization()(z_mean_2_dense)
 z_mean_2 = Activation(activation)(z_mean_2_batch)
 z_mean_dropout_2 = Dropout(dropout)(z_mean_2)
 z_mean = Dense(latent_dim)(z_mean_dropout_2)
 
 # Decoder network
-decoder_1_dense = Dense(intermediate_dim)
+decoder_1_dense = Dense(intermediate_dim, kernel_initializer="he_normal", bias_initializer="uniform")
 decoder_1_batch = BatchNormalization()
 decoder_1 = Activation(activation)
 decoder_dropout_1 = Dropout(dropout)
 
-decoder_2_dense = Dense(intermediate_dim)
+decoder_2_dense = Dense(intermediate_dim, kernel_initializer="he_normal", bias_initializer="uniform")
 decoder_2_batch = BatchNormalization()
 decoder_2 = Activation(activation)
 decoder_dropout_2 = Dropout(dropout)
 
-decoder_3_dense = Dense(intermediate_dim)
+decoder_3_dense = Dense(intermediate_dim, kernel_initializer="he_normal", bias_initializer="uniform")
 decoder_3_batch = BatchNormalization()
 decoder_3 = Activation(activation)
 decoder_dropout_3 = Dropout(dropout)
 
-decoder_4_dense = Dense(intermediate_dim)
+decoder_4_dense = Dense(intermediate_dim, kernel_initializer="he_normal", bias_initializer="uniform")
 decoder_4_batch = BatchNormalization()
 decoder_4 = Activation(activation)
 decoder_dropout_4 = Dropout(dropout)
 
-decoder_5_dense = Dense(intermediate_dim)
+decoder_5_dense = Dense(intermediate_dim, kernel_initializer="he_normal", bias_initializer="uniform")
 decoder_5_batch = BatchNormalization()
 decoder_5 = Activation(activation)
 decoder_dropout_5 = Dropout(dropout)
@@ -147,7 +147,7 @@ decoder_6_dense = Dense(n_components)
 decoder_6_batch = BatchNormalization()
 decoder_6 = Activation(activation)
 decoder_dropout_6 = Dropout(dropout)
-x_decoded_var = Dense(n_components, activation='relu')
+x_decoded_var = Dense(n_components, activation='relu', kernel_initializer="he_normal", bias_initializer="uniform")
 
 _decoder_1 = decoder_dropout_1(decoder_1(decoder_1_batch(decoder_1_dense(z_mean))))
 _decoder_2 = decoder_dropout_2(decoder_2(decoder_2_batch(decoder_2_dense(_decoder_1))))
@@ -184,7 +184,7 @@ vae.summary()
 # Fit Model
 start = time.time()
 
-early_stopping = EarlyStopping('loss', min_delta=0.1, patience=100)
+# early_stopping = EarlyStopping('loss', min_delta=0.1, patience=100)
 
 # Modified from original:
 history = vae.fit(
@@ -192,7 +192,7 @@ history = vae.fit(
     y=xTrainPca,
     batch_size=batch_size,
     epochs=epochs,
-    callbacks=[early_stopping],
+    # callbacks=[early_stopping],
     validation_data=(xValPca, xValPca)
 )
 # The author instead had:
