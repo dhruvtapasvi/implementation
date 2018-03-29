@@ -17,7 +17,6 @@ from keras.callbacks import EarlyStopping
 # Imports from project
 from dataset.basicLoader.NorbLoader import NorbLoader
 from dataset.preprocessLoader.ScaleBetweenZeroAndOne import ScaleBetweenZeroAndOne
-from dataset.preprocessLoader.Downsample import Downsample
 
 # Set route to "implementation" folder
 route = ".."
@@ -26,7 +25,7 @@ if not os.path.exists(outRoute):
     os.mkdir(outRoute)
 
 # Load NORB
-norbLoader = Downsample(ScaleBetweenZeroAndOne(NorbLoader(route + "/res/norb"), 0, 255), 32, 32)
+norbLoader = ScaleBetweenZeroAndOne(NorbLoader(route + "/res/norb"), 0, 255)
 (xTrain, yTrain), (xVal, yVal), (xTest, yTest) = norbLoader.loadData()
 norbShape = (96, 96)
 
