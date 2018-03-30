@@ -1,13 +1,14 @@
 import matplotlib
 matplotlib.use('Agg')
 
+from experiment.development.mnist.UseLoadedWeightsMnistExperiment import UseLoadedWeightsExperiment
 from experiment.development.norb.NorbInterpolationExperiment import NorbInterpolationExperiment
 
 if __name__ == '__main__':
     # experiment = SimpleMnistExperiment()
     # experiment = TrainingMnistExperiment()
-    # experiment = UseLoadedWeightsExperiment()
+    experiment = UseLoadedWeightsExperiment()
     # experiment = TrainingNorbExperiment()
     # experiment = UseLoadedWeightsNorbExperiment()
-    experiment = NorbInterpolationExperiment()
+    # experiment = NorbInterpolationExperiment()
     experiment.run()

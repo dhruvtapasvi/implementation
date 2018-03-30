@@ -19,3 +19,6 @@ class SortByLabels(DatasetLoader):
         YLabelFormat = Y if len(Y.shape) == 2 else np.array([Y]).T
         sortPerm = np.lexsort(np.transpose(YLabelFormat), axis=0)
         return X[sortPerm], Y[sortPerm]
+
+    def dataPointShape(self):
+        return self.__baseDatasetLoader.dataPointShape()
