@@ -6,7 +6,7 @@ from interpolate.InterpolateLatentSpace import InterpolateLatentSpace
 
 class MockEncoder():
     def predict_on_batch(self, x):
-        return np.sqrt(x[:, :2]).astype(np.int)
+        return np.sqrt(x[:, :2])
 
 
 class MockDecoder():

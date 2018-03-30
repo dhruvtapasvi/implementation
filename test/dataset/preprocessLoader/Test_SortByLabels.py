@@ -5,7 +5,18 @@ from dataset.DatasetLoader import DatasetLoader
 from dataset.preprocessLoader.SortByLabels import SortByLabels
 
 
-class MockDatasetLoader(DatasetLoader):
+class MockDatasetLoader_SingleLabelPerExample(DatasetLoader):
+    def loadData(self) -> ((np.ndarray, np.ndarray), (np.ndarray, np.ndarray), (np.ndarray, np.ndarray)):
+        XTrain = np.array([np.full((4,), i) for i in range(6)])
+        YTrain = np.arange(6, 0, -1)
+        XVal = np.array([np.full((4,), i) for i in range(6, 8)])
+        YVal = np.arange(8, 6, -1)
+        XTest = np.array([np.full((4,), i) for i in range(8, 10)])
+        YTest = np.arange(10, 8, -1)
+        return (XTrain, YTrain), (XVal, YVal), (XTest, YTest)
+
+
+class MockDatasetLoader_MultipleLabelsPerExample(DatasetLoader):
     def loadData(self) -> ((np.ndarray, np.ndarray), (np.ndarray, np.ndarray), (np.ndarray, np.ndarray)):
         XTrain = np.array([np.full((4,), i) for i in range(6)])
         YTrain = np.array([[1, i] for i in range(6, 0, -1)])
@@ -16,25 +27,34 @@ class MockDatasetLoader(DatasetLoader):
         return (XTrain, YTrain), (XVal, YVal), (XTest, YTest)
 
 
+class MockDatasetLoader_SingleLabelPerExample_EncapsulatedAsMultiple(DatasetLoader):
+    def loadData(self) -> ((np.ndarray, np.ndarray), (np.ndarray, np.ndarray), (np.ndarray, np.ndarray)):
+        XTrain = np.array([np.full((4,), i) for i in range(6)])
+        YTrain = np.array([[i] for i in range(6, 0, -1)])
+        XVal = np.array([np.full((4,), i) for i in range(6, 8)])
+        YVal = np.array([[i] for i in range(8, 6, -1)])
+        XTest = np.array([np.full((4,), i) for i in range(8, 10)])
+        YTest = np.array([[i] for i in range(10, 8, -1)])
+        return (XTrain, YTrain), (XVal, YVal), (XTest, YTest)
+
+
 class Test_SortByLabels(unittest.TestCase):
-    def setUp(self):
-        self.__mockDatasetLoader = MockDatasetLoader()
-        (self.__mockXTrain, self.__mockYTrain), (self.__mockXVal, self.__mockYVal), (self.__mockXTest, self.__mockYTest) = self.__mockDatasetLoader.loadData()
-        self.__sortByLabels = SortByLabels(self.__mockDatasetLoader)
+    def test_SingleLabelPerExample(self):
+        self.sortsByLabelsTest(MockDatasetLoader_SingleLabelPerExample())
 
-    def test_SortsByLabels(self):
-        (XTrainSorted, YTrainSorted), (XValSorted, YValSorted), (XTestSorted, YTestSorted) = self.__sortByLabels.loadData()
+    def test_MultipleLabelsPerExample(self):
+        self.sortsByLabelsTest(MockDatasetLoader_MultipleLabelsPerExample())
 
-        expectedXTrainSorted = np.flip(self.__mockXTrain, 0)
-        expectedYTrainSorted = np.flip(self.__mockYTrain, 0)
-        expectedXValSorted = np.flip(self.__mockXVal, 0)
-        expectedYValSorted = np.flip(self.__mockYVal, 0)
-        expectedXTestSorted = np.flip(self.__mockXTest, 0)
-        expectedYTestSorted = np.flip(self.__mockYTest, 0)
+    def test_SingleLabelPerExample_EncapsulatedAsMultiple(self):
+        self.sortsByLabelsTest(MockDatasetLoader_SingleLabelPerExample_EncapsulatedAsMultiple())
 
-        np.testing.assert_array_equal(expectedXTrainSorted, XTrainSorted)
-        np.testing.assert_array_equal(expectedYTrainSorted, YTrainSorted)
-        np.testing.assert_array_equal(expectedXValSorted, XValSorted)
-        np.testing.assert_array_equal(expectedYValSorted, YValSorted)
-        np.testing.assert_array_equal(expectedXTestSorted, XTestSorted)
-        np.testing.assert_array_equal(expectedYTestSorted, YTestSorted)
+    def sortsByLabelsTest(self, mockDatasetLoader):
+        mockData = mockDatasetLoader.loadData()
+        sortByLabels = SortByLabels(mockDatasetLoader)
+
+        sortedMockData = sortByLabels.loadData()
+
+        for i in range(3):
+            for j in range(2):
+                expectedSortedData = np.flip(mockData[i][j], 0)
+                np.testing.assert_array_equal(expectedSortedData, sortedMockData[i][j])

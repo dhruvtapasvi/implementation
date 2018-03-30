@@ -16,5 +16,6 @@ class SortByLabels(DatasetLoader):
         return (XTrain, YTrain), (XValidation, YValidation), (XTest, YTest)
 
     def __sort(self, X: np.ndarray, Y: np.ndarray):
-        sortPerm = np.lexsort(np.transpose(Y), axis=0)
+        YLabelFormat = Y if len(Y.shape) == 2 else np.array([Y]).T
+        sortPerm = np.lexsort(np.transpose(YLabelFormat), axis=0)
         return X[sortPerm], Y[sortPerm]

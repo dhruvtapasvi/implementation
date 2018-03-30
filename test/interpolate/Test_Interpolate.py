@@ -3,11 +3,11 @@ import numpy as np
 from interpolate.Interpolate import Interpolate
 
 
-class Test_InterpolateLatentSpace(unittest.TestCase):
+class Test_Interpolate(unittest.TestCase):
     def setUp(self):
         self.__interpolate = Interpolate()
 
-    def test_InterpolationInLatentSpace(self):
+    def test_Interpolation(self):
         left = np.array([np.full((4,), i) for i in range(10)])
         right = np.array([np.full((4,), i) for i in range(40, 50)])
 
