@@ -4,12 +4,12 @@ from dataset.DatasetLoader import DatasetLoader
 from dataset.assemble.NorbAssembler import NorbAssembler
 from dataset.parse.NorbParser import NorbParser
 from dataset.process.FilterDatasetLabelPredicate import FilterDatasetLabelPredicate
+from dataset.info.NorbInfo import NorbLabelIndex
 
 
 class NorbLoader(DatasetLoader):
     __NORB_VALIDATION_INSTANCES = 7
     __NORB_TEST_INSTANCES = 9
-    __NORB_INSTANCE_ATTRIBUTE = 2
 
     def __init__(
             self,
@@ -47,9 +47,9 @@ class NorbLoader(DatasetLoader):
         datasetFilter = FilterDatasetLabelPredicate()
 
         test, (XRemaining, YRemaining) =\
-            datasetFilter.split(XTrain, YTrain, lambda row: row[NorbLoader.__NORB_INSTANCE_ATTRIBUTE] >= NorbLoader.__NORB_TEST_INSTANCES)
+            datasetFilter.split(XTrain, YTrain, lambda row: row[NorbLabelIndex.INSTANCE.value] >= NorbLoader.__NORB_TEST_INSTANCES)
         validation, (XExtraTrain, YExtraTrain) =\
-            datasetFilter.split(XRemaining, YRemaining, lambda row: row[NorbLoader.__NORB_INSTANCE_ATTRIBUTE] >= NorbLoader.__NORB_VALIDATION_INSTANCES)
+            datasetFilter.split(XRemaining, YRemaining, lambda row: row[NorbLabelIndex.INSTANCE.value] >= NorbLoader.__NORB_VALIDATION_INSTANCES)
         train = np.concatenate((XTest, XExtraTrain)), np.concatenate((YTest, YExtraTrain))
         print("Norb Loaded!")
         return train, validation, test
