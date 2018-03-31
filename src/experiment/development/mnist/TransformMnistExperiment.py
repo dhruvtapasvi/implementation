@@ -21,7 +21,7 @@ class TransformMnistExperiment(Experiment):
                 os.mkdir(folderPath)
                 randomLoader = RandomTransforms(mnistLoader, 0.14, 1 / 2, i)
                 (xTrain, yTrain), (xVal, yVal), (xTest, yTest) = randomLoader.loadData()
-                print(xTrain.shape())
+                print(xTrain.shape)
 
                 np.save(datasetRoute + "/x_train", xTrain)
                 np.save(datasetRoute + "/y_train", yTrain)
