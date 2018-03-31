@@ -6,11 +6,12 @@ from dataset.basicLoader.MnistLoader import MnistLoader
 from dataset.preprocessLoader.ScaleBetweenZeroAndOne import ScaleBetweenZeroAndOne
 from dataset.preprocessLoader.RandomTransforms import RandomTransforms
 from experiment.Experiment import Experiment
+import dataset.info.MnistTransformedInfo as mnistTransformedInfo
 
 
 class TransformMnistExperiment(Experiment):
     def run(self):
-        mnistLoader = ScaleBetweenZeroAndOne(MnistLoader(), 0, 255)
+        mnistLoader = MnistLoader()
         datasetRoute = "../res"
         if not os.path.isdir(datasetRoute):
             os.mkdir(datasetRoute)
@@ -19,7 +20,7 @@ class TransformMnistExperiment(Experiment):
             folderPath = datasetRoute + "/mnistTransformed_" + str(i)
             if not os.path.isdir(folderPath):
                 os.mkdir(folderPath)
-                randomLoader = RandomTransforms(mnistLoader, 0.14, 1 / 2, i)
+                randomLoader = RandomTransforms(mnistLoader, 0.14, 1 / 2, i, mnistTransformedInfo.RANDOM_GENERATION_SEED)
                 (xTrain, yTrain), (xVal, yVal), (xTest, yTest) = randomLoader.loadData()
                 print(xTrain.shape)
 

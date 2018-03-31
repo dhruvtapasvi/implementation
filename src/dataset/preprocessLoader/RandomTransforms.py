@@ -3,18 +3,17 @@ import numpy as np
 from skimage.util import pad, img_as_ubyte
 from skimage.transform import AffineTransform, warp
 from dataset.DatasetLoader import DatasetLoader
-import dataset.info.MnistTransformedInfo as mnistTransformedInfo
 import random
 
 
 class RandomTransforms(DatasetLoader):
-    def __init__(self, baseDatasetLoader: DatasetLoader, shearFactor, maxAbsStretchExponent, numSamplesPerPoint):
+    def __init__(self, baseDatasetLoader: DatasetLoader, shearFactor, maxAbsStretchExponent, numSamplesPerPoint, randomSeed=None):
         self.__baseDatasetLoader = baseDatasetLoader
         self.__shearRange = shearFactor
         self.__stretchExponentRange = maxAbsStretchExponent
         self.__numSamplesPerPoint = numSamplesPerPoint
         self.__imageGrowFactor = (1.0 + shearFactor) * (2 ** (0.5 + maxAbsStretchExponent))
-        random.seed(mnistTransformedInfo.RANDOM_GENERATION_SEED)
+        self.__randomSeed = randomSeed
 
     def loadData(self) -> ((np.ndarray, np.ndarray), (np.ndarray, np.ndarray), (np.ndarray, np.ndarray)):
         (xTrain, yTrain), (xVal, yVal), (xTest, yTest) = self.__baseDatasetLoader.loadData()
@@ -24,6 +23,8 @@ class RandomTransforms(DatasetLoader):
         return train, validation, test
 
     def __randomTransform(self, X: np.ndarray, Y: np.ndarray):
+        random.seed(self.__randomSeed)
+
         newImageDimensions = self.dataPointShape()[0][0:2]
         oldImageDimensions = self.__baseDatasetLoader.dataPointShape()[0][0:2]
 
