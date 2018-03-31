@@ -19,7 +19,7 @@ class TrainingMnistTransformedExperiment(Experiment):
 
         # Train model
         batchSize = 1000
-        epochs = 50
+        epochs = 100
         trainingHistory = vae.train(xTrain, xVal, epochs, batchSize)
 
         # Save training history and network weights:
