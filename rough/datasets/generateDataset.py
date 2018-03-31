@@ -10,6 +10,8 @@ import numpy as np
 (xTrain, _), _ = mnist.load_data()
 image = xTrain[0]
 
+print(image)
+
 io.imshow(image)
 io.show()
 
@@ -18,7 +20,7 @@ image = pad(image, 14, 'constant')
 io.imshow(image)
 io.show()
 
-print(image.shape)
+print(np.amax(image))
 
 trans1 = tf.AffineTransform(translation=(-28, -28))
 maintrans = tf.AffineTransform(rotation=(3 * math.pi / 2))
@@ -27,3 +29,5 @@ modified = tf.warp(image, (trans1 + (maintrans + trans2)).inverse)
 io.imshow(modified)
 io.show()
 
+print(np.amax(modified))
+print(modified.dtype)

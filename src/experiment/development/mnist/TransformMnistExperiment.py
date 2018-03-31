@@ -15,11 +15,13 @@ class TransformMnistExperiment(Experiment):
         if not os.path.isdir(datasetRoute):
             os.mkdir(datasetRoute)
         for i in [1, 2, 5, 10]:
+            print("Creating " + str(i) + " transformed dataset...")
             folderPath = datasetRoute + "/mnistTransformed_" + str(i)
             if not os.path.isdir(folderPath):
                 os.mkdir(folderPath)
                 randomLoader = RandomTransforms(mnistLoader, 0.14, 1 / 2, i)
                 (xTrain, yTrain), (xVal, yVal), (xTest, yTest) = randomLoader.loadData()
+                print(xTrain.shape())
 
                 np.save(datasetRoute + "/x_train", xTrain)
                 np.save(datasetRoute + "/y_train", yTrain)
@@ -28,4 +30,4 @@ class TransformMnistExperiment(Experiment):
                 np.save(datasetRoute + "/x_test", xTest)
                 np.save(datasetRoute + "/y_test", yTest)
 
-            "Tranformed " + str(i) + " dataset created"
+            print("Tranformed " + str(i) + " dataset created")

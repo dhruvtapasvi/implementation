@@ -1,6 +1,6 @@
 import math
 import numpy as np
-from skimage.util import pad
+from skimage.util import pad, img_as_ubyte
 from skimage.transform import AffineTransform, warp
 from dataset.DatasetLoader import DatasetLoader
 import dataset.info.MnistTransformedInfo as mnistTransformedInfo
@@ -57,7 +57,7 @@ class RandomTransforms(DatasetLoader):
                 )
                 combinedInverseTransform = (translateToCentre + (randomTransformation + translationBack)).inverse
                 xTransformed = warp(xPadded, combinedInverseTransform)
-                XTransformed.append(xTransformed)
+                XTransformed.append(img_as_ubyte(xTransformed))
 
                 YTransformed.append((index,) + y + (randomRotationAngle, randomShearFactor, randomStretchExponentFirstAxis, randomStretchExponentSecondAxis))
 
