@@ -23,11 +23,11 @@ class TransformMnistExperiment(Experiment):
                 (xTrain, yTrain), (xVal, yVal), (xTest, yTest) = randomLoader.loadData()
                 print(xTrain.shape)
 
-                np.save(datasetRoute + "/x_train", xTrain)
-                np.save(datasetRoute + "/y_train", yTrain)
-                np.save(datasetRoute + "/x_val", xVal)
-                np.save(datasetRoute + "/y_val", yVal)
-                np.save(datasetRoute + "/x_test", xTest)
-                np.save(datasetRoute + "/y_test", yTest)
+                np.save(folderPath + "/x_train", xTrain)
+                np.save(folderPath + "/y_train", yTrain)
+                np.save(folderPath + "/x_val", xVal)
+                np.save(folderPath + "/y_val", yVal)
+                np.save(folderPath + "/x_test", xTest)
+                np.save(folderPath + "/y_test", yTest)
 
             print("Tranformed " + str(i) + " dataset created")
