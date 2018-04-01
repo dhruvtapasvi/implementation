@@ -10,6 +10,10 @@ See requirements.txt
 ## Setup and Testing
 ### Setup
 `pip install -r requirements.txt`
+### Running the Code
+*src* contains the main bits of code for the project  
+At the top level of this folder, there are a number of Python scripts which can be executed directly e.g. to produce a dataset or to generate the results for the dissertation  
+To run such a script, simply run `python3 -m <script>` from the *src* folder
 ### Test
 `nosetests`
 

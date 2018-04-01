@@ -3,7 +3,7 @@ import unittest
 import numpy as np
 
 from dataset.loader.DatasetLoader import DatasetLoader
-from dataset.loader.preprocess import SortByLabels
+from dataset.loader.preprocess.SortByLabels import SortByLabels
 
 
 class MockDatasetLoader_SingleLabelPerExample(DatasetLoader):
