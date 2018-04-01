@@ -1,9 +1,9 @@
 import pickle
 
-from experiment.Experiment import Experiment
 from config.ConvolutionAutoencoderConfig import ConvolutionalAutoencoderConfig
-from dataset.basicLoader.NorbLoader import NorbLoader
-from dataset.preprocessLoader.ScaleBetweenZeroAndOne import ScaleBetweenZeroAndOne
+from dataset.loader.basic.NorbLoader import NorbLoader
+from dataset.loader.preprocess import ScaleBetweenZeroAndOne
+from experiment.Experiment import Experiment
 
 
 class TrainingNorbExperiment(Experiment):

@@ -2,10 +2,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 import scipy as sp
 
-from dataset.basicLoader.MnistLoader import MnistLoader
-from dataset.preprocessLoader.ScaleBetweenZeroAndOne import ScaleBetweenZeroAndOne
-from experiment.Experiment import Experiment
 from config.ConvolutionAutoencoderConfig import ConvolutionalAutoencoderConfig
+from dataset.loader.basic.MnistLoader import MnistLoader
+from dataset.loader.preprocess import ScaleBetweenZeroAndOne
+from experiment.Experiment import Experiment
 
 
 class UseLoadedWeightsExperiment(Experiment):
@@ -27,12 +27,14 @@ class UseLoadedWeightsExperiment(Experiment):
         # Obtain datasets and carry out normalisation
         mnistLoader = ScaleBetweenZeroAndOne(MnistLoader(), 0, 255)
         _, _, (xTest, yTest) = mnistLoader.loadData()
+        print(yTest.shape)
+        print(yTest[:, 0].shape)
 
         # Display the latent space:
         batchSizeLatentSpace = 100
         xTestEncodedExamples = encoder.predict(xTest, batch_size=batchSizeLatentSpace)
         plt.figure(figsize=(6,6))
-        plt.scatter(xTestEncodedExamples[:, 0], xTestEncodedExamples[:, 1], c=yTest)
+        plt.scatter(xTestEncodedExamples[:, 0], xTestEncodedExamples[:, 1], c=yTest[:, 0])
         plt.colorbar()
         plt.savefig("out/" + config.stringDescriptor + '_fig1.png')
 

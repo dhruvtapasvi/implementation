@@ -1,13 +1,14 @@
-from dataset.basicLoader.NorbLoader import NorbLoader
-from dataset.preprocessLoader.ScaleBetweenZeroAndOne import ScaleBetweenZeroAndOne
-from experiment.Experiment import Experiment
-from dataset.process.FilterDatasetLabelPredicate import  FilterDatasetLabelPredicate
-from dataset.preprocessLoader.SortByLabels import SortByLabels
-from dataset.info.NorbInfo import NorbLabelIndex
-from interpolate.Interpolate import Interpolate
-from display.imagesArraysComparisonDisplay import imagesArrayComparisonDisplay
-from metric.SquaredError import SquaredError
 import numpy as np
+
+from dataset.info.NorbInfo import NorbLabelIndex
+from dataset.loader.basic.NorbLoader import NorbLoader
+from dataset.loader.preprocess import ScaleBetweenZeroAndOne
+from dataset.loader.preprocess import SortByLabels
+from dataset.process.FilterDatasetLabelPredicate import  FilterDatasetLabelPredicate
+from display.imagesArraysComparisonDisplay import imagesArrayComparisonDisplay
+from experiment.Experiment import Experiment
+from interpolate.Interpolate import Interpolate
+from metric.SquaredError import SquaredError
 
 
 class NorbInterpolationExperiment(Experiment):

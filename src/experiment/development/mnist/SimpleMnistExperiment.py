@@ -2,10 +2,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.stats import norm
 
-from dataset.basicLoader.MnistLoader import MnistLoader
-from dataset.preprocessLoader.ScaleBetweenZeroAndOne import ScaleBetweenZeroAndOne
-from experiment.Experiment import Experiment
 from config.ConvolutionAutoencoderConfig import ConvolutionalAutoencoderConfig
+from dataset.loader.basic.MnistLoader import MnistLoader
+from dataset.loader.preprocess import ScaleBetweenZeroAndOne
+from experiment.Experiment import Experiment
 
 
 class SimpleMnistExperiment(Experiment):
@@ -27,7 +27,7 @@ class SimpleMnistExperiment(Experiment):
         encoder = mnistAutoencoder.encoder()
         x_test_encoded = encoder.predict(x_test, batch_size=batchSize)
         plt.figure(figsize=(6, 6))
-        plt.scatter(x_test_encoded[:, 0], x_test_encoded[:, 1], c=y_test)
+        plt.scatter(x_test_encoded[:, 0], x_test_encoded[:, 1], c=y_test[:,1])
         plt.colorbar()
         plt.savefig("out/" + config.stringDescriptor + '_fig1.png')
 

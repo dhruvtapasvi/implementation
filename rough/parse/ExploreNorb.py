@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-from dataset.basicLoader.NorbLoader import NorbLoader
+from dataset.loader.basic.NorbLoader import NorbLoader
 
 numImages = 10
 norbLoader = NorbLoader('../../res/norb')

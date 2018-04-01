@@ -4,3 +4,4 @@ nose
 matplotlib
 h5py
 jsonschema
+scikit-image

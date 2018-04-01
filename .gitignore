@@ -7,3 +7,4 @@ res/norb/*
 *.h5
 *.p
 *.hdf5
+*.npy

@@ -1,11 +1,10 @@
-import numpy as np
 import matplotlib.pyplot as plt
 import scipy as sp
 
-from experiment.Experiment import Experiment
 from config.ConvolutionAutoencoderConfig import ConvolutionalAutoencoderConfig
-from dataset.basicLoader.NorbLoader import NorbLoader
-from dataset.preprocessLoader.ScaleBetweenZeroAndOne import ScaleBetweenZeroAndOne
+from dataset.loader.basic.NorbLoader import NorbLoader
+from dataset.loader.preprocess import ScaleBetweenZeroAndOne
+from experiment.Experiment import Experiment
 
 
 class UseLoadedWeightsNorbExperiment(Experiment):

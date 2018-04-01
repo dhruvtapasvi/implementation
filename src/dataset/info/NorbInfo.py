@@ -1,6 +1,11 @@
 from enum import Enum
 
 
+NORB_VALIDATION_INSTANCES = 7
+NORB_TEST_INSTANCES = 9
+NORB_IMAGE_DIMENSIONS = (96, 96)
+NORB_LABEL_DIMENSIONS = (6,)
+
 class NorbLabelIndex(Enum):
     STEREO = 0
     CATEGORY = 1

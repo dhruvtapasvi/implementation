@@ -10,6 +10,10 @@ See requirements.txt
 ## Setup and Testing
 ### Setup
 `pip install -r requirements.txt`
+### Running the Code
+*src* contains the main bits of code for the project  
+At the top level of this folder, there are a number of Python scripts which can be executed directly e.g. to produce a dataset or to generate the results for the dissertation  
+To run such a script, simply run `python3 -m <script>` from the *src* folder
 ### Test
 `nosetests`
 
@@ -20,6 +24,6 @@ See requirements.txt
 
 *rough* contains some scripts for quickly testing the code in *src*. These may be broken at any point so please do not rely on them.
 
-*scripts* contains some useful scripts e.g. for downloading datasets which are too large to store in the repository.
+*scripts* contains some useful scripts e.g. for downloading datasets which are too large to store in the repository. Run scripts from the implementation folder.
 
 *res* contains resources useful for the project, e.g. datasets. If a resource is too large, please consider adding a script/program to reproduce it instead of checking it into the repository.

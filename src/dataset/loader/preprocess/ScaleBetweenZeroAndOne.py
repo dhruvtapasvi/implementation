@@ -1,5 +1,6 @@
-from dataset.DatasetLoader import DatasetLoader
 import numpy as np
+
+from dataset.loader.DatasetLoader import DatasetLoader
 
 
 class ScaleBetweenZeroAndOne(DatasetLoader):
@@ -19,3 +20,6 @@ class ScaleBetweenZeroAndOne(DatasetLoader):
 
     def __scaleAndAdjustMinimum(self, unscaled: np.ndarray):
         return unscaled.astype('float64') / self.__maxrange + self.__minimum
+
+    def dataPointShape(self):
+        return self.__baseDatasetLoader.dataPointShape()
