@@ -18,6 +18,7 @@ class RandomTransforms(DatasetLoader):
         self.__randomSeed = randomSeed
 
     def loadData(self) -> ((np.ndarray, np.ndarray), (np.ndarray, np.ndarray), (np.ndarray, np.ndarray)):
+        random.seed(self.__randomSeed)
         (xTrain, yTrain), (xVal, yVal), (xTest, yTest) = self.__baseDatasetLoader.loadData()
         train = self.__randomTransform(xTrain, yTrain)
         validation = self.__randomTransform(xVal, yVal)
@@ -25,8 +26,6 @@ class RandomTransforms(DatasetLoader):
         return train, validation, test
 
     def __randomTransform(self, X: np.ndarray, Y: np.ndarray):
-        random.seed(self.__randomSeed)
-
         newImageDimensions = self.dataPointShape()[0][0:2]
         oldImageDimensions = self.__baseDatasetLoader.dataPointShape()[0][0:2]
 
