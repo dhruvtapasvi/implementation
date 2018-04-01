@@ -1,6 +1,8 @@
 import matplotlib
 matplotlib.use('Agg')
 
+from experiment.development.norb.NorbInterpolationExperiment import NorbInterpolationExperiment
+
 from experiment.development.mnistTransformed.CreateMnistTransformedInterpolationDatasetExperiment import CreateMnistTransformedInterpolationDatasetExperiment
 from experiment.development.mnistTransformed.InterpolateMnistTransformedExperiment import InterpolateMnistTransformedExperiment
 
@@ -12,11 +14,11 @@ if __name__ == '__main__':
 
     # experiment = TrainingNorbExperiment()
     # experiment = UseLoadedWeightsNorbExperiment()
-    # experiment = NorbInterpolationExperiment()
+    experiment = NorbInterpolationExperiment()
 
     # experiment = TrainingMnistTransformedExperiment()
     # experiment = UseLoadedWeightsMnistTransformedExperiment()
     # experiment = CreateMnistTransformedInterpolationDatasetExperiment()
-    experiment = InterpolateMnistTransformedExperiment()
+    # experiment = InterpolateMnistTransformedExperiment()
 
     experiment.run()
