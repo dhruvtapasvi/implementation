@@ -2,6 +2,7 @@ import matplotlib
 matplotlib.use('Agg')
 
 from experiment.development.mnistTransformed.CreateMnistTransformedInterpolationDatasetExperiment import CreateMnistTransformedInterpolationDatasetExperiment
+from experiment.development.mnistTransformed.InterpolateMnistTransformedExperiment import InterpolateMnistTransformedExperiment
 
 if __name__ == '__main__':
     # experiment = SimpleMnistExperiment()
@@ -15,6 +16,7 @@ if __name__ == '__main__':
 
     # experiment = TrainingMnistTransformedExperiment()
     # experiment = UseLoadedWeightsMnistTransformedExperiment()
-    experiment = CreateMnistTransformedInterpolationDatasetExperiment()
+    # experiment = CreateMnistTransformedInterpolationDatasetExperiment()
+    experiment = InterpolateMnistTransformedExperiment()
 
     experiment.run()
