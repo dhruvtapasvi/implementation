@@ -1,6 +1,6 @@
 import numpy as np
 
-from dataset.interpolateLoader.InterpolateDatasetLoader import InterpolateDatasetLoader
+from dataset.interpolate.InterpolateDatasetLoader import InterpolateDatasetLoader
 import dataset.info.MnistTransformedInfo as mnistTransformedInfo
 
 

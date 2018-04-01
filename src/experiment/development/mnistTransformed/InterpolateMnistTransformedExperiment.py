@@ -1,4 +1,4 @@
-from dataset.interpolateLoader.basic.MnistTransformedInterpolateLoader import MnistTransformedInterpolateLoader
+from dataset.interpolate.basic.MnistTransformedInterpolateLoader import MnistTransformedInterpolateLoader
 from experiment.Experiment import Experiment
 
 

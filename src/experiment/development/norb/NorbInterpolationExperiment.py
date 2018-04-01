@@ -2,7 +2,7 @@ import numpy as np
 
 from dataset.info.NorbInfo import NorbLabelIndex
 from dataset.loader.basic.NorbLoader import NorbLoader
-from dataset.interpolateLoader.basic.NorbInterpolateLoader import NorbInterpolateLoader
+from dataset.interpolate.basic.NorbInterpolateLoader import NorbInterpolateLoader
 from dataset.loader.preprocess.ScaleBetweenZeroAndOne import ScaleBetweenZeroAndOne
 from dataset.loader.preprocess.SortByLabels import SortByLabels
 from dataset.process.FilterDatasetLabelPredicate import FilterDatasetLabelPredicate

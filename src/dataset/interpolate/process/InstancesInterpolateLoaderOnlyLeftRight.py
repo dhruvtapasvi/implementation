@@ -1,4 +1,4 @@
-from dataset.interpolateLoader.InterpolateDatasetLoader import InterpolateDatasetLoader
+from dataset.interpolate.InterpolateDatasetLoader import InterpolateDatasetLoader
 from dataset.loader.DatasetLoader import DatasetLoader
 import numpy as np
 

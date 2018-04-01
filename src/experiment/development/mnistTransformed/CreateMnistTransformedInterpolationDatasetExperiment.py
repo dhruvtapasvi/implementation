@@ -3,7 +3,7 @@ import os
 
 
 import dataset.info.MnistTransformedInfo as mnistTransformedInfo
-from dataset.interpolateLoader.process.CreateTransformedInterpolateData import CreateTransformedInterpolateData
+from dataset.interpolate.process.CreateTransformedInterpolateData import CreateTransformedInterpolateData
 from dataset.loader.basic.MnistLoader import MnistLoader
 from display.imagesArraysComparisonDisplay import imagesArrayComparisonDisplay
 from experiment.Experiment import Experiment

@@ -1,6 +1,6 @@
 import numpy as np
 
-from dataset.interpolateLoader.InterpolateDatasetLoader import InterpolateDatasetLoader
+from dataset.interpolate.InterpolateDatasetLoader import InterpolateDatasetLoader
 from dataset.loader.DatasetLoader import DatasetLoader
 from dataset.loader.preprocess.SortByLabels import SortByLabels
 from dataset.process.FilterDatasetLabelPredicate import FilterDatasetLabelPredicate

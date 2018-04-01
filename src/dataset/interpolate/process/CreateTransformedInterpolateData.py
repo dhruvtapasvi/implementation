@@ -2,7 +2,7 @@ import numpy as np
 from skimage.transform import AffineTransform, warp
 from skimage.util import pad, img_as_ubyte
 
-from dataset.interpolateLoader.InterpolateDatasetLoader import InterpolateDatasetLoader
+from dataset.interpolate.InterpolateDatasetLoader import InterpolateDatasetLoader
 from dataset.loader.DatasetLoader import DatasetLoader
 
 
