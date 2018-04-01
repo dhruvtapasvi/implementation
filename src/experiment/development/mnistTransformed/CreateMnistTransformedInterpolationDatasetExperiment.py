@@ -1,4 +1,5 @@
 import numpy as np
+import os
 
 
 import dataset.info.MnistTransformedInfo as mnistTransformedInfo
@@ -26,11 +27,14 @@ class CreateMnistTransformedInterpolationDatasetExperiment(Experiment):
             (-mnistTransformedInfo.TRANSFORM_LOG2_STRETCH_FACTOR, mnistTransformedInfo.TRANSFORM_LOG2_STRETCH_FACTOR, 0.0, mnistTransformedInfo.INTERPOLATE_INCORRECT_LOG_2_STRETCH_FACTOR)
         )
         interpolateTest, interpolateTestLabels = mnistTransformedInterpolatedLoader.loadInterpolationData()
+
+        rootFolder = "."
+        datasetRoute = rootFolder + "/res/mnistTransformedInterpolate"
+
+        if not os.path.isdir(datasetRoute):
+            os.mkdir(datasetRoute)
+            np.save(datasetRoute + "/xInterpolate.npy", interpolateTest)
+            np.save(datasetRoute + "/yInterpolate.npy", interpolateTestLabels)
+
         print(interpolateTest.shape)
         print(interpolateTestLabels.shape)
-
-        startIndex = 20000
-        numElements = 10
-        # print(interpolateTestLabels[startIndex:startIndex + numElements])
-        print("Display")
-        imagesArrayComparisonDisplay(np.swapaxes(interpolateTest, 0, 1), "./out2/mnistTransformCreateInterpolationData.png", startIndex=startIndex, endIndex=startIndex+numElements)
