@@ -1,8 +1,9 @@
 import unittest
+
 import numpy as np
 
-from dataset.DatasetLoader import DatasetLoader
-from dataset.preprocessLoader.SortByLabels import SortByLabels
+from dataset.loader.DatasetLoader import DatasetLoader
+from dataset.loader.preprocess import SortByLabels
 
 
 class MockDatasetLoader_SingleLabelPerExample(DatasetLoader):

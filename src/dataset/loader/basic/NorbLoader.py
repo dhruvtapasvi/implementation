@@ -1,10 +1,10 @@
 import numpy as np
 
-from dataset.DatasetLoader import DatasetLoader
+import dataset.info.NorbInfo as norbInfo
 from dataset.assemble.NorbAssembler import NorbAssembler
+from dataset.loader.DatasetLoader import DatasetLoader
 from dataset.parse.NorbParser import NorbParser
 from dataset.process.FilterDatasetLabelPredicate import FilterDatasetLabelPredicate
-import dataset.info.NorbInfo as norbInfo
 
 
 class NorbLoader(DatasetLoader):

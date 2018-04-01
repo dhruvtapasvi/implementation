@@ -1,7 +1,7 @@
 import numpy as np
 
-from dataset.DatasetLoader import DatasetLoader
 import dataset.info.MnistTransformedInfo as mnistTransformedInfo
+from dataset.loader.DatasetLoader import DatasetLoader
 
 
 class MnistTransformedLoader(DatasetLoader):

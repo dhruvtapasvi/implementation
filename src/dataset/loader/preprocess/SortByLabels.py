@@ -1,5 +1,6 @@
-from dataset.DatasetLoader import DatasetLoader
 import numpy as np
+
+from dataset.loader.DatasetLoader import DatasetLoader
 
 
 class SortByLabels(DatasetLoader):

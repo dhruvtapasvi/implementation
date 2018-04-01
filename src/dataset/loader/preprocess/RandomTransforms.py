@@ -1,9 +1,11 @@
 import math
-import numpy as np
-from skimage.util import pad, img_as_ubyte
-from skimage.transform import AffineTransform, warp
-from dataset.DatasetLoader import DatasetLoader
 import random
+
+import numpy as np
+from skimage.transform import AffineTransform, warp
+from skimage.util import pad, img_as_ubyte
+
+from dataset.loader.DatasetLoader import DatasetLoader
 
 
 class RandomTransforms(DatasetLoader):

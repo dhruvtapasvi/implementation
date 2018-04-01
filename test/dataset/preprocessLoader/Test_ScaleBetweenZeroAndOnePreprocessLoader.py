@@ -1,7 +1,9 @@
 import unittest
+
 import numpy as np
-from dataset.DatasetLoader import DatasetLoader
-from dataset.preprocessLoader.ScaleBetweenZeroAndOne import ScaleBetweenZeroAndOne
+
+from dataset.loader.DatasetLoader import DatasetLoader
+from dataset.loader.preprocess import ScaleBetweenZeroAndOne
 
 
 class MockDatasetLoader_NonnegativeData(DatasetLoader):

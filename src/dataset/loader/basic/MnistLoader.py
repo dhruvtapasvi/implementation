@@ -1,7 +1,8 @@
-from dataset.DatasetLoader import DatasetLoader
 import numpy as np
 from keras.datasets import mnist
+
 import dataset.info.MnistInfo as mnistInfo
+from dataset.loader.DatasetLoader import DatasetLoader
 
 
 class MnistLoader(DatasetLoader):

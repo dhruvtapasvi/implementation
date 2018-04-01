@@ -1,11 +1,10 @@
 import matplotlib.pyplot as plt
-import numpy as np
 import scipy as sp
 
-from dataset.basicLoader.MnistTransformedLoader import MnistTransformedLoader
-from dataset.preprocessLoader.ScaleBetweenZeroAndOne import ScaleBetweenZeroAndOne
-from experiment.Experiment import Experiment
 from config.ConvolutionAutoencoderConfig import ConvolutionalAutoencoderConfig
+from dataset.loader.basic.MnistTransformedLoader import MnistTransformedLoader
+from dataset.loader.preprocess import ScaleBetweenZeroAndOne
+from experiment.Experiment import Experiment
 
 
 class UseLoadedWeightsMnistTransformedExperiment(Experiment):

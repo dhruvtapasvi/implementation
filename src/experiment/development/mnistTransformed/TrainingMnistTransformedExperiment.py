@@ -1,8 +1,9 @@
-from dataset.basicLoader.MnistTransformedLoader import MnistTransformedLoader
-from dataset.preprocessLoader.ScaleBetweenZeroAndOne import ScaleBetweenZeroAndOne
-from experiment.Experiment import Experiment
-from config.ConvolutionAutoencoderConfig import ConvolutionalAutoencoderConfig
 import pickle
+
+from config.ConvolutionAutoencoderConfig import ConvolutionalAutoencoderConfig
+from dataset.loader.basic.MnistTransformedLoader import MnistTransformedLoader
+from dataset.loader.preprocess import ScaleBetweenZeroAndOne
+from experiment.Experiment import Experiment
 
 
 class TrainingMnistTransformedExperiment(Experiment):

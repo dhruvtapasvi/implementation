@@ -2,10 +2,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.stats import norm
 
-from dataset.basicLoader.MnistLoader import MnistLoader
-from dataset.preprocessLoader.ScaleBetweenZeroAndOne import ScaleBetweenZeroAndOne
-from experiment.Experiment import Experiment
 from config.ConvolutionAutoencoderConfig import ConvolutionalAutoencoderConfig
+from dataset.loader.basic.MnistLoader import MnistLoader
+from dataset.loader.preprocess import ScaleBetweenZeroAndOne
+from experiment.Experiment import Experiment
 
 
 class SimpleMnistExperiment(Experiment):
