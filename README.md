@@ -24,6 +24,6 @@ To run such a script, simply run `python3 -m <script>` from the *src* folder
 
 *rough* contains some scripts for quickly testing the code in *src*. These may be broken at any point so please do not rely on them.
 
-*scripts* contains some useful scripts e.g. for downloading datasets which are too large to store in the repository.
+*scripts* contains some useful scripts e.g. for downloading datasets which are too large to store in the repository. Run scripts from the implementation folder.
 
 *res* contains resources useful for the project, e.g. datasets. If a resource is too large, please consider adding a script/program to reproduce it instead of checking it into the repository.
