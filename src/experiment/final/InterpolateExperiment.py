@@ -1,7 +1,13 @@
 from experiment.Experiment import Experiment
+from dataset.interpolate.InterpolateDatasetLoader import InterpolateDatasetLoader
+from dataset.interpolate.InterpolateSubdataset import InterpolateSubdataset
+from display.imagesArraysComparisonDisplay import imagesArrayComparisonDisplay
 
 
 class InterpolateExperiment(Experiment):
+    def __init__(self, interpolateDatasetLoader: InterpolateDatasetLoader):
+        self.__interpolateDatasetLoader = interpolateDatasetLoader
+
     def run(self):
         """
         TODO:
@@ -17,4 +23,13 @@ class InterpolateExperiment(Experiment):
         (maybe a method to run with the autoencoder)
         What about reporting per class? Need to think about that in more details
         """
-        pass
+        interpolateDataset = self.__interpolateDatasetLoader.loadInterpolationData()
+        for interpolateSubdataset in interpolateDataset:
+            print(interpolateSubdataset.interpolatedFactorName)
+            interpolateSubdatasetArrays = [interpolateSubdataset.xLeft, interpolateSubdataset.xRight]
+            if interpolateSubdataset.centreIsSpecified():
+                interpolateSubdatasetArrays.append(interpolateSubdataset.xCentre)
+                if interpolateSubdataset.outsideIsSpecified():
+                    interpolateSubdatasetArrays.append(interpolateSubdataset.xOutside)
+            print(interpolateSubdatasetArrays)
+            imagesArrayComparisonDisplay(interpolateSubdatasetArrays, "./out2/interpolate_subdataset_" + interpolateSubdataset.interpolatedFactorName + ".png", endIndex=20)

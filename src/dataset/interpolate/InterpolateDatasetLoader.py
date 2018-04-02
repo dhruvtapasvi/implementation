@@ -1,21 +1,18 @@
 from abc import ABCMeta, abstractclassmethod
 import numpy as np
+from typing import List
+from dataset.interpolate.InterpolateSubdataset import InterpolateSubdataset
 
 
 class InterpolateDatasetLoader(metaclass=ABCMeta):
     @abstractclassmethod
-    def loadInterpolationData(self) -> (np.ndarray, np.ndarray):
+    def loadInterpolationData(self) -> List[InterpolateSubdataset]:
         """
         Should produce a dataset between which you can interpolate
-        :return: Two arrays
-        First array dimensions: no(examples) * 4 * ...imagedim... . Second index explained as follows:
-        0: Left for interpolation
-        1: Right for interpolation
-        2: Correct for interpolation
-        3: Incorrect for interpolation, control result
-        Second array dimensions: no(examples) * 4 * ...labeldim... . Second index explained as above
+        :return: Each interpolate subdataset has a different interpolation factor
+        e.g. one interpolate subdataset for angle interpolation and another for size interpolation
         """
         raise NotImplementedError
 
     def dataPointShape(self):
-        return self.loadInterpolationData()[0][0, 0].shape, self.loadInterpolationData()[1][0, 0].shape
+        return self.loadInterpolationData()[0].xLeft.shape, self.loadInterpolationData()[0].yLeft.shape
