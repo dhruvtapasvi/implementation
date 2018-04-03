@@ -8,12 +8,10 @@ class SortByLabels(DatasetLoader):
         self.__baseDatasetLoader = baseDatasetLoader
 
     def loadData(self) -> ((np.ndarray, np.ndarray), (np.ndarray, np.ndarray), (np.ndarray, np.ndarray)):
-        print("Sorting...")
         (XTrain, YTrain), (XValidation, YValidation), (XTest, YTest) = self.__baseDatasetLoader.loadData()
         XTrain, YTrain = self.__sort(XTrain, YTrain)
         XValidation, YValidation = self.__sort(XValidation, YValidation)
         XTest, YTest = self.__sort(XTest, YTest)
-        print("Sorted!")
         return (XTrain, YTrain), (XValidation, YValidation), (XTest, YTest)
 
     def __sort(self, X: np.ndarray, Y: np.ndarray):
