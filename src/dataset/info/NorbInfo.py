@@ -1,6 +1,8 @@
 from enum import Enum
+from config import routes
 
 
+NORB_RANGE = (0, 255)
 NORB_VALIDATION_INSTANCES = 7
 NORB_TEST_INSTANCES = 9
 NORB_IMAGE_DIMENSIONS = (96, 96)
@@ -19,3 +21,6 @@ class NorbLabelIndex(Enum):
     ELEVATION = 3
     AZIMUTH = 4
     LIGHTING = 5
+
+
+NORB_HOME = routes.RESOURCE_ROUTE + "/norb"

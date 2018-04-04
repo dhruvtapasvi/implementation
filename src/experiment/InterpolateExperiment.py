@@ -3,7 +3,6 @@ from dataset.interpolate.InterpolateDatasetLoader import InterpolateDatasetLoade
 from dataset.interpolate.InterpolateSubdataset import InterpolateSubdataset
 from display.imagesArraysComparisonDisplay import imagesArrayComparisonDisplay
 
-
 class InterpolateExperiment(Experiment):
     def __init__(self, interpolateDatasetLoader: InterpolateDatasetLoader):
         self.__interpolateDatasetLoader = interpolateDatasetLoader
@@ -31,5 +30,4 @@ class InterpolateExperiment(Experiment):
                 interpolateSubdatasetArrays.append(interpolateSubdataset.xCentre)
                 if interpolateSubdataset.outsideIsSpecified():
                     interpolateSubdatasetArrays.append(interpolateSubdataset.xOutside)
-            print(interpolateSubdatasetArrays)
-            imagesArrayComparisonDisplay(interpolateSubdatasetArrays, "./out2/interpolate_subdataset_" + interpolateSubdataset.interpolatedFactorName + ".png", endIndex=20)
+            imagesArrayComparisonDisplay(interpolateSubdatasetArrays, "../out/interpolate_subdataset_" + interpolateSubdataset.interpolatedFactorName + ".png", endIndex=20)

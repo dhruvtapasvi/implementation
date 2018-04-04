@@ -1,8 +1,9 @@
 import pickle
 
+from config import routes
+from config.VaeConfig import VaeConfig
 from experiment.Experiment import Experiment
 from model.VariationalAutoencoder import VariationalAutoencoder
-from config.VaeConfig import VaeConfig
 
 
 class SaveModelTrainingExperiment(Experiment):
@@ -14,14 +15,10 @@ class SaveModelTrainingExperiment(Experiment):
     def run(self):
         """
         Save the model and the associated training history in the appropriate location
-        :return: Nothing
         """
-        rootPath = ".."
-        modelWeightsPath = rootPath + "/cacheWeights"
-        modelTrainingHistoryPath = rootPath + "/modelTrainingHistory"
+        self.__model.saveWeights(routes.getModelWeightsRoute(self.__variationalAutoencoderConfig.stringDescriptor))
 
         pickle.dump(
-            modelTrainingHistoryPath,
-            open(modelTrainingHistoryPath + "/" + self.__variationalAutoencoderConfig.stringDescriptor + ".history.p", "wb")
+            self.__modelTrainingHistory,
+            open(routes.getModelTrainingHistoryRoute(self.__variationalAutoencoderConfig.stringDescriptor), "wb")
         )
-        self.__model.saveWeights(modelWeightsPath + "/" + ".weights.h5")

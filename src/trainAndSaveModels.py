@@ -1,5 +1,8 @@
 from config.ConvolutionAutoencoderConfig import ConvolutionalAutoencoderConfig
 from config.DenseAutoencoderConfig import DenseAutoencoderConfig
+from config import routes
+
+from dataset.info import MnistInfo as mnistInfo, MnistTransformedInfo as mnistTranformedInfo, NorbInfo as norbInfo
 
 from dataset.loader.basic.MnistLoader import MnistLoader
 from dataset.loader.basic.NorbLoader import NorbLoader
@@ -11,15 +14,15 @@ from experiment.TrainModelExperiment import TrainModelExperiment
 from experiment.SaveModelTrainingExperiment import SaveModelTrainingExperiment
 
 
-resourcesRoot = "../res"
-mnistLoader = ScaleBetweenZeroAndOne(MnistLoader(), 0, 255)
-norbLoader = ScaleBetweenZeroAndOne(NorbLoader(resourcesRoot + "/norb"), 0, 255)
-mnistTransformedLoader = ScaleBetweenZeroAndOne(MnistTransformedLoader(resourcesRoot + "/mnistTransformed_10"), 0, 255)
+resourcesRoot = routes.RESOURCE_ROUTE
+mnistLoader = ScaleBetweenZeroAndOne(MnistLoader(), *mnistInfo.MNIST_RANGE)
+norbLoader = ScaleBetweenZeroAndOne(NorbLoader(resourcesRoot + "/norb"), *norbInfo.NORB_RANGE)
+mnistTransformedLoader = ScaleBetweenZeroAndOne(MnistTransformedLoader(resourcesRoot + "/mnistTransformed_10"), *mnistTranformedInfo.RANGE)
 
-modelConfigRoot = "../config/model"
+modelConfigRoot = routes.CONFIG_ROUTE + "/model"
 modelConfigs = [
     # (modelConfig, DatasetLoader, epochs, batchSize)
-    (ConvolutionalAutoencoderConfig(modelConfigRoot + "/mnist_transformed_conv_7_16_256_32_bce.json"), mnistTransformedLoader, 100, 1000)
+    (ConvolutionalAutoencoderConfig(modelConfigRoot + "/convolutional/mnist_transformed_conv_7_16_256_32_bce.json"), mnistTransformedLoader, 0, 1000)
 ]
 
 for modelConfig, datasetLoader, epochs, batchSize in modelConfigs:

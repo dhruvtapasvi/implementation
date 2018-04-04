@@ -5,9 +5,10 @@ import numpy as np
 import dataset.info.MnistTransformedInfo as mnistTransformedInfo
 from dataset.loader.basic.MnistLoader import MnistLoader
 from dataset.loader.preprocess.RandomTransforms import RandomTransforms
+import config.routes as routes
 
 
-resourceRoot = "../res"
+resourceRoot = routes.RESOURCE_ROUTE
 if not os.path.isdir(resourceRoot):
     os.mkdir(resourceRoot)
 datasetRouteStem = resourceRoot + "/mnistTransformed_"
