@@ -9,7 +9,7 @@ class MnistTransformedLoader(DatasetLoader):
         self.__transformedMnistHome = transformedMnistHome
 
     def loadData(self):
-        xTrain = (np.load(self.__transformedMnistHome + "/x_train.npy"))[0:30]
+        xTrain = np.load(self.__transformedMnistHome + "/x_train.npy")
         yTrain = np.load(self.__transformedMnistHome + "/y_train.npy")
         xVal = np.load(self.__transformedMnistHome + "/x_val.npy")
         yVal = np.load(self.__transformedMnistHome + "/y_val.npy")
