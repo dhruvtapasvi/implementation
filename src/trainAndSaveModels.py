@@ -22,7 +22,7 @@ mnistTransformedLoader = ScaleBetweenZeroAndOne(MnistTransformedLoader(resources
 modelConfigRoot = routes.CONFIG_ROUTE + "/model"
 modelConfigs = [
     # (modelConfig, DatasetLoader, epochs, batchSize)
-    (ConvolutionalAutoencoderConfig(modelConfigRoot + "/convolutional/mnist_transformed_conv_6_32_2048_64_bce.json"), mnistTransformedLoader, 100, 1000)
+    (ConvolutionalAutoencoderConfig(modelConfigRoot + "/convolutional/mnist_transformed_conv_7_32_512_64_bce.json"), mnistTransformedLoader, 200, 250)
 ]
 
 for modelConfig, datasetLoader, epochs, batchSize in modelConfigs:
