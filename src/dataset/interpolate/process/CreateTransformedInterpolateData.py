@@ -1,35 +1,39 @@
 import numpy as np
 from skimage.transform import AffineTransform, warp
 from skimage.util import pad, img_as_ubyte
+from typing import List
 
-from dataset.interpolateLoader.InterpolateDatasetLoader import InterpolateDatasetLoader
+from dataset.interpolate.InterpolateDatasetLoader import InterpolateDatasetLoader
 from dataset.loader.DatasetLoader import DatasetLoader
+from dataset.interpolate.InterpolateSubdataset import InterpolateSubdataset
 
 
 class CreateTransformedInterpolateData(InterpolateDatasetLoader):
-    def __init__(self, baseDatasetLoader: DatasetLoader, padding, rotationFactors, shearFactors, log2StretchFactors):
-        #  Factors have (left, right, centre, outside) layout
+    def __init__(
+            self,
+            baseDatasetLoader: DatasetLoader,
+            padding,
+            defaultRotationFactor,
+            defaultShearFactor,
+            defaultLog2StretchFactor,
+            rotationFactors,
+            shearFactors,
+            log2StretchFactors):
+        #  Factors have (left, right, centre [optional], outside [optional]) layout
         self.__baseDatasetLoader = baseDatasetLoader
         self.__padding = padding
         self.__rotationFactors = rotationFactors
-        self.__defaultRotationFactor = 0.0
+        self.__defaultRotationFactor = defaultRotationFactor
         self.__shearFactors = shearFactors
-        self.__defaultShearFactor = 0.0
+        self.__defaultShearFactor = defaultShearFactor
         self.__log2StretchFactors = log2StretchFactors
-        self.__defaultLog2StretchFactor = 0.0
+        self.__defaultLog2StretchFactor = defaultLog2StretchFactor
 
-    def loadInterpolationData(self) -> (np.ndarray, np.ndarray):
+    def loadInterpolationData(self) -> List[InterpolateSubdataset]:
         _, _, (xTest, yTest) = self.__baseDatasetLoader.loadData()
         xTestPadded = self.__pad(xTest)
         yTestLabelled = self.__label(yTest)
-        xTestRotated, yTestRotated = self.__rotate(xTestPadded, yTestLabelled)
-        xTestSheared, yTestSheared = self.__shear(xTestPadded, yTestLabelled)
-        xTestStretched, yTestStretched = self.__stretch(xTestPadded, yTestLabelled)
-        print("Concatenate")
-        xTestTransformed = np.concatenate((xTestRotated, xTestSheared, xTestStretched))
-        yTestTransformed = np.concatenate((yTestRotated, yTestSheared, yTestStretched))
-        print("Done transforming!")
-        return xTestTransformed, yTestTransformed
+        return [f(xTestPadded, yTestLabelled) for f in [self.__rotate, self.__shear, self.__stretch]]
 
     def __pad(self, X: np.ndarray):
         print("Pad")
@@ -43,41 +47,34 @@ class CreateTransformedInterpolateData(InterpolateDatasetLoader):
         ]
         return np.array(YLabelled)
 
-    def __rotate(self, X, Y):
+    def __rotate(self, X, Y) -> InterpolateSubdataset:
         print("Rotate")
-        return self.__transform(X, Y, self.__rotationFactors, lambda f: AffineTransform(rotation=f), (1,))
+        return self.__transform(X, Y, "ROTATION", self.__rotationFactors, lambda f: AffineTransform(rotation=f), (1,))
 
-    def __shear(self, X, Y):
+    def __shear(self, X, Y) -> InterpolateSubdataset:
         print("Shear")
-        return self.__transform(X, Y, self.__shearFactors, lambda f: AffineTransform(shear=f), (2,))
+        return self.__transform(X, Y, "SHEAR", self.__shearFactors, lambda f: AffineTransform(shear=f), (2,))
 
-    def __stretch(self, X, Y):
+    def __stretch(self, X, Y) -> InterpolateSubdataset:
         print("Stretch")
-        return self.__transform(X, Y, self.__log2StretchFactors, lambda f: AffineTransform(scale=(2**f, 2**f)), (3, 4))
+        return self.__transform(X, Y, "STRETCH", self.__log2StretchFactors, lambda f: AffineTransform(scale=(2**f, 2**f)), (3, 4))
 
-    def __transform(self, X, Y, factors, transformFromFactor, yIndexOffsets):
+    def __transform(self, X, Y, interpolationFactorName, factors, transformFromFactor, yIndexOffsets):
         imageToOriginTransform = self.__imageToOriginTransform()
         imageFromOriginTransform = self.__imageFromOriginTransform()
-
-        inverseTransforms = [
-            (imageToOriginTransform + (transformFromFactor(factor) + imageFromOriginTransform)).inverse
-            for factor in factors
-        ]
-
-        XTransformed = [[img_as_ubyte(warp(x, inverseTransform)) for inverseTransform in inverseTransforms] for x in X]
-
-        YTransformed = []
         yLength = self.__baseDatasetLoader.dataPointShape()[1][0]
-        for y in Y:
-            yTransformed = []
-            for factor in factors:
-                yCopy = np.array(y)
-                for yIndexOffset in yIndexOffsets:
-                    yCopy[yIndexOffset + yLength] = factor
-                yTransformed.append(yCopy)
-            YTransformed.append(yTransformed)
 
-        return np.array(XTransformed), np.array(YTransformed)
+        def performTransform(factor):
+            inverseTransform = (imageToOriginTransform + (transformFromFactor(factor) + imageFromOriginTransform)).inverse
+            XTransformed = np.array([img_as_ubyte(warp(x, inverseTransform)) for x in X])
+            YTransformed = np.array(Y)
+            for y in YTransformed:
+                for yIndexOffset in yIndexOffsets:
+                    y[yLength + yIndexOffset] = factor
+            return XTransformed, YTransformed
+
+        transformed = map(performTransform, factors)
+        return InterpolateSubdataset(interpolationFactorName, *transformed)
 
     def __imageToOriginTransform(self):
         centre = self.__getCentre()

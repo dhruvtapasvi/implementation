@@ -40,7 +40,7 @@ class VariationalAutoencoder(Autoencoder, metaclass=ABCMeta):
         self.__autoencoder = Model(inputRepresentation, decodedInputRepresentation)
 
         self.__autoencoder.compile(
-            optimizer='rmsprop',
+            optimizer='adam',
             loss=variationalAutoencoderLossConstructor(
                 self.__reconstructionLossConstructor,
                 self.__klLossWeight,

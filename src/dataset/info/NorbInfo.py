@@ -1,10 +1,18 @@
 from enum import Enum
+from config import routes
 
 
+NORB_RANGE = (0, 255)
 NORB_VALIDATION_INSTANCES = 7
 NORB_TEST_INSTANCES = 9
 NORB_IMAGE_DIMENSIONS = (96, 96)
 NORB_LABEL_DIMENSIONS = (6,)
+
+NORB_ELEVATION_NAME = "NORB: ELEVATION ANGLE"
+NORB_ELEVATION_FACTORS = (0, 6, 3, 8)
+NORB_AZIMUTH_NAME = "NORB: AZIMUTH ANGLE"
+NORB_AZIMUTH_FACTORS = (0, 8, 4, 12)
+
 
 class NorbLabelIndex(Enum):
     STEREO = 0
@@ -13,3 +21,6 @@ class NorbLabelIndex(Enum):
     ELEVATION = 3
     AZIMUTH = 4
     LIGHTING = 5
+
+
+NORB_HOME = routes.RESOURCE_ROUTE + "/norb"
