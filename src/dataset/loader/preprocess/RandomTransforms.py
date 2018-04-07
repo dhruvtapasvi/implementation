@@ -9,23 +9,25 @@ from dataset.loader.DatasetLoader import DatasetLoader
 
 
 class RandomTransforms(DatasetLoader):
-    def __init__(self, baseDatasetLoader: DatasetLoader, shearFactor, maxAbsStretchExponent, numSamplesPerPoint, randomSeed=None):
+    def __init__(self, baseDatasetLoader: DatasetLoader, shearFactor, maxAbsStretchExponent, numSamplesPerTrainPoint, numSamplesPerValidationPoint=None, numSamplesPerTestPoint=None, randomSeed=None):
         self.__baseDatasetLoader = baseDatasetLoader
         self.__shearRange = shearFactor
         self.__stretchExponentRange = maxAbsStretchExponent
-        self.__numSamplesPerPoint = numSamplesPerPoint
+        self.__numSamplesPerTrainPoint = numSamplesPerTrainPoint
+        self.__numSamplesPerValidationPoint = numSamplesPerTrainPoint if numSamplesPerValidationPoint is None else numSamplesPerValidationPoint
+        self.__numSamplesPerTestPoint = numSamplesPerTrainPoint if numSamplesPerTestPoint is None else numSamplesPerTestPoint
         self.__imageGrowFactor = (1.0 + shearFactor) * (2 ** (0.5 + maxAbsStretchExponent))
         self.__randomSeed = randomSeed
 
     def loadData(self) -> ((np.ndarray, np.ndarray), (np.ndarray, np.ndarray), (np.ndarray, np.ndarray)):
         random.seed(self.__randomSeed)
         (xTrain, yTrain), (xVal, yVal), (xTest, yTest) = self.__baseDatasetLoader.loadData()
-        train = self.__randomTransform(xTrain, yTrain)
-        validation = self.__randomTransform(xVal, yVal)
-        test = self.__randomTransform(xTest, yTest)
+        train = self.__randomTransform(xTrain, yTrain, self.__numSamplesPerTrainPoint)
+        validation = self.__randomTransform(xVal, yVal, self.__numSamplesPerValidationPoint)
+        test = self.__randomTransform(xTest, yTest, self.__numSamplesPerTestPoint)
         return train, validation, test
 
-    def __randomTransform(self, X: np.ndarray, Y: np.ndarray):
+    def __randomTransform(self, X: np.ndarray, Y: np.ndarray, numSamplesPerPoint):
         newImageDimensions = self.dataPointShape()[0][0:2]
         oldImageDimensions = self.__baseDatasetLoader.dataPointShape()[0][0:2]
 
@@ -44,7 +46,7 @@ class RandomTransforms(DatasetLoader):
         for index, x in enumerate(X):
             xPadded = pad(x, paddingDimensions, 'constant')
             y = tuple(Y[index])
-            for _ in range(self.__numSamplesPerPoint):
+            for _ in range(numSamplesPerPoint):
                 randomRotationAngle = random.uniform(0.0, 2.0 * math.pi)
                 randomShearFactor = random.uniform(-self.__shearRange, self.__shearRange)
                 randomStretchExponentFirstAxis = random.uniform(-self.__stretchExponentRange, self.__stretchExponentRange)
@@ -54,7 +56,7 @@ class RandomTransforms(DatasetLoader):
 
                 randomTransformation = AffineTransform(
                     rotation=randomRotationAngle,
-                    shear = randomShearFactor,
+                    shear=randomShearFactor,
                     scale=(randomStretchFactorFirstAxis, randomStretchFactorSecondAxis)
                 )
                 combinedInverseTransform = (translateToCentre + (randomTransformation + translationBack)).inverse

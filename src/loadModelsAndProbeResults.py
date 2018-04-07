@@ -8,7 +8,7 @@ import dataset.info.MnistTransformedInfo as mnistTransformedInfo
 
 from dataset.loader.basic.MnistLoader import MnistLoader
 from dataset.loader.basic.NorbLoader import NorbLoader
-from dataset.loader.basic.MnistTransformedLoader import MnistTransformedLoader
+from dataset.loader.basic.LoadFromFile import LoadFromFile
 from dataset.loader.preprocess.ScaleBetweenZeroAndOne import ScaleBetweenZeroAndOne
 
 from dataset.interpolate.basic.MnistInterpolateLoader import MnistInterpolateLoader
@@ -24,7 +24,7 @@ from experiment.InterpolateExperiment import InterpolateExperiment
 
 mnistLoader = MnistLoader()
 norbLoader = NorbLoader(norbInfo.NORB_HOME)
-mnistTransformedLoader = MnistTransformedLoader(mnistTransformedInfo.MNIST_TRANSFORMED_10_HOME)
+mnistTransformedLoader = LoadFromFile(mnistTransformedInfo.MNIST_TRANSFORMED_10_HOME, mnistTransformedInfo.IMAGE_DIMENSIONS, mnistTransformedInfo.LABEL_DIMENSIONS)
 
 mnistLoaderScaled = ScaleBetweenZeroAndOne(mnistLoader, *mnistInfo.MNIST_RANGE)
 norbLoaderScaled = ScaleBetweenZeroAndOne(norbLoader, *norbInfo.NORB_RANGE)
