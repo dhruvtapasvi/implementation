@@ -5,6 +5,7 @@ from config import routes
 import dataset.info.MnistInfo as mnistInfo
 import dataset.info.NorbInfo as norbInfo
 import dataset.info.MnistTransformedInfo as mnistTransformedInfo
+import dataset.info.ShapesInfo as shapesInfo
 
 from dataset.loader.basic.MnistLoader import MnistLoader
 from dataset.loader.basic.NorbLoader import NorbLoader
@@ -25,6 +26,7 @@ from experiment.InterpolateExperiment import InterpolateExperiment
 mnistLoader = MnistLoader()
 norbLoader = NorbLoader(norbInfo.NORB_HOME)
 mnistTransformedLoader = LoadFromFile(mnistTransformedInfo.MNIST_TRANSFORMED_10_HOME, mnistTransformedInfo.IMAGE_DIMENSIONS, mnistTransformedInfo.LABEL_DIMENSIONS)
+shapesLoader = ScaleBetweenZeroAndOne(LoadFromFile(routes.RESOURCE_ROUTE + shapesInfo.HOME, shapesInfo.BASE_IMAGE_SIZE, shapesInfo.BASE_IMAGE_SIZE), *shapesInfo.RANGE)
 
 mnistLoaderScaled = ScaleBetweenZeroAndOne(mnistLoader, *mnistInfo.MNIST_RANGE)
 norbLoaderScaled = ScaleBetweenZeroAndOne(norbLoader, *norbInfo.NORB_RANGE)
@@ -35,7 +37,7 @@ norbInterpolateLoader = ScaleBetweenZeroAndOneInterpolate(NorbInterpolateLoader(
 mnistTransformedInterpolateLoader = ScaleBetweenZeroAndOneInterpolate(MnistTransformedInterpolateLoader(mnistLoader), *mnistTransformedInfo.RANGE)
 
 configDatasetTuples = [
-    (ConvolutionalAutoencoderConfig(routes.getConfigRoute("model/convolutional/mnist_transformed_conv_7_16_256_32_bce.json")), mnistTransformedLoaderScaled, mnistTransformedInterpolateLoader)
+    (ConvolutionalAutoencoderConfig(routes.getConfigRoute("model/convolutional/mnist_transformed_conv_7_16_256_32_bce.json")), shapesLoader, mnistTransformedInterpolateLoader)
 ]
 
 for config, loader, interpolateLoader in configDatasetTuples:
@@ -48,5 +50,5 @@ for config, loader, interpolateLoader in configDatasetTuples:
     createReconstructions = ReconstructionsExperiment(loader, config, variationalAutoencoder, 100, 10)
     createReconstructions.run()
 
-    interpolate = InterpolateExperiment(interpolateLoader)
-    interpolate.run()
+    # interpolate = InterpolateExperiment(interpolateLoader)
+    # interpolate.run()

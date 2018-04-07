@@ -1,4 +1,5 @@
 import scipy as sp
+import numpy as np
 
 from config import routes
 from config.VaeConfig import VaeConfig
@@ -23,6 +24,9 @@ class ReconstructionsExperiment(Experiment):
         Create reconstructions and random sampling from the variational autoencoder
         """
         (xTrain, _), (xVal, _), (xTest, _) = self.__datasetLoader.loadData()
+        np.random.shuffle(xTrain)
+        np.random.shuffle(xVal)
+        np.random.shuffle(xTest)
 
         self.__displayReconstructions(xTrain, "train")
         self.__displayReconstructions(xVal, "validation")
