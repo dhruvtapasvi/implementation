@@ -25,7 +25,7 @@ paddedMnistLoader = ScaleBetweenZeroAndOne(Pad(MnistLoader(), ((18, 18), (18, 18
 modelConfigRoot = routes.CONFIG_ROUTE + "/model"
 modelConfigs = [
     # (modelConfig, DatasetLoader, epochs, batchSize)
-    (ConvolutionalAutoencoderConfig(modelConfigRoot + "/convolutional/mnist_transformed_conv_7_16_256_32_bce.json"), paddedMnistLoader, 100, 1000)
+    (ConvolutionalAutoencoderConfig(modelConfigRoot + "/convolutional/mnist_padded_conv_7_16_256_32_bce.json"), paddedMnistLoader, 100, 1000)
 ]
 
 for modelConfig, datasetLoader, epochs, batchSize in modelConfigs:
