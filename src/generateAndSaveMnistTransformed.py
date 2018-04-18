@@ -25,6 +25,7 @@ for i in numRandomTransforms:
 
     randomLoader = RandomTransforms(
         mnistLoader,
+        mnistTransformedInfo.TRANSFORM_MIN_MAX_ROTATIONS,
         mnistTransformedInfo.TRANSFORM_SHEAR_FACTOR,
         mnistTransformedInfo.TRANSFORM_LOG2_STRETCH_FACTOR,
         i,
@@ -33,6 +34,8 @@ for i in numRandomTransforms:
     (xTrain, yTrain), (xVal, yVal), (xTest, yTest) = randomLoader.loadData()
 
     np.save(datasetRoute + "/x_train.npy", xTrain)
+
+
     np.save(datasetRoute + "/y_train.npy", yTrain)
     np.save(datasetRoute + "/x_val.npy", xVal)
     np.save(datasetRoute + "/y_val.npy", yVal)
