@@ -28,7 +28,7 @@ for i in numRandomTransforms:
         mnistTransformedInfo.TRANSFORM_SHEAR_FACTOR,
         mnistTransformedInfo.TRANSFORM_LOG2_STRETCH_FACTOR,
         i,
-        mnistTransformedInfo.RANDOM_GENERATION_SEED
+        randomSeed=mnistTransformedInfo.RANDOM_GENERATION_SEED
     )
     (xTrain, yTrain), (xVal, yVal), (xTest, yTest) = randomLoader.loadData()
 
