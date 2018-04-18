@@ -9,18 +9,22 @@ import dataset.info.ShapesInfo as shapesInfo
 
 from dataset.loader.basic.MnistLoader import MnistLoader
 from dataset.loader.basic.NorbLoader import NorbLoader
+from dataset.loader.basic.ShapesBase import ShapesBase
 from dataset.loader.basic.LoadFromFile import LoadFromFile
 from dataset.loader.preprocess.ScaleBetweenZeroAndOne import ScaleBetweenZeroAndOne
 
 from dataset.interpolate.basic.MnistInterpolateLoader import MnistInterpolateLoader
 from dataset.interpolate.basic.NorbInterpolateLoader import NorbInterpolateLoader
 from dataset.interpolate.basic.MnistTransformedInterpolateLoader import MnistTransformedInterpolateLoader
+from dataset.interpolate.basic.ShapesTransformedInterpolateLoader import ShapesTransformedInterpolateLoader
 from dataset.interpolate.process.ScaleBetweenZeroAndOneInterpolate import ScaleBetweenZeroAndOneInterpolate
 
 from experiment.BuildModelExperiment import BuildModelExperiment
 from experiment.LoadModelExperiment import LoadModelExperiment
 from experiment.ReconstructionsExperiment import ReconstructionsExperiment
 from experiment.InterpolateExperiment import InterpolateExperiment
+
+from interpolate.InterpolateLatentSpace import InterpolateLatentSpace
 
 
 mnistLoader = MnistLoader()
@@ -35,9 +39,12 @@ mnistTransformedLoaderScaled = ScaleBetweenZeroAndOne(mnistTransformedLoader, *m
 mnistInterpolateLoader = ScaleBetweenZeroAndOneInterpolate(MnistInterpolateLoader(mnistLoader), *mnistInfo.MNIST_RANGE)
 norbInterpolateLoader = ScaleBetweenZeroAndOneInterpolate(NorbInterpolateLoader(norbLoader), *norbInfo.NORB_RANGE)
 mnistTransformedInterpolateLoader = ScaleBetweenZeroAndOneInterpolate(MnistTransformedInterpolateLoader(mnistLoader), *mnistTransformedInfo.RANGE)
+shapesInterpolateLoader = ScaleBetweenZeroAndOneInterpolate(ShapesTransformedInterpolateLoader(ShapesBase()), *shapesInfo.RANGE)
+
+
 
 configDatasetTuples = [
-    (ConvolutionalAutoencoderConfig(routes.getConfigRoute("model/convolutional/mnist_transformed_conv_7_16_256_32_bce.json")), shapesLoader, mnistTransformedInterpolateLoader)
+    (ConvolutionalAutoencoderConfig(routes.getConfigRoute("model/convolutional/mnist_transformed_conv_7_16_256_32_bce.json")), shapesLoader, shapesInterpolateLoader)
 ]
 
 for config, loader, interpolateLoader in configDatasetTuples:
@@ -50,5 +57,7 @@ for config, loader, interpolateLoader in configDatasetTuples:
     createReconstructions = ReconstructionsExperiment(loader, config, variationalAutoencoder, 100, 10)
     createReconstructions.run()
 
-    # interpolate = InterpolateExperiment(interpolateLoader)
-    # interpolate.run()
+    interpolate = InterpolateLatentSpace(variationalAutoencoder)
+
+    interpolateExperiment = InterpolateExperiment(interpolateLoader, variationalAutoencoder, interpolate)
+    interpolateExperiment.run()

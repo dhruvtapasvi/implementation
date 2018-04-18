@@ -1,7 +1,7 @@
 import numpy as np
 
 
-class Interpolate():
+class Interpolate:
     def interpolateAll(self, left: np.ndarray, right: np.ndarray, intervals):
         """
         Input: N * m * n array

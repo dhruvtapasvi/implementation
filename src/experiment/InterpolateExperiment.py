@@ -2,10 +2,14 @@ from experiment.Experiment import Experiment
 from dataset.interpolate.InterpolateDatasetLoader import InterpolateDatasetLoader
 from dataset.interpolate.InterpolateSubdataset import InterpolateSubdataset
 from display.imagesArraysComparisonDisplay import imagesArrayComparisonDisplay
+from model.Autoencoder import Autoencoder
+from interpolate.Interpolate import Interpolate
 
 class InterpolateExperiment(Experiment):
-    def __init__(self, interpolateDatasetLoader: InterpolateDatasetLoader):
+    def __init__(self, interpolateDatasetLoader: InterpolateDatasetLoader, autoencoder: Autoencoder, interpolate: Interpolate):
         self.__interpolateDatasetLoader = interpolateDatasetLoader
+        self.__autoencoder = autoencoder
+        self.__interpolate = interpolate
 
     def run(self):
         """
@@ -25,9 +29,21 @@ class InterpolateExperiment(Experiment):
         interpolateDataset = self.__interpolateDatasetLoader.loadInterpolationData()
         for interpolateSubdataset in interpolateDataset:
             print(interpolateSubdataset.interpolatedFactorName)
-            interpolateSubdatasetArrays = [interpolateSubdataset.xLeft, interpolateSubdataset.xRight]
+            interpolated1 = self.__interpolate.interpolateAll(interpolateSubdataset.xLeft, interpolateSubdataset.xRight, 6)
+            imagesArrayComparisonDisplay(interpolated1, "../out/interpolate_graduated_" + interpolateSubdataset.interpolatedFactorName + ".png")
+
+            interpolated = self.__interpolate.interpolateAll(interpolateSubdataset.xLeft, interpolateSubdataset.xRight, 2)
+            interpolateSubdatasetArrays = [
+                interpolateSubdataset.xLeft,
+                self.__autoencoder.autoencoder().predict_on_batch(interpolateSubdataset.xLeft),
+                interpolateSubdataset.xRight,
+                self.__autoencoder.autoencoder().predict_on_batch(interpolateSubdataset.xRight),
+                interpolated[:, 2]
+            ]
             if interpolateSubdataset.centreIsSpecified():
                 interpolateSubdatasetArrays.append(interpolateSubdataset.xCentre)
+                interpolateSubdatasetArrays.append(self.__autoencoder.autoencoder().predict_on_batch(interpolateSubdataset.xCentre))
                 if interpolateSubdataset.outsideIsSpecified():
                     interpolateSubdatasetArrays.append(interpolateSubdataset.xOutside)
-            imagesArrayComparisonDisplay(interpolateSubdatasetArrays, "../out/interpolate_subdataset_" + interpolateSubdataset.interpolatedFactorName + ".png", endIndex=20)
+                    interpolateSubdatasetArrays.append(self.__autoencoder.autoencoder().predict_on_batch(interpolateSubdataset.xOutside))
+            imagesArrayComparisonDisplay(interpolateSubdatasetArrays, "../out/interpolate_subdataset_" + interpolateSubdataset.interpolatedFactorName + ".png")
