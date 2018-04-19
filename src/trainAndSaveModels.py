@@ -2,7 +2,7 @@ from config.ConvolutionAutoencoderConfig import ConvolutionalAutoencoderConfig
 from config.DenseAutoencoderConfig import DenseAutoencoderConfig
 from config import routes
 
-from dataset.info import MnistInfo as mnistInfo, MnistTransformedInfo as mnistTranformedInfo, NorbInfo as norbInfo, ShapesInfo as shapesInfo
+from dataset.info import MnistInfo as mnistInfo, MnistTransformedInfo as mnistTranformedInfo, NorbInfo as norbInfo, ShapesInfo as shapesInfo, MnistTransformedInfoLimitedRotation as mnistTransformedLimitedRotationInfo
 
 from dataset.loader.basic.MnistLoader import MnistLoader
 from dataset.loader.basic.NorbLoader import NorbLoader
@@ -21,11 +21,12 @@ norbLoader = ScaleBetweenZeroAndOne(NorbLoader(resourcesRoot + "/norb"), *norbIn
 mnistTransformedLoader = ScaleBetweenZeroAndOne(LoadFromFile(resourcesRoot + "/mnistTransformed_10", mnistTranformedInfo.IMAGE_DIMENSIONS, mnistTranformedInfo.LABEL_DIMENSIONS), *mnistTranformedInfo.RANGE)
 shapesLoader = ScaleBetweenZeroAndOne(LoadFromFile(routes.RESOURCE_ROUTE + shapesInfo.HOME, shapesInfo.BASE_IMAGE_SIZE, shapesInfo.BASE_IMAGE_SIZE), *shapesInfo.RANGE)
 paddedMnistLoader = ScaleBetweenZeroAndOne(Pad(MnistLoader(), ((18, 18), (18, 18)), (64, 64), (1,)), *mnistInfo.MNIST_RANGE)
+mnistTransformedLimitedRotationsLoader = ScaleBetweenZeroAndOne(LoadFromFile(resourcesRoot + mnistTransformedLimitedRotationInfo.HOME_5, mnistTransformedLimitedRotationInfo.IMAGE_DIMENSIONS,mnistTransformedLimitedRotationInfo.LABEL_DIMENSIONS), *mnistTransformedLimitedRotationInfo.RANGE)
 
 modelConfigRoot = routes.CONFIG_ROUTE + "/model"
 modelConfigs = [
     # (modelConfig, DatasetLoader, epochs, batchSize)
-    (ConvolutionalAutoencoderConfig(modelConfigRoot + "/convolutional/mnist_padded_conv_7_16_256_32_bce.json"), paddedMnistLoader, 100, 1000)
+    (ConvolutionalAutoencoderConfig(modelConfigRoot + "/convolutional/mnist_transformed_limited_rotation_conv_7_16_256_32_bce.json"), mnistTransformedLimitedRotationsLoader, 100, 1000)
 ]
 
 for modelConfig, datasetLoader, epochs, batchSize in modelConfigs:

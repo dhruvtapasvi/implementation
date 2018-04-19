@@ -11,7 +11,7 @@ import config.routes as routes
 resourceRoot = routes.RESOURCE_ROUTE
 if not os.path.isdir(resourceRoot):
     os.mkdir(resourceRoot)
-datasetRouteStem = mnistTransformedInfoLimitedRotation.MNIST_TRANFORMED_HOME_STEM
+datasetRouteStem = mnistTransformedInfoLimitedRotation.HOME_STEM
 
 mnistLoader = MnistLoader()
 numRandomTransforms = [1, 2, 5, 10]
