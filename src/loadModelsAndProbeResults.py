@@ -44,7 +44,7 @@ shapesInterpolateLoader = ScaleBetweenZeroAndOneInterpolate(ShapesTransformedInt
 
 
 configDatasetTuples = [
-    (ConvolutionalAutoencoderConfig(routes.getConfigRoute("model/convolutional/mnist_transformed_conv_7_16_256_32_bce.json")), shapesLoader, shapesInterpolateLoader)
+    (ConvolutionalAutoencoderConfig(routes.getConfigRoute("model/convolutional/conv_64x64_7_16_256_32_bce.json")), shapesLoader, shapesInterpolateLoader)
 ]
 
 for config, loader, interpolateLoader in configDatasetTuples:

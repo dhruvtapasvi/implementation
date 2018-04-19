@@ -23,7 +23,7 @@ shapesLoader = ScaleBetweenZeroAndOne(LoadFromFile(routes.RESOURCE_ROUTE + shape
 modelConfigRoot = routes.CONFIG_ROUTE + "/model"
 modelConfigs = [
     # (modelConfig, DatasetLoader, epochs, batchSize)
-    (ConvolutionalAutoencoderConfig(modelConfigRoot + "/convolutional/mnist_transformed_conv_7_16_256_32_bce.json"), shapesLoader, 100, 1000)
+    (ConvolutionalAutoencoderConfig(modelConfigRoot + "/convolutional/conv_64x64_7_16_256_32_bce.json"), shapesLoader, 100, 1000)
 ]
 
 for modelConfig, datasetLoader, epochs, batchSize in modelConfigs:
