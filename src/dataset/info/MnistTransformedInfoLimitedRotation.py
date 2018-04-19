@@ -33,7 +33,7 @@ class LabelIndex(Enum):
 
 
 HOME_STEM = routes.RESOURCE_ROUTE + "/mnistTransformed_LimitedRotations_"
-Home_1 = HOME_STEM + "1"
+HOME_1 = HOME_STEM + "1"
 HOME_2 = HOME_STEM + "2"
 HOME_5 = HOME_STEM + "5"
 HOME_10 = HOME_STEM + "10"
