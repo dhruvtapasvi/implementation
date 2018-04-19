@@ -21,7 +21,7 @@ norbLoader = ScaleBetweenZeroAndOne(NorbLoader(resourcesRoot + "/norb"), *norbIn
 mnistTransformedLoader = ScaleBetweenZeroAndOne(LoadFromFile(resourcesRoot + "/mnistTransformed_10", mnistTranformedInfo.IMAGE_DIMENSIONS, mnistTranformedInfo.LABEL_DIMENSIONS), *mnistTranformedInfo.RANGE)
 shapesLoader = ScaleBetweenZeroAndOne(LoadFromFile(routes.RESOURCE_ROUTE + shapesInfo.HOME, shapesInfo.BASE_IMAGE_SIZE, shapesInfo.BASE_IMAGE_SIZE), *shapesInfo.RANGE)
 paddedMnistLoader = ScaleBetweenZeroAndOne(Pad(MnistLoader(), ((18, 18), (18, 18)), (64, 64), (1,)), *mnistInfo.MNIST_RANGE)
-mnistTransformedLimitedRotationsLoader = ScaleBetweenZeroAndOne(LoadFromFile(resourcesRoot + mnistTransformedLimitedRotationInfo.HOME_5, mnistTransformedLimitedRotationInfo.IMAGE_DIMENSIONS,mnistTransformedLimitedRotationInfo.LABEL_DIMENSIONS), *mnistTransformedLimitedRotationInfo.RANGE)
+mnistTransformedLimitedRotationsLoader = ScaleBetweenZeroAndOne(LoadFromFile(mnistTransformedLimitedRotationInfo.HOME_5, mnistTransformedLimitedRotationInfo.IMAGE_DIMENSIONS,mnistTransformedLimitedRotationInfo.LABEL_DIMENSIONS), *mnistTransformedLimitedRotationInfo.RANGE)
 
 modelConfigRoot = routes.CONFIG_ROUTE + "/model"
 modelConfigs = [
