@@ -51,7 +51,7 @@ shapesPackage = DatasetPackage(
 
 shapesTransformedPackage = DatasetPackage(
     "shapesTransformed",
-    ScaleBetweenZeroAndOne(LoadFromFile(routes.RESOURCE_ROUTE + shapesInfo.HOME, shapesInfo.BASE_IMAGE_SIZE, shapesInfo.BASE_IMAGE_SIZE), *shapesInfo.RANGE),
+    ScaleBetweenZeroAndOne(LoadFromFile(routes.RESOURCE_ROUTE + shapesInfo.HOME, shapesInfo.IMAGE_DIMENSIONS, shapesInfo.LABEL_DIMENSIONS), *shapesInfo.RANGE),
     ScaleBetweenZeroAndOneInterpolate(ShapesTransformedInterpolateLoader(ShapesBase()), *shapesInfo.RANGE)
 )
 

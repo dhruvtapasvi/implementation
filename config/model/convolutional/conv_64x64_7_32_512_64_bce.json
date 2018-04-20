@@ -1,7 +1,7 @@
 {
   "$schema": "file:config/schema/convolutional.schema.json",
 
-  "descriptor": "conv_64x64_6_8_256_10_bce",
+  "descriptor": "conv_64x64_7_32_512_64_bce",
   "reconstructionLoss": "binaryCrossEntropy",
   "klLossWeight": 1.0,
   "inputRepresentationDimensions": [
