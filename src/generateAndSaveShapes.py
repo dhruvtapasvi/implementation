@@ -17,6 +17,7 @@ if not os.path.isdir(datasetRoute):
 
 randomLoader = RandomTransforms(
     ShapesBase(),
+    shapesInfo.TRANSFORM_MIN_MAX_ROTATIONS,
     shapesInfo.TRANSFORM_SHEAR_FACTOR,
     shapesInfo.TRANSFORM_LOG2_STRETCH_FACTOR,
     numSamplesPerTrainPoint=shapesInfo.BASE_TRAIN_PROPORTION * shapesInfo.BASE_NUM_SAMPLES,

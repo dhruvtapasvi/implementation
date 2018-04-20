@@ -9,8 +9,9 @@ from dataset.loader.DatasetLoader import DatasetLoader
 
 
 class RandomTransforms(DatasetLoader):
-    def __init__(self, baseDatasetLoader: DatasetLoader, shearFactor, maxAbsStretchExponent, numSamplesPerTrainPoint, numSamplesPerValidationPoint=None, numSamplesPerTestPoint=None, randomSeed=None):
+    def __init__(self, baseDatasetLoader: DatasetLoader, maxMinRotation, shearFactor, maxAbsStretchExponent, numSamplesPerTrainPoint, numSamplesPerValidationPoint=None, numSamplesPerTestPoint=None, randomSeed=None):
         self.__baseDatasetLoader = baseDatasetLoader
+        self.__minRotation, self.__maxRotation = maxMinRotation
         self.__shearRange = shearFactor
         self.__stretchExponentRange = maxAbsStretchExponent
         self.__numSamplesPerTrainPoint = numSamplesPerTrainPoint
@@ -47,7 +48,7 @@ class RandomTransforms(DatasetLoader):
             xPadded = pad(x, paddingDimensions, 'constant')
             y = tuple(Y[index])
             for _ in range(numSamplesPerPoint):
-                randomRotationAngle = random.uniform(0.0, 2.0 * math.pi)
+                randomRotationAngle = random.uniform(self.__minRotation, self.__maxRotation)
                 randomShearFactor = random.uniform(-self.__shearRange, self.__shearRange)
                 randomStretchExponentFirstAxis = random.uniform(-self.__stretchExponentRange, self.__stretchExponentRange)
                 randomStretchFactorFirstAxis = 2.0 ** randomStretchExponentFirstAxis

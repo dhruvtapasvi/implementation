@@ -2,7 +2,7 @@ import os
 import numpy as np
 
 
-import dataset.info.MnistTransformedInfo as mnistTransformedInfo
+import dataset.info.MnistTransformedInfoLimitedRotation as mnistTransformedInfoLimitedRotation
 from dataset.loader.basic.MnistLoader import MnistLoader
 from dataset.loader.preprocess.RandomTransforms import RandomTransforms
 import config.routes as routes
@@ -11,13 +11,13 @@ import config.routes as routes
 resourceRoot = routes.RESOURCE_ROUTE
 if not os.path.isdir(resourceRoot):
     os.mkdir(resourceRoot)
-datasetRouteStem = resourceRoot + "/mnistTransformed_"
+datasetRouteStem = mnistTransformedInfoLimitedRotation.HOME_STEM
 
 mnistLoader = MnistLoader()
 numRandomTransforms = [1, 2, 5, 10]
 
 for i in numRandomTransforms:
-    print("Creating MNIST transformed dataset with " + str(i) + " random transformations per training example...")
+    print("Creating MNIST transformed dataset (limited rotation) with " + str(i) + " random transformations per training example...")
 
     datasetRoute = datasetRouteStem + str(i)
     if not os.path.isdir(datasetRoute):
@@ -25,11 +25,11 @@ for i in numRandomTransforms:
 
     randomLoader = RandomTransforms(
         mnistLoader,
-        mnistTransformedInfo.TRANSFORM_MIN_MAX_ROTATIONS,
-        mnistTransformedInfo.TRANSFORM_SHEAR_FACTOR,
-        mnistTransformedInfo.TRANSFORM_LOG2_STRETCH_FACTOR,
+        mnistTransformedInfoLimitedRotation.TRANSFORM_MIN_MAX_ROTATIONS,
+        mnistTransformedInfoLimitedRotation.TRANSFORM_SHEAR_FACTOR,
+        mnistTransformedInfoLimitedRotation.TRANSFORM_LOG2_STRETCH_FACTOR,
         i,
-        randomSeed=mnistTransformedInfo.RANDOM_GENERATION_SEED
+        randomSeed=mnistTransformedInfoLimitedRotation.RANDOM_GENERATION_SEED
     )
     (xTrain, yTrain), (xVal, yVal), (xTest, yTest) = randomLoader.loadData()
 
