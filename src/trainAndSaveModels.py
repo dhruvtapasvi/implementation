@@ -15,9 +15,18 @@ experimentalTuples = [
 for experimentalTuple in experimentalTuples:
     buildModel = BuildModelExperiment(experimentalTuple.config)
     builtModel = buildModel.run()
-    
-    trainModel = TrainModelExperiment(builtModel, experimentalTuple.datasetPackage.datasetLoader, experimentalTuple.epochs, experimentalTuple.batchSize)
-    modelTrainingHistory = trainModel.run()
 
-    saveModelTrainingHistory = SaveModelTrainingExperiment(builtModel, modelTrainingHistory, experimentalTuple.stringDescriptor)
-    saveModelTrainingHistory.run()
+    try:
+        trainModel = TrainModelExperiment(builtModel, experimentalTuple.datasetPackage.datasetLoader, experimentalTuple.epochs, experimentalTuple.batchSize)
+        modelTrainingHistory = trainModel.run()
+    except TypeError:
+        print("NoneType error observed in training:", experimentalTuple.stringDescriptor)
+    except:
+        print("An unexpected error observed in training:", experimentalTuple.stringDescriptor)
+        continue
+
+    try:
+        saveModelTrainingHistory = SaveModelTrainingExperiment(builtModel, modelTrainingHistory, experimentalTuple.stringDescriptor)
+        saveModelTrainingHistory.run()
+    except:
+        print("Error occured while saving weights for:", experimentalTuple.stringDescriptor)
