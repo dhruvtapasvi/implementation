@@ -1,0 +1,15 @@
+{
+  "$schema": "file:config/schema/deepDense.schema.json",
+
+  "descriptor": "deepDense_28x28_ENC_512_512_1024_1024_DEC_512_512_512_512_LAT_512_bce",
+  "reconstructionLoss": "binaryCrossEntropy",
+  "klLossWeight": 1.0,
+  "inputRepresentationDimensions": [
+    28,
+    28
+  ],
+  "latentRepresentationDimension": 512,
+
+  "encoderDimensions": [512, 512, 1024, 1024],
+  "decoderDimensions": [512, 512, 512, 512]
+}

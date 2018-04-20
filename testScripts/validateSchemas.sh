@@ -16,3 +16,6 @@ jsonschema -i config/model/convolutional/conv_96x96_6_16_256_10_bce.json config/
 
 # Test dense vae model configuration instances against schema
 jsonschema -i config/model/dense/dense_28x28_keras_autoencoders_tutorial.json config/schema/dense.schema.json
+
+# Test deep dense model configuration instances against schema
+jsonschema -i config/model/deepDense/deepDense_28x28_ENC_512_512_1024_1024_DEC_512_512_512_512_LAT_512_bce.json config/schema/deepDense.schema.json
