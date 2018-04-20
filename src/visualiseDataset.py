@@ -1,23 +1,17 @@
 import numpy as np
-
-from config import routes
-
-from dataset.loader.basic.ShapesBase import ShapesBase
-from dataset.loader.basic.LoadFromFile import LoadFromFile
-
-import dataset.info.ShapesInfo as shapesInfo
-
 from display.imagesArraysComparisonDisplay import imagesArrayComparisonDisplay
+import dataset.loaderPackaged as loaders
+from config import routes
 
 
 NUM_VISUALISATIONS = 100
-datasetNamesAndLoaders = [
-    ("shapesBase", ShapesBase()),
-    ("shapesTransformed", LoadFromFile(routes.RESOURCE_ROUTE + shapesInfo.HOME, shapesInfo.BASE_IMAGE_SIZE, shapesInfo.BASE_IMAGE_SIZE))
+datasetPackages = [
+    loaders.shapesPackage,
+    loaders.shapesTransformedPackage
 ]
 
-for datasetName, datasetLoader in datasetNamesAndLoaders:
-    (xTrain, _), (xVal, _), (xTest, _) = datasetLoader.loadData()
+for datasetPackage in datasetPackages:
+    (xTrain, _), (xVal, _), (xTest, _) = datasetPackage.datasetLoader.loadData()
     if xTrain.shape[0] > NUM_VISUALISATIONS:
         np.random.shuffle(xTrain)
         xTrain = xTrain[:NUM_VISUALISATIONS]
@@ -27,4 +21,4 @@ for datasetName, datasetLoader in datasetNamesAndLoaders:
     if xTest.shape[0] > NUM_VISUALISATIONS:
         np.random.shuffle(xTest)
         xTest = xTest[0:NUM_VISUALISATIONS]
-    imagesArrayComparisonDisplay([xTrain, xVal, xTest], routes.getResultRouteStem("visualisations_") + datasetName)
+    imagesArrayComparisonDisplay([xTrain, xVal, xTest], routes.getResultRouteStem("visualisations_") + datasetPackage.name)

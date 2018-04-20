@@ -1,4 +1,4 @@
-from metric.Metric import Metric
+from evaluation.metric.Metric import Metric
 import numpy as np
 import math
 

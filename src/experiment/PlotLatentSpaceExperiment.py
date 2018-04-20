@@ -12,9 +12,9 @@ from model.VariationalAutoencoder import VariationalAutoencoder
 
 
 class ReconstructionsExperiment(Experiment):
-    def __init__(self, datasetLoader: DatasetLoader, config: VaeConfig, variationalAutoencoder: VariationalAutoencoder, sqrtNumSamples, labelToValue):
+    def __init__(self, datasetModelPath:str, datasetLoader: DatasetLoader, config: VaeConfig, variationalAutoencoder: VariationalAutoencoder, sqrtNumSamples, labelToValue):
         self.__datasetLoader = datasetLoader
-        self.__resultRouteStem = routes.getResultRouteStem(config.stringDescriptor)
+        self.__resultRouteStem = routes.getResultRouteStem(datasetModelPath)
         self.__latentDimension = config.latentRepresentationDimension
         self.__encoder = variationalAutoencoder.encoder()
         self.__decoder = variationalAutoencoder.decoder()

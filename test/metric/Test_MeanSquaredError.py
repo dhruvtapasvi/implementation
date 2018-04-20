@@ -1,7 +1,9 @@
-from metric.SquaredError import SquaredError
-import numpy as np
 import math
 import unittest
+
+import numpy as np
+
+from evaluation.metric.SquaredError import SquaredError
 
 
 class Test_MeanSquaredError(unittest.TestCase):

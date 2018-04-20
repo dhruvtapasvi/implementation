@@ -5,14 +5,13 @@ from config import routes
 
 
 class LoadModelExperiment(Experiment):
-    def __init__(self, variationalAutoencoderConfig: VaeConfig, variationalAutoencoder: VariationalAutoencoder):
-        self.__variationalAutoencoderConfig = variationalAutoencoderConfig
+    def __init__(self, weightsPathInner: str, variationalAutoencoder: VariationalAutoencoder):
+        self.__weightsPath = routes.getModelWeightsRoute(weightsPathInner)
         self.__variationalAutoencoder = variationalAutoencoder
 
     def run(self):
         """
         Load the weights into a specified model
         """
-        weightsPath = routes.getModelWeightsRoute(self.__variationalAutoencoderConfig.stringDescriptor)
-        print("Loading model " + weightsPath)
-        self.__variationalAutoencoder.loadWeights(weightsPath)
+        print("Loading model " + self.__weightsPath)
+        self.__variationalAutoencoder.loadWeights(self.__weightsPath)
