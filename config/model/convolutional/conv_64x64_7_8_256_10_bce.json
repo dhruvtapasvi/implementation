@@ -1,16 +1,16 @@
 {
   "$schema": "file:config/schema/convolutional.schema.json",
 
-  "descriptor": "mnist_transformed_conv_7_16_256_32_bce",
+  "descriptor": "conv_64x64_7_8_256_10_bce.json",
   "reconstructionLoss": "binaryCrossEntropy",
   "klLossWeight": 1.0,
   "inputRepresentationDimensions": [
     64,
     64
   ],
-  "latentRepresentationDimension": 32,
+  "latentRepresentationDimension": 10,
 
   "numberConvolutions": 7,
   "intermediateRepresentationDimension": 256,
-  "baseConvolutionalDepth": 16
+  "baseConvolutionalDepth": 8
 }

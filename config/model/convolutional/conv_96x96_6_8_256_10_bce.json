@@ -1,7 +1,7 @@
 {
   "$schema": "file:config/schema/convolutional.schema.json",
 
-  "descriptor": "norb_conv_6_16_256_10_bce",
+  "descriptor": "conv_96x96_6_8_256_10_bce",
   "reconstructionLoss": "binaryCrossEntropy",
   "klLossWeight": 1.0,
   "inputRepresentationDimensions": [
@@ -12,5 +12,5 @@
 
   "numberConvolutions": 6,
   "intermediateRepresentationDimension": 256,
-  "baseConvolutionalDepth": 16
+  "baseConvolutionalDepth": 8
 }
