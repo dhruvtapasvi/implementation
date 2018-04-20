@@ -1,6 +1,6 @@
 from dataset.DatasetPackage import DatasetPackage
 
-from dataset.info import MnistInfo as mnistInfo, MnistTransformedInfo as mnistTransformedInfo, NorbInfo as norbInfo, ShapesInfo as shapesInfo
+from dataset.info import MnistInfo as mnistInfo, MnistTransformedInfo as mnistTransformedInfo, MnistTransformedInfoLimitedRotation as mnistTransformedInfoLimitedRotation, NorbInfo as norbInfo, ShapesInfo as shapesInfo, ShapesInfoLimitedRotation as shapesInfoLimitedRotation
 
 from dataset.loader.basic.LoadFromFile import LoadFromFile
 from dataset.loader.basic.MnistLoader import MnistLoader
@@ -35,6 +35,16 @@ mnistTransformedPackage = DatasetPackage(
 )
 
 
+mnistTransformedLimitedRotationPackage = DatasetPackage(
+    "mnistTransformedLimitedRotation",
+    ScaleBetweenZeroAndOne(
+        LoadFromFile(mnistTransformedInfoLimitedRotation.HOME_5, mnistTransformedInfoLimitedRotation.IMAGE_DIMENSIONS, mnistTransformedInfoLimitedRotation.LABEL_DIMENSIONS),
+        *mnistTransformedInfoLimitedRotation.RANGE
+    ),
+    ScaleBetweenZeroAndOneInterpolate(MnistTransformedInterpolateLoader(baseMnistLoader), *mnistTransformedInfo.RANGE)
+)
+
+
 baseNorbLoader = NorbLoader(norbInfo.NORB_HOME)
 norbPackage = DatasetPackage(
     "norb",
@@ -49,6 +59,7 @@ shapesPackage = DatasetPackage(
     ScaleBetweenZeroAndOneInterpolate(ShapesTransformedInterpolateLoader(ShapesBase()), *shapesInfo.RANGE) # Doesn't actually go here
 )
 
+
 shapesTransformedPackage = DatasetPackage(
     "shapesTransformed",
     ScaleBetweenZeroAndOne(LoadFromFile(routes.RESOURCE_ROUTE + shapesInfo.HOME, shapesInfo.IMAGE_DIMENSIONS, shapesInfo.LABEL_DIMENSIONS), *shapesInfo.RANGE),
@@ -56,9 +67,8 @@ shapesTransformedPackage = DatasetPackage(
 )
 
 
-datasetPackages = [
-    mnistPackage,
-    mnistTransformedPackage,
-    norbPackage,
-    shapesTransformedPackage
-]
+shapesTransformedLimitedRotationPackage = DatasetPackage(
+    "shapesTransformedLimitedRotation",
+    ScaleBetweenZeroAndOne(LoadFromFile(routes.RESOURCE_ROUTE + shapesInfoLimitedRotation.HOME, shapesInfoLimitedRotation.IMAGE_DIMENSIONS, shapesInfoLimitedRotation.LABEL_DIMENSIONS), *shapesInfoLimitedRotation.RANGE),
+    ScaleBetweenZeroAndOneInterpolate(ShapesTransformedInterpolateLoader(ShapesBase()), *shapesInfoLimitedRotation.RANGE)
+)

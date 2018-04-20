@@ -2,7 +2,7 @@ import os
 import numpy as np
 
 
-import dataset.info.ShapesInfoLimitedRotations as shapesInfoLimitedRotations
+import dataset.info.ShapesInfoLimitedRotation as shapesInfoLimitedRotations
 from dataset.loader.basic.ShapesBase import ShapesBase
 from dataset.loader.preprocess.RandomTransforms import RandomTransforms
 import config.routes as routes
