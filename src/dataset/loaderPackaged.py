@@ -45,6 +45,12 @@ norbPackage = DatasetPackage(
 
 shapesPackage = DatasetPackage(
     "shapes",
+    ScaleBetweenZeroAndOne(ShapesBase(), *shapesInfo.RANGE),
+    ScaleBetweenZeroAndOneInterpolate(ShapesTransformedInterpolateLoader(ShapesBase()), *shapesInfo.RANGE) # Doesn't actually go here
+)
+
+shapesTransformedPackage = DatasetPackage(
+    "shapesTransformed",
     ScaleBetweenZeroAndOne(LoadFromFile(routes.RESOURCE_ROUTE + shapesInfo.HOME, shapesInfo.BASE_IMAGE_SIZE, shapesInfo.BASE_IMAGE_SIZE), *shapesInfo.RANGE),
     ScaleBetweenZeroAndOneInterpolate(ShapesTransformedInterpolateLoader(ShapesBase()), *shapesInfo.RANGE)
 )
@@ -54,5 +60,5 @@ datasetPackages = [
     mnistPackage,
     mnistTransformedPackage,
     norbPackage,
-    shapesPackage
+    shapesTransformedPackage
 ]

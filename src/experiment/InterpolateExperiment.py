@@ -4,12 +4,14 @@ from dataset.interpolate.InterpolateSubdataset import InterpolateSubdataset
 from display.imagesArraysComparisonDisplay import imagesArrayComparisonDisplay
 from model.Autoencoder import Autoencoder
 from interpolate.Interpolate import Interpolate
+from config.routes import getResultRouteStem
 
 class InterpolateExperiment(Experiment):
-    def __init__(self, interpolateDatasetLoader: InterpolateDatasetLoader, autoencoder: Autoencoder, interpolate: Interpolate):
+    def __init__(self, interpolateDatasetLoader: InterpolateDatasetLoader, autoencoder: Autoencoder, interpolate: Interpolate, resultRouteInner):
         self.__interpolateDatasetLoader = interpolateDatasetLoader
         self.__autoencoder = autoencoder
         self.__interpolate = interpolate
+        self.__resultRouteStem = getResultRouteStem(resultRouteInner)
 
     def run(self):
         """
@@ -30,7 +32,7 @@ class InterpolateExperiment(Experiment):
         for interpolateSubdataset in interpolateDataset:
             print(interpolateSubdataset.interpolatedFactorName)
             interpolated1 = self.__interpolate.interpolateAll(interpolateSubdataset.xLeft, interpolateSubdataset.xRight, 6)
-            imagesArrayComparisonDisplay(interpolated1, "../out/interpolate_graduated_" + interpolateSubdataset.interpolatedFactorName + ".png")
+            imagesArrayComparisonDisplay(interpolated1, self.__resultRouteStem + "interpolate_graduated_" + interpolateSubdataset.interpolatedFactorName + ".png")
 
             interpolated = self.__interpolate.interpolateAll(interpolateSubdataset.xLeft, interpolateSubdataset.xRight, 2)
             interpolateSubdatasetArrays = [
@@ -46,4 +48,4 @@ class InterpolateExperiment(Experiment):
                 if interpolateSubdataset.outsideIsSpecified():
                     interpolateSubdatasetArrays.append(interpolateSubdataset.xOutside)
                     interpolateSubdatasetArrays.append(self.__autoencoder.autoencoder().predict_on_batch(interpolateSubdataset.xOutside))
-            imagesArrayComparisonDisplay(interpolateSubdatasetArrays, "../out/interpolate_subdataset_" + interpolateSubdataset.interpolatedFactorName + ".png")
+            imagesArrayComparisonDisplay(interpolateSubdatasetArrays, self.__resultRouteStem + "interpolate_subdataset_" + interpolateSubdataset.interpolatedFactorName + ".png")
