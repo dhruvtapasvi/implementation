@@ -9,8 +9,8 @@ from experiment.experimentalConfigTuples import experimentalConfigTuples as prep
 
 
 experimentalTuples = [
-    ExperimentalConfigTuple(loaders.mnistPackage, modelConfigs.conv_28x28_3_8_ENC_1024_DEC_1024_LAT_32_bce, 10000, 100),
-    ExperimentalConfigTuple(loaders.mnistPackage, modelConfigs.deepDense_28x28_ENC_512x2_1024_DEC_512x3_LAT_32_bce, 10000, 1000)
+    ExperimentalConfigTuple(loaders.mnistPackage, modelConfigs.conv_28x28_3_8_ENC_1024_DEC_1024_LAT_32_bce, 5000, 100),
+    ExperimentalConfigTuple(loaders.mnistPackage, modelConfigs.deepDense_28x28_ENC_512x2_1024_DEC_512x3_LAT_32_bce, 5000, 1000)
 ]
 
 for experimentalTuple in experimentalTuples:
