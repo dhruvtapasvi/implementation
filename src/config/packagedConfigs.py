@@ -1,5 +1,7 @@
 from config.DenseAutoencoderConfig import DenseAutoencoderConfig
 from config.ConvolutionAutoencoderConfig import ConvolutionalAutoencoderConfig
+from config.DeepDenseAutoencoderConfig import DeepDenseAutoencoderConfig
+from config.ConvolutionalDeepIntermediateAutoencoderConfig import ConvolutionalDeepIntermediateAutoencoderConfig
 from config.routes import getConfigRoute
 
 
@@ -12,3 +14,8 @@ conv_96x96_6_8_256_10_bce = ConvolutionalAutoencoderConfig(getConfigRoute("model
 conv_96x96_6_16_256_10_bce = ConvolutionalAutoencoderConfig(getConfigRoute("model/convolutional/conv_96x96_6_16_256_10_bce.json"))
 
 dense_28x28_keras_autoencoders_tutorial = DenseAutoencoderConfig(getConfigRoute("model/dense/dense_28x28_keras_autoencoders_tutorial.json"))
+
+conv_64x64_6_16_ENC_1024_DEC_1024_LAT_32_bce = ConvolutionalDeepIntermediateAutoencoderConfig(getConfigRoute("conv_64x64_6_16_ENC_1024_DEC_1024_LAT_32_bce.json"))
+conv_28x28_3_8_ENC_1024_DEC_1024_LAT_32_bce = ConvolutionalDeepIntermediateAutoencoderConfig(getConfigRoute("conv_28x28_3_8_ENC_1024_DEC_1024_LAT_32_bce.json"))
+
+deepDense_28x28_ENC_512x2_1024_DEC_512x3_LAT_32_bce = DeepDenseAutoencoderConfig(getConfigRoute("deepDense_28x28_ENC_512x2_1024_DEC_512x3_LAT_32_bce.json"))
