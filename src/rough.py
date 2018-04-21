@@ -8,7 +8,7 @@ from model.loss.binaryCrossEntropyLoss import binaryCrossEntropyLossConstructor
 from model.architecture.ConvolutionalDeepIntermediateAutoencoder import ConvolutionalDeepIntermediateAutoencoder
 from config.ConvolutionalDeepIntermediateAutoencoderConfig import ConvolutionalDeepIntermediateAutoencoderConfig
 
-modelConfig = DeepDenseAutoencoderConfig(routes.CONFIG_ROUTE + "/model/deepDense/deepDense_28x28_ENC_512x2_1024_DEC_512x3_LAT_32_bce.json")
+modelConfig = DeepDenseAutoencoderConfig(routes.CONFIG_ROUTE + "/model/deepDense/deepDense_64x64_ENC_1024x4_DEC_1024x4_LAT_32_bce.json")
 model = modelConfig.fromConfig()
 model.buildModels()
 model.summary()
@@ -30,6 +30,11 @@ model.summary()
 # model.buildModels()
 # model.summary()
 #
+# modelConfig = ConvolutionalDeepIntermediateAutoencoderConfig(routes.CONFIG_ROUTE + "/model/convolutionalDeepIntermediate/conv_64x64_6_16_ENC_1024_DEC_1024_LAT_32_bce.json")
+# model = modelConfig.fromConfig()
+# model.buildModels()
+# model.summary()
+
 # modelConfig = ConvolutionalDeepIntermediateAutoencoderConfig(routes.CONFIG_ROUTE + "/model/convolutionalDeepIntermediate/conv_28x28_3_8_ENC_1024_DEC_1024_LAT_32_bce.json")
 # model = modelConfig.fromConfig()
 # model.buildModels()

@@ -4,8 +4,12 @@ from experiment.ExperimentalConfigTuple import ExperimentalConfigTuple
 
 
 experimentalConfigTuples = [
-    ExperimentalConfigTuple(datasetPackages.mnistPackage, configs.dense_28x28_keras_autoencoders_tutorial, 2000, 50),
-    ExperimentalConfigTuple(datasetPackages.mnistPackage, configs.conv_28x28_3_8_256_2_bce, 2000, 50),
+    # MNIST
+    ExperimentalConfigTuple(datasetPackages.mnistPackage, configs.conv_28x28_3_8_ENC_1024_DEC_1024_LAT_32_bce, 500, 100),
+    ExperimentalConfigTuple(datasetPackages.mnistPackage, configs.deepDense_28x28_ENC_512x2_1024_DEC_512x3_LAT_32_bce, 500, 200),
+
+    # MNIST Transformed
+
 
     ExperimentalConfigTuple(datasetPackages.mnistTransformedPackage, configs.conv_64x64_7_16_256_32_bce, 1000, 100),
 
