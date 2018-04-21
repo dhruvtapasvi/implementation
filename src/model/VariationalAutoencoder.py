@@ -77,6 +77,9 @@ class VariationalAutoencoder(Autoencoder, metaclass=ABCMeta):
             intermediateResult = layer(intermediateResult)
         return intermediateResult
 
+    def collapseLayers(self, layers):
+        return lambda input: self.evaluateLayersList(layers, input)
+
     def encoder(self) -> Model:
         return self._encoder
 
