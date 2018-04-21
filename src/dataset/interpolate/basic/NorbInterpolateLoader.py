@@ -1,5 +1,3 @@
-import numpy as np
-
 from dataset.interpolate.InterpolateDatasetLoader import InterpolateDatasetLoader
 from dataset.loader.DatasetLoader import DatasetLoader
 from dataset.loader.preprocess.SortByLabels import SortByLabels
