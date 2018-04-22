@@ -65,12 +65,12 @@ shapesPackage = DatasetPackage(
 shapesTransformedPackage = DatasetPackage(
     "shapesTransformed",
     ScaleBetweenZeroAndOne(LoadFromFile(routes.RESOURCE_ROUTE + shapesInfo.HOME, shapesInfo.IMAGE_DIMENSIONS, shapesInfo.LABEL_DIMENSIONS), *shapesInfo.RANGE),
-    ScaleBetweenZeroAndOneInterpolate(ShapesTransformedLimitedRotationInterpolateLoader(ShapesBase()), *shapesInfo.RANGE)
+    ScaleBetweenZeroAndOneInterpolate(ShapesTransformedInterpolateLoader(ShapesBase()), *shapesInfo.RANGE)
 )
 
 
 shapesTransformedLimitedRotationPackage = DatasetPackage(
     "shapesTransformedLimitedRotation",
     ScaleBetweenZeroAndOne(LoadFromFile(routes.RESOURCE_ROUTE + shapesInfoLimitedRotation.HOME, shapesInfoLimitedRotation.IMAGE_DIMENSIONS, shapesInfoLimitedRotation.LABEL_DIMENSIONS), *shapesInfoLimitedRotation.RANGE),
-    ScaleBetweenZeroAndOneInterpolate(ShapesTransformedInterpolateLoader(ShapesBase()), *shapesInfoLimitedRotation.RANGE)
+    ScaleBetweenZeroAndOneInterpolate(ShapesTransformedLimitedRotationInterpolateLoader(ShapesBase()), *shapesInfoLimitedRotation.RANGE)
 )
