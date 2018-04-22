@@ -17,7 +17,7 @@ from experiment.experimentalConfigTuples import experimentalConfigTuples as prep
 
 
 experimentalTuples = [
-    ExperimentalConfigTuple(loaders.shapesTransformedPackage, configs.conv_64x64_7_16_256_32_bce, 1000, 0)
+    ExperimentalConfigTuple(loaders.shapesTransformedPackage, configs.conv_64x64_7_16_256_32_bce, 1000, 0, SquaredError(1), SquaredError(1))
 ]
 
 
@@ -45,8 +45,8 @@ for experimentalTuple in experimentalTuples:
         dataSplitsName,
         variationalAutoencoder,
         configName,
-        SquaredError(1),
-        SquaredError(1),
+        experimentalTuple.metricLatentSpace,
+        experimentalTuple.metricImageSpace,
         experimentalTuple.stringDescriptor,
         resultsStores.interpolationResults
     )
