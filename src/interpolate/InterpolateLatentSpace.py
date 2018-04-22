@@ -14,4 +14,4 @@ class InterpolateLatentSpace(Interpolate):
         flattenedInterpolated = interpolated.reshape((-1,) + interpolated.shape[2:])
         flattedReconstructed = self.__decoder.predict_on_batch(flattenedInterpolated)
         reconstructed = flattedReconstructed.reshape(interpolated.shape[0:2] + left.shape[1:])
-        return reconstructed
+        return interpolated, reconstructed

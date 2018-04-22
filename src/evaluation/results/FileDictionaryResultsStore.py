@@ -1,7 +1,7 @@
 import pickle
 import os
 
-from results.ResultsStore import ResultsStore
+from evaluation.results.ResultsStore import ResultsStore
 
 
 class FileDictionaryResultsStore(ResultsStore):

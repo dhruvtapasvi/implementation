@@ -1,6 +1,6 @@
 from experiment.Experiment import Experiment
 from model.VariationalAutoencoder import VariationalAutoencoder
-from results.ResultsStore import ResultsStore
+from evaluation.results.ResultsStore import ResultsStore
 
 
 class RecordLossesExperiment(Experiment):

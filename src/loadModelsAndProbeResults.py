@@ -8,6 +8,8 @@ from experiment.ReconstructionsExperiment import ReconstructionsExperiment
 from experiment.InterpolateExperiment import InterpolateExperiment
 from experiment.RecordLossesExperiment import RecordLossesExperiment
 
+from evaluation.metric.SquaredError import SquaredError
+
 from interpolate.InterpolateLatentSpace import InterpolateLatentSpace
 
 from experiment.ExperimentalConfigTuple import ExperimentalConfigTuple
@@ -37,13 +39,15 @@ for experimentalTuple in experimentalTuples:
 
     recordLossesExperiment = RecordLossesExperiment(dataSplits, dataSplitsName, variationalAutoencoder, configName, resultsStores.modelLossResults)
     recordLossesExperiment.run()
-    print(resultsStores.modelLossResults.getDictionary())
-    quit()
 
-    createReconstructions = ReconstructionsExperiment(dataSplits, experimentalTuple.config, variationalAutoencoder, NUM_RECONSTRUCTIONS, SQRT_NUM_SAMPLES, experimentalTuple.stringDescriptor)
-    createReconstructions.run()
-
-    interpolate = InterpolateLatentSpace(variationalAutoencoder)
-
-    interpolateExperiment = InterpolateExperiment(interpolationSplits, variationalAutoencoder, interpolate, configName)
+    interpolateExperiment = InterpolateExperiment(
+        interpolationSplits,
+        dataSplitsName,
+        variationalAutoencoder,
+        configName,
+        SquaredError(1),
+        SquaredError(1),
+        experimentalTuple.stringDescriptor,
+        resultsStores.interpolationResults
+    )
     interpolateExperiment.run()

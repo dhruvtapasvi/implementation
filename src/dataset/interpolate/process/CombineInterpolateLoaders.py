@@ -4,9 +4,9 @@ from dataset.interpolate.InterpolateSubdataset import InterpolateSubdataset
 
 
 class CombineInterpolateLoaders:
-    def combine(self, interpolateSubdatasets) -> InterpolateSubdataset:
+    def combine(self, interpolateSubdatasets, combinedName=None) -> InterpolateSubdataset:
         combinedInterpolateSubdataset = InterpolateSubdataset(
-            interpolateSubdatasets[0].interpolatedFactorName,
+            combinedName if combinedName is not None else interpolateSubdatasets[0].interpolatedFactorName,
             (
                 np.concatenate([interpolateSubdataset.xLeft for interpolateSubdataset in interpolateSubdatasets]),
                 np.concatenate([interpolateSubdataset.yLeft for interpolateSubdataset in interpolateSubdatasets])
