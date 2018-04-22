@@ -1,6 +1,6 @@
 import dataset.loaderPackaged as loaders
 import config.packagedConfigs as configs
-import results.packageResults as resultsStores
+import evaluation.results.packageResults as resultsStores
 
 from experiment.BuildModelExperiment import BuildModelExperiment
 from experiment.LoadModelExperiment import LoadModelExperiment
