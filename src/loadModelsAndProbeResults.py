@@ -38,6 +38,7 @@ for experimentalTuple in experimentalTuples:
     recordLossesExperiment = RecordLossesExperiment(dataSplits, dataSplitsName, variationalAutoencoder, configName, resultsStores.modelLossResults)
     recordLossesExperiment.run()
     print(resultsStores.modelLossResults.getDictionary())
+    quit()
 
     createReconstructions = ReconstructionsExperiment(dataSplits, experimentalTuple.config, variationalAutoencoder, NUM_RECONSTRUCTIONS, SQRT_NUM_SAMPLES, experimentalTuple.stringDescriptor)
     createReconstructions.run()

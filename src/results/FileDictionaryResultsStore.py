@@ -1,4 +1,5 @@
 import pickle
+import os
 
 from results.ResultsStore import ResultsStore
 
@@ -6,7 +7,8 @@ from results.ResultsStore import ResultsStore
 class FileDictionaryResultsStore(ResultsStore):
     def __init__(self, dictionaryLocation: str):
         self.__dictionaryLocation = dictionaryLocation
-        self.__storeDict({})
+        if not os.path.isfile(self.__dictionaryLocation):
+            self.__storeDict({})
 
     def getValue(self, keysList):
         value = self.getDictionary()
@@ -20,9 +22,10 @@ class FileDictionaryResultsStore(ResultsStore):
 
     def storeValue(self, keysList, value):
         dict = self.getDictionary()
+        nestedDict = dict
         for key in keysList[:-1]:
-            dict = dict.setdefault(key, {})
-        dict[keysList[-1]] = value
+            nestedDict = nestedDict.setdefault(key, {})
+        nestedDict[keysList[-1]] = value
         self.__storeDict(dict)
 
     def __storeDict(self, dict):
