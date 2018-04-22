@@ -1,10 +1,12 @@
 import dataset.loaderPackaged as loaders
 import config.packagedConfigs as configs
+import results.packageResults as resultsStores
 
 from experiment.BuildModelExperiment import BuildModelExperiment
 from experiment.LoadModelExperiment import LoadModelExperiment
 from experiment.ReconstructionsExperiment import ReconstructionsExperiment
 from experiment.InterpolateExperiment import InterpolateExperiment
+from experiment.RecordLossesExperiment import RecordLossesExperiment
 
 from interpolate.InterpolateLatentSpace import InterpolateLatentSpace
 
@@ -28,10 +30,19 @@ for experimentalTuple in experimentalTuples:
     loadWeights = LoadModelExperiment(experimentalTuple.stringDescriptor, variationalAutoencoder)
     loadWeights.run()
 
-    createReconstructions = ReconstructionsExperiment(experimentalTuple.datasetPackage.datasetLoader, experimentalTuple.config, variationalAutoencoder, NUM_RECONSTRUCTIONS, SQRT_NUM_SAMPLES, experimentalTuple.stringDescriptor)
+    dataSplits = experimentalTuple.datasetPackage.datasetLoader.loadData()
+    interpolationSplits = experimentalTuple.datasetPackage.interpolateLoader.loadInterpolationData()
+    dataSplitsName = experimentalTuple.datasetPackage.name
+    configName = experimentalTuple.config.stringDescriptor
+
+    recordLossesExperiment = RecordLossesExperiment(dataSplits, dataSplitsName, variationalAutoencoder, configName, resultsStores.modelLossResults)
+    recordLossesExperiment.run()
+    print(resultsStores.modelLossResults.getDictionary())
+
+    createReconstructions = ReconstructionsExperiment(dataSplits, experimentalTuple.config, variationalAutoencoder, NUM_RECONSTRUCTIONS, SQRT_NUM_SAMPLES, experimentalTuple.stringDescriptor)
     createReconstructions.run()
 
     interpolate = InterpolateLatentSpace(variationalAutoencoder)
 
-    interpolateExperiment = InterpolateExperiment(experimentalTuple.datasetPackage.interpolateLoader, variationalAutoencoder, interpolate, experimentalTuple.stringDescriptor)
+    interpolateExperiment = InterpolateExperiment(interpolationSplits, variationalAutoencoder, interpolate, configName)
     interpolateExperiment.run()

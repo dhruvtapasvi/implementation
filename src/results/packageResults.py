@@ -1,0 +1,6 @@
+from config.routes import getRecordedResultsRoute
+from results.FileDictionaryResultsStore import FileDictionaryResultsStore
+
+
+MODEL_LOSS_RESULTS_FILE = "modelLoss"
+modelLossResults = FileDictionaryResultsStore(getRecordedResultsRoute(MODEL_LOSS_RESULTS_FILE))

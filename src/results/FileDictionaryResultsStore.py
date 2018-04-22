@@ -1,6 +1,6 @@
 import pickle
 
-from results.ReultsStore import ResultsStore
+from results.ResultsStore import ResultsStore
 
 
 class FileDictionaryResultsStore(ResultsStore):
@@ -27,4 +27,4 @@ class FileDictionaryResultsStore(ResultsStore):
 
     def __storeDict(self, dict):
         with open(self.__dictionaryLocation, "wb") as file:
-            return pickle.dump(file, dict)
+            return pickle.dump(dict, file)

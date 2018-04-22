@@ -10,8 +10,8 @@ from model.VariationalAutoencoder import VariationalAutoencoder
 
 
 class ReconstructionsExperiment(Experiment):
-    def __init__(self, datasetLoader: DatasetLoader, config: VaeConfig, variationalAutoencoder: VariationalAutoencoder, numSampleReconstructions, sqrtNumSamples, resultRouteInner: str):
-        self.__datasetLoader = datasetLoader
+    def __init__(self, dataSplits, config: VaeConfig, variationalAutoencoder: VariationalAutoencoder, numSampleReconstructions, sqrtNumSamples, resultRouteInner: str):
+        self.__dataSplits = dataSplits
         self.__resultRouteStem = routes.getResultRouteStem(resultRouteInner)
         self.__latentDimension = config.latentRepresentationDimension
         self.__autoencoder = variationalAutoencoder.autoencoder()
@@ -23,7 +23,7 @@ class ReconstructionsExperiment(Experiment):
         """
         Create reconstructions and random sampling from the variational autoencoder
         """
-        (xTrain, _), (xVal, _), (xTest, _) = self.__datasetLoader.loadData()
+        (xTrain, _), (xVal, _), (xTest, _) = self.__dataSplits
         np.random.shuffle(xTrain)
         np.random.shuffle(xVal)
         np.random.shuffle(xTest)

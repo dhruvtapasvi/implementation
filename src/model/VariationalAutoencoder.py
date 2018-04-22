@@ -108,3 +108,6 @@ class VariationalAutoencoder(Autoencoder, metaclass=ABCMeta):
 
     def loadWeights(self, location):
         self.__autoencoder.load_weights(location)
+
+    def evaluate(self, data):
+        return self.__autoencoder.evaluate(data, data)

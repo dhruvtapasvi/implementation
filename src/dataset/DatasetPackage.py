@@ -9,13 +9,13 @@ class DatasetPackage:
         self.__interpolateLoader = interpolateLoader
 
     @property
-    def name(self):
+    def name(self) -> str:
         return self.__name
 
     @property
-    def datasetLoader(self):
+    def datasetLoader(self) -> DatasetLoader:
         return self.__datasetLoader
 
     @property
-    def interpolateLoader(self):
+    def interpolateLoader(self) -> InterpolateDatasetLoader:
         return self.__interpolateLoader

@@ -1,4 +1,4 @@
-from results.ReultsStore import ResultsStore
+from results.ResultsStore import ResultsStore
 
 
 class DictionaryResultsStore(ResultsStore):

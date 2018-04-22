@@ -7,8 +7,8 @@ from interpolate.Interpolate import Interpolate
 from config.routes import getResultRouteStem
 
 class InterpolateExperiment(Experiment):
-    def __init__(self, interpolateDatasetLoader: InterpolateDatasetLoader, autoencoder: Autoencoder, interpolate: Interpolate, resultRouteInner):
-        self.__interpolateDatasetLoader = interpolateDatasetLoader
+    def __init__(self, interpolateData, autoencoder: Autoencoder, interpolate: Interpolate, resultRouteInner):
+        self.__interpolateData = interpolateData
         self.__autoencoder = autoencoder
         self.__interpolate = interpolate
         self.__resultRouteStem = getResultRouteStem(resultRouteInner)
@@ -28,7 +28,7 @@ class InterpolateExperiment(Experiment):
         (maybe a method to run with the autoencoder)
         What about reporting per class? Need to think about that in more details
         """
-        interpolateDataset = self.__interpolateDatasetLoader.loadInterpolationData()
+        interpolateDataset = self.__interpolateData.loadInterpolationData()
         for interpolateSubdataset in interpolateDataset:
             print(interpolateSubdataset.interpolatedFactorName)
             interpolated1 = self.__interpolate.interpolateAll(interpolateSubdataset.xLeft, interpolateSubdataset.xRight, 6)
