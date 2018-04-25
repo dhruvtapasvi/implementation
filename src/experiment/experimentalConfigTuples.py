@@ -16,9 +16,7 @@ experimentalConfigTuples = [
     ExperimentalConfigTuple(datasetPackages.shapesTransformedLimitedRotationPackage, configs.deepDense_64x64_ENC_1024x4_DEC_1024x4_LAT_32_bce, 500, 100),
     ExperimentalConfigTuple(datasetPackages.shapesTransformedLimitedRotationPackage, configs.conv_64x64_6_16_ENC_1024x3_DEC_1024x3_LAT_32_bce, 500, 100),
 
-    ExperimentalConfigTuple(datasetPackages.mnistTransformedPackage, configs.conv_64x64_7_16_256_32_bce, 1000, 100),
-
-    ExperimentalConfigTuple(datasetPackages.shapesTransformedPackage, configs.conv_64x64_7_16_256_32_bce, 1000, 100),
-
-    ExperimentalConfigTuple(datasetPackages.norbPackage, configs.conv_96x96_6_16_256_10_bce, 1000, 100)
+    # NORB
+    ExperimentalConfigTuple(datasetPackages.norbPackage, configs.deepDense_96x96_ENC_1024_2048_2048_DEC_2048_2048_1024_LAT_32_bce, 500, 100),
+    ExperimentalConfigTuple(datasetPackages.norbPackage, configs.conv_96x96_6_16_ENC_1024x3_DEC_1024x3_LAT_32_bce, 250, 100)
 ]

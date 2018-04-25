@@ -9,8 +9,7 @@ from experiment.experimentalConfigTuples import experimentalConfigTuples as prep
 
 
 experimentalTuples = [
-    ExperimentalConfigTuple(loaders.norbPackage, modelConfigs.deepDense_96x96_ENC_1024_2048_2048_DEC_2048_2048_1024_LAT_32_bce, 500, 100),
-    ExperimentalConfigTuple(loaders.norbPackage, modelConfigs.conv_96x96_6_16_ENC_1024x3_DEC_1024x3_LAT_32_bce, 500, 100),
+    ExperimentalConfigTuple(loaders.norbPackage, modelConfigs.conv_96x96_6_16_ENC_1024x3_DEC_1024x3_LAT_32_bce, 250, 100)
 ]
 
 for experimentalTuple in experimentalTuples:
@@ -20,14 +19,17 @@ for experimentalTuple in experimentalTuples:
     try:
         trainModel = TrainModelExperiment(builtModel, experimentalTuple.datasetPackage.datasetLoader, experimentalTuple.epochs, experimentalTuple.batchSize)
         modelTrainingHistory = trainModel.run()
-    except TypeError:
+    except TypeError as te:
         print("NoneType error observed in training:", experimentalTuple.stringDescriptor)
-    except:
+        print(te)
+    except Exception as e:
         print("An unexpected error observed in training:", experimentalTuple.stringDescriptor)
+        print(e)
         continue
 
     try:
         saveModelTrainingHistory = SaveModelTrainingExperiment(builtModel, modelTrainingHistory, experimentalTuple.stringDescriptor)
         saveModelTrainingHistory.run()
-    except:
+    except Exception as e:
         print("Error occured while saving weights for:", experimentalTuple.stringDescriptor)
+        print(e)
