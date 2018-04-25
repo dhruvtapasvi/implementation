@@ -14,5 +14,5 @@ class RecordLossesExperiment(Experiment):
     def run(self):
         (xTrain, _), (xVal, _), (xTest, _) = self.__dataSplits
         for split, splitName in [(xTrain, "train"), (xVal, "val"), (xTest, "test")]:
-            splitLoss = self.__variationalAutoencoder.evaluate(split)
+            splitLoss = self.__variationalAutoencoder.evaluate(split, batchSize=100)
             self.__resultsStore.storeValue([self.__datasetName, self.__modelDescriptor, splitName], splitLoss)

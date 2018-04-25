@@ -5,12 +5,12 @@ from interpolate.InterpolateLatentSpace import InterpolateLatentSpace
 
 
 class MockEncoder():
-    def predict_on_batch(self, x):
+    def predict(self, x, batch_size=None):
         return np.sqrt(x[:, :2])
 
 
 class MockDecoder():
-    def predict_on_batch(self, y):
+    def predict(self, y, batch_size=None):
         return (np.square(np.concatenate((y, y), axis=1)) + 0.5).astype(np.int)
 
 
@@ -34,7 +34,7 @@ class Test_InterpolateLatentSpace(unittest.TestCase):
         left = np.square([np.full((4,), i) for i in range(10)])
         right = np.square([np.full((4,), i) for i in range(10, 20)])
 
-        interpolatedResult = self.__interpolate.interpolateAll(left, right, 5)
+        _, interpolatedResult = self.__interpolate.interpolateAll(left, right, 5)
 
         expectedResult = np.square([
             [np.full((4,), i + j) for j in range(0, 10 + 2, 2)]

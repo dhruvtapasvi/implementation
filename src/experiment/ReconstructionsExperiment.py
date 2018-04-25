@@ -33,7 +33,7 @@ class ReconstructionsExperiment(Experiment):
         self.__displayReconstructions(xTest, "test")
 
         randomSamples = sp.randn(self.__sqrtNumSamples * self.__sqrtNumSamples, self.__latentDimension)
-        decodedRandomSamples = self.__decoder.predict_on_batch(randomSamples)
+        decodedRandomSamples = self.__decoder.predict(randomSamples, batch_size=100)
         imagesArrayComparisonDisplay(
             decodedRandomSamples.reshape((self.__sqrtNumSamples, self.__sqrtNumSamples) + decodedRandomSamples.shape[1:]),
             self.__resultRouteStem + "randomSampling.png"
@@ -41,5 +41,5 @@ class ReconstructionsExperiment(Experiment):
 
     def __displayReconstructions(self, xData, reconstructionType: str):
         xDataTruncated = xData[:self.__numSampleReconstructions]
-        xDataTruncatedReconstructed = self.__autoencoder.predict_on_batch(xDataTruncated)
+        xDataTruncatedReconstructed = self.__autoencoder.predict(xDataTruncated, batch_size=100)
         imagesArrayComparisonDisplay([xDataTruncated, xDataTruncatedReconstructed], self.__resultRouteStem + reconstructionType + "Reconstructions.png")
