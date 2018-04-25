@@ -2,12 +2,14 @@ from evaluation.metric.Metric import Metric
 from evaluation.metric.MetricResult import MetricResult
 import numpy as np
 import math
-from keras.metrics import binary_crossentropy
+# from keras.metrics import binary_crossentropy
+from keras.backend import variable, binary_crossentropy, sum, eval
+
 
 
 class BinaryCrossEntropy(Metric):
     def compute(self, first: np.ndarray, second: np.ndarray) -> MetricResult:
-        firstFlattened = first.reshape((first.shape[0], -1))
-        secondFlattened = second.reshape((second.shape[0], -1))
-        totalNumPixels = len(firstFlattened[0])
-        return MetricResult(totalNumPixels * binary_crossentropy(firstFlattened, secondFlattened))
+        firstFlattened = variable(first.reshape((first.shape[0], -1)))
+        secondFlattened = variable(second.reshape((second.shape[0], -1)))
+        result = eval(sum(binary_crossentropy(firstFlattened, secondFlattened), axis=-1))
+        return MetricResult(result)

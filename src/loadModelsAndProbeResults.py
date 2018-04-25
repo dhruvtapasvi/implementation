@@ -9,6 +9,7 @@ from experiment.InterpolateExperiment import InterpolateExperiment
 from experiment.RecordLossesExperiment import RecordLossesExperiment
 
 from evaluation.metric.SquaredError import SquaredError
+from evaluation.metric.BinaryCrossEntropy import BinaryCrossEntropy
 
 from interpolate.InterpolateLatentSpace import InterpolateLatentSpace
 
@@ -17,7 +18,7 @@ from experiment.experimentalConfigTuples import experimentalConfigTuples as prep
 
 
 experimentalTuples = [
-    ExperimentalConfigTuple(loaders.shapesTransformedPackage, configs.conv_64x64_7_16_256_32_bce, 1000, 0, SquaredError(1), SquaredError(1))
+    ExperimentalConfigTuple(loaders.shapesTransformedPackage, configs.conv_64x64_7_16_256_32_bce, 1000, 0, SquaredError(1), BinaryCrossEntropy())
 ]
 
 
@@ -37,8 +38,8 @@ for experimentalTuple in experimentalTuples:
     dataSplitsName = experimentalTuple.datasetPackage.name
     configName = experimentalTuple.config.stringDescriptor
 
-    recordLossesExperiment = RecordLossesExperiment(dataSplits, dataSplitsName, variationalAutoencoder, configName, resultsStores.modelLossResults)
-    recordLossesExperiment.run()
+    # recordLossesExperiment = RecordLossesExperiment(dataSplits, dataSplitsName, variationalAutoencoder, configName, resultsStores.modelLossResults)
+    # recordLossesExperiment.run()
 
     interpolateExperiment = InterpolateExperiment(
         interpolationSplits,
@@ -51,3 +52,4 @@ for experimentalTuple in experimentalTuples:
         resultsStores.interpolationResults
     )
     interpolateExperiment.run()
+    print(resultsStores.interpolationResults.getDictionary())

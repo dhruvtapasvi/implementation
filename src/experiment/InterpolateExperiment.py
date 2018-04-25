@@ -57,7 +57,7 @@ class InterpolateExperiment(Experiment):
 
             self.__resultsStore.storeValue(
                 [self.__datasetName, self.__modelName, interpolateSubdataset.interpolatedFactorName, "actual", "metricLatentSpace"],
-                self.__imageSpaceComparisonMetric.compute(
+                self.__latentSpaceComparisonMetric.compute(
                     self.__autoencoder.encoder().predict(interpolateSubdataset.xCentre, batch_size=100),
                     interpolated
                 ).mean
@@ -71,7 +71,7 @@ class InterpolateExperiment(Experiment):
 
                 self.__resultsStore.storeValue(
                     [self.__datasetName, self.__modelName, interpolateSubdataset.interpolatedFactorName, "control", "metricLatentSpace"],
-                    self.__imageSpaceComparisonMetric.compute(
+                    self.__latentSpaceComparisonMetric.compute(
                         self.__autoencoder.encoder().predict(interpolateSubdataset.xCentre, batch_size=100),
                         self.__autoencoder.encoder().predict(interpolateSubdataset.xOutside, batch_size=100)
                     ).mean
