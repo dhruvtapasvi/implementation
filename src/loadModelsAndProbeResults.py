@@ -41,6 +41,9 @@ for experimentalTuple in experimentalTuples:
     recordLossesExperiment = RecordLossesExperiment(dataSplits, dataSplitsName, variationalAutoencoder, configName, resultsStores.modelLossResults)
     recordLossesExperiment.run()
 
+    reconstructionsExperiment = ReconstructionsExperiment(dataSplits, variationalAutoencoder, 10, experimentalTuple.stringDescriptor)
+    reconstructionsExperiment.run()
+
     interpolateExperiment = InterpolateExperiment(
         interpolationSplits,
         dataSplitsName,
