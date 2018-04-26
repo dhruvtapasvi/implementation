@@ -19,3 +19,7 @@ def getResultRouteStem(name):
 CONFIG_ROUTE = ROOT + "/config"
 def getConfigRoute(name):
     return CONFIG_ROUTE + "/" + name
+
+RESULTS_ROUTE = ROOT + "/results"
+def getRecordedResultsRoute(name):
+    return RESULTS_ROUTE + "/" + name
