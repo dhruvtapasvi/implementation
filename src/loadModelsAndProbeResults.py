@@ -7,6 +7,7 @@ from experiment.LoadModelExperiment import LoadModelExperiment
 from experiment.ReconstructionsExperiment import ReconstructionsExperiment
 from experiment.InterpolateExperiment import InterpolateExperiment
 from experiment.RecordLossesExperiment import RecordLossesExperiment
+from experiment.SamplingExperiment import SamplingExperiment
 
 from evaluation.metric.SquaredError import SquaredError
 from evaluation.metric.BinaryCrossEntropy import BinaryCrossEntropy
@@ -43,6 +44,9 @@ for experimentalTuple in experimentalTuples:
 
     reconstructionsExperiment = ReconstructionsExperiment(dataSplits, variationalAutoencoder, 10, experimentalTuple.stringDescriptor)
     reconstructionsExperiment.run()
+
+    samplingExperiment = SamplingExperiment(dataSplits, experimentalTuple.config, variationalAutoencoder, 10, experimentalTuple.stringDescriptor)
+    samplingExperiment.run()
 
     interpolateExperiment = InterpolateExperiment(
         interpolationSplits,
