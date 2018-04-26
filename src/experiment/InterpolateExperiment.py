@@ -21,7 +21,9 @@ class InterpolateExperiment(Experiment):
             latentSpaceComparisonMetric: Metric,
             imageSpaceComparisonMetric: Metric,
             resultRouteInner: str,
-            resultsStore: ResultsStore):
+            resultsStore: ResultsStore,
+            numSampleInterpolations,
+            numIntervals):
         self.__interpolateData = interpolateData
         self.__datasetName = datasetName
         self.__autoencoder = autoencoder
@@ -32,6 +34,8 @@ class InterpolateExperiment(Experiment):
         self.__resultsStore = resultsStore
         self.__interpolate = Interpolate()
         self.__interpolateLatentSpace = InterpolateLatentSpace(autoencoder)
+        self.__numSampleInterpolations = numSampleInterpolations
+        self.__numIntervals = numIntervals
 
     def run(self):
         for interpolationSubdataset in self.__interpolateData:
@@ -40,8 +44,9 @@ class InterpolateExperiment(Experiment):
 
         if len(self.__interpolateData) > 1:
             combineSubdatasets = CombineInterpolateLoaders()
-            combinedSubdatasets = combineSubdatasets.combine(self.__interpolateData, "Combined")
+            combinedSubdatasets = combineSubdatasets.combine(self.__interpolateData, "COMBINED")
             self.__numericalInterpolationMetrics(combinedSubdatasets)
+            self.__visualInterpolation(combinedSubdatasets)
 
     def __numericalInterpolationMetrics(self, interpolateSubdataset: InterpolateSubdataset):
         interpolated, interpolatedReconstructed = self.__interpolateLatentSpace.interpolateAll(interpolateSubdataset.xLeft, interpolateSubdataset.xRight, 2)
@@ -78,7 +83,17 @@ class InterpolateExperiment(Experiment):
                 )
 
     def __visualInterpolation(self, interpolateSubdataset: InterpolateSubdataset):
-        _, interpolatedReconstructed = self.__interpolateLatentSpace.interpolateAll(interpolateSubdataset.xLeft, interpolateSubdataset.xRight, 6)
+        randomSubset = np.random.choice(len(interpolateSubdataset.xLeft), self.__numSampleInterpolations, replace=False)
+        truncatedInterpolateSubdataset = InterpolateSubdataset(
+            interpolateSubdataset.interpolatedFactorName,
+            (interpolateSubdataset.xLeft[randomSubset], interpolateSubdataset.yLeft[randomSubset]),
+            (interpolateSubdataset.xRight[randomSubset], interpolateSubdataset.yRight[randomSubset]),
+            (interpolateSubdataset.xCentre[randomSubset], interpolateSubdataset.yCentre[randomSubset])
+                if interpolateSubdataset.centreIsSpecified() else None,
+            (interpolateSubdataset.xOutside[randomSubset], interpolateSubdataset.yOutside[randomSubset])
+                if interpolateSubdataset.centreIsSpecified() else None
+        )
+        _, interpolatedReconstructed = self.__interpolateLatentSpace.interpolateAll(truncatedInterpolateSubdataset.xLeft, truncatedInterpolateSubdataset.xRight, self.__numIntervals)
         interpolatedReconstructed = np.swapaxes(interpolatedReconstructed, 0, 1)
-        interpolatedDisplay = np.concatenate([np.array([interpolateSubdataset.xLeft]), interpolatedReconstructed, np.array([interpolateSubdataset.xRight])])
+        interpolatedDisplay = np.concatenate([np.array([truncatedInterpolateSubdataset.xLeft]), interpolatedReconstructed, np.array([truncatedInterpolateSubdataset.xRight])])
         imagesArrayComparisonDisplay(interpolatedDisplay, self.__resultRouteStem + interpolateSubdataset.interpolatedFactorName + "_interpolated_graduated.png")

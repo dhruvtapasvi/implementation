@@ -56,6 +56,8 @@ for experimentalTuple in experimentalTuples:
         experimentalTuple.metricLatentSpace,
         experimentalTuple.metricImageSpace,
         experimentalTuple.stringDescriptor,
-        resultsStores.interpolationResults
+        resultsStores.interpolationResults,
+        10,
+        6
     )
     interpolateExperiment.run()
