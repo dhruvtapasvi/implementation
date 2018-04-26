@@ -38,8 +38,8 @@ for experimentalTuple in experimentalTuples:
     dataSplitsName = experimentalTuple.datasetPackage.name
     configName = experimentalTuple.config.stringDescriptor
 
-    # recordLossesExperiment = RecordLossesExperiment(dataSplits, dataSplitsName, variationalAutoencoder, configName, resultsStores.modelLossResults)
-    # recordLossesExperiment.run()
+    recordLossesExperiment = RecordLossesExperiment(dataSplits, dataSplitsName, variationalAutoencoder, configName, resultsStores.modelLossResults)
+    recordLossesExperiment.run()
 
     interpolateExperiment = InterpolateExperiment(
         interpolationSplits,
@@ -52,4 +52,3 @@ for experimentalTuple in experimentalTuples:
         resultsStores.interpolationResults
     )
     interpolateExperiment.run()
-    print(resultsStores.interpolationResults.getDictionary())
