@@ -1,10 +1,7 @@
 from evaluation.metric.Metric import Metric
 from evaluation.metric.MetricResult import MetricResult
 import numpy as np
-import math
-# from keras.metrics import binary_crossentropy
 from keras.backend import variable, binary_crossentropy, sum, eval
-
 
 
 class BinaryCrossEntropy(Metric):

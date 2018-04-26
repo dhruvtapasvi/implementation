@@ -5,7 +5,7 @@ class MetricResult:
     def __init__(self, allValues: np.ndarray):
         self.__allValues = allValues
         self.__mean = np.mean(allValues)
-        self.__standardDeviation = np.std(allValues)
+        self.__standardDeviation = np.std(allValues, ddof=1)
 
     @property
     def allValues(self) -> np.ndarray:

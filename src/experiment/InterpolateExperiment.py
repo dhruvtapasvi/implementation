@@ -50,36 +50,64 @@ class InterpolateExperiment(Experiment):
 
     def __numericalInterpolationMetrics(self, interpolateSubdataset: InterpolateSubdataset):
         interpolated, interpolatedReconstructed = self.__interpolateLatentSpace.interpolateAll(interpolateSubdataset.xLeft, interpolateSubdataset.xRight, 2)
-
         interpolatedReconstructed = interpolatedReconstructed[:, 1]
         interpolated = interpolated[:, 1]
 
+        interpolatedImageSpace = self.__interpolate.interpolateAll(interpolateSubdataset.xLeft, interpolateSubdataset.xRight, 2)[:, 1]
+
+        randomImages = np.random.random_sample(interpolateSubdataset.xLeft.shape)
+
+        xCentreEncoded = self.__autoencoder.encoder().predict(interpolateSubdataset.xCentre, batch_size=100)
+
         if interpolateSubdataset.centreIsSpecified():
             self.__resultsStore.storeValue(
-                [self.__datasetName, self.__modelName, interpolateSubdataset.interpolatedFactorName, "actual", "metricImageSpace"],
-                self.__imageSpaceComparisonMetric.compute(interpolateSubdataset.xCentre, interpolatedReconstructed).mean
+                [self.__datasetName, self.__modelName, interpolateSubdataset.interpolatedFactorName, "interpolateLatentSpace", "metricImageSpace"],
+                self.__imageSpaceComparisonMetric.compute(interpolateSubdataset.xCentre, interpolatedReconstructed)
             )
 
             self.__resultsStore.storeValue(
-                [self.__datasetName, self.__modelName, interpolateSubdataset.interpolatedFactorName, "actual", "metricLatentSpace"],
+                [self.__datasetName, self.__modelName, interpolateSubdataset.interpolatedFactorName, "interpolateLatentSpace", "metricLatentSpace"],
+                self.__latentSpaceComparisonMetric.compute(xCentreEncoded, interpolated)
+            )
+
+            self.__resultsStore.storeValue(
+                [self.__datasetName, self.__modelName, interpolateSubdataset.interpolatedFactorName, "interpolateImageSpace", "metricImageSpace"],
+                self.__imageSpaceComparisonMetric.compute(interpolateSubdataset.xCentre, interpolatedImageSpace)
+            )
+
+            self.__resultsStore.storeValue(
+                [self.__datasetName, self.__modelName, interpolateSubdataset.interpolatedFactorName, "interpolateImageSpace", "metricLatentSpace"],
                 self.__latentSpaceComparisonMetric.compute(
-                    self.__autoencoder.encoder().predict(interpolateSubdataset.xCentre, batch_size=100),
-                    interpolated
-                ).mean
+                    xCentreEncoded,
+                    self.__autoencoder.encoder().predict(interpolatedImageSpace, batch_size=100),
+                )
+            )
+
+            self.__resultsStore.storeValue(
+                [self.__datasetName, self.__modelName, interpolateSubdataset.interpolatedFactorName, "randomImage", "metricImageSpace"],
+                self.__imageSpaceComparisonMetric.compute(interpolateSubdataset.xCentre, randomImages)
+            )
+
+            self.__resultsStore.storeValue(
+                [self.__datasetName, self.__modelName, interpolateSubdataset.interpolatedFactorName, "randomImage", "metricLatentSpace"],
+                self.__latentSpaceComparisonMetric.compute(
+                    xCentreEncoded,
+                    self.__autoencoder.encoder().predict(randomImages, batch_size=100),
+                )
             )
 
             if interpolateSubdataset.outsideIsSpecified():
                 self.__resultsStore.storeValue(
                     [self.__datasetName, self.__modelName, interpolateSubdataset.interpolatedFactorName, "control", "metricImageSpace"],
-                    self.__imageSpaceComparisonMetric.compute(interpolateSubdataset.xCentre, interpolateSubdataset.xOutside).mean
+                    self.__imageSpaceComparisonMetric.compute(interpolateSubdataset.xCentre, interpolateSubdataset.xOutside)
                 )
 
                 self.__resultsStore.storeValue(
                     [self.__datasetName, self.__modelName, interpolateSubdataset.interpolatedFactorName, "control", "metricLatentSpace"],
                     self.__latentSpaceComparisonMetric.compute(
-                        self.__autoencoder.encoder().predict(interpolateSubdataset.xCentre, batch_size=100),
+                        xCentreEncoded,
                         self.__autoencoder.encoder().predict(interpolateSubdataset.xOutside, batch_size=100)
-                    ).mean
+                    )
                 )
 
     def __visualInterpolation(self, interpolateSubdataset: InterpolateSubdataset):
