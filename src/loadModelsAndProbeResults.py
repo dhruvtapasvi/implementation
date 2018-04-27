@@ -8,6 +8,7 @@ from experiment.ReconstructionsExperiment import ReconstructionsExperiment
 from experiment.InterpolateExperiment import InterpolateExperiment
 from experiment.RecordLossesExperiment import RecordLossesExperiment
 from experiment.SamplingExperiment import SamplingExperiment
+from experiment.UserStudyGenerateImagesExperiment import UserStudyGenerateImagesExperiment
 
 from evaluation.metric.SquaredError import SquaredError
 from evaluation.metric.BinaryCrossEntropy import BinaryCrossEntropy
@@ -39,25 +40,28 @@ for experimentalTuple in experimentalTuples:
     dataSplitsName = experimentalTuple.datasetPackage.name
     configName = experimentalTuple.config.stringDescriptor
 
-    recordLossesExperiment = RecordLossesExperiment(dataSplits, dataSplitsName, variationalAutoencoder, configName, resultsStores.modelLossResults)
-    recordLossesExperiment.run()
+    # recordLossesExperiment = RecordLossesExperiment(dataSplits, dataSplitsName, variationalAutoencoder, configName, resultsStores.modelLossResults)
+    # recordLossesExperiment.run()
+    #
+    # reconstructionsExperiment = ReconstructionsExperiment(dataSplits, variationalAutoencoder, 10, experimentalTuple.stringDescriptor)
+    # reconstructionsExperiment.run()
 
-    reconstructionsExperiment = ReconstructionsExperiment(dataSplits, variationalAutoencoder, 10, experimentalTuple.stringDescriptor)
-    reconstructionsExperiment.run()
+    # samplingExperiment = SamplingExperiment(dataSplits, experimentalTuple.config, variationalAutoencoder, 10, experimentalTuple.stringDescriptor)
+    # samplingExperiment.run()
+    #
+    # interpolateExperiment = InterpolateExperiment(
+    #     interpolationSplits,
+    #     dataSplitsName,
+    #     variationalAutoencoder,
+    #     configName,
+    #     experimentalTuple.metricLatentSpace,
+    #     experimentalTuple.metricImageSpace,
+    #     experimentalTuple.stringDescriptor,
+    #     resultsStores.interpolationResults,
+    #     6,
+    #     6
+    # )
+    # interpolateExperiment.run()
 
-    samplingExperiment = SamplingExperiment(dataSplits, experimentalTuple.config, variationalAutoencoder, 10, experimentalTuple.stringDescriptor)
-    samplingExperiment.run()
-
-    interpolateExperiment = InterpolateExperiment(
-        interpolationSplits,
-        dataSplitsName,
-        variationalAutoencoder,
-        configName,
-        experimentalTuple.metricLatentSpace,
-        experimentalTuple.metricImageSpace,
-        experimentalTuple.stringDescriptor,
-        resultsStores.interpolationResults,
-        10,
-        6
-    )
-    interpolateExperiment.run()
+    experiment = UserStudyGenerateImagesExperiment(dataSplits, interpolationSplits, dataSplitsName, [(variationalAutoencoder, configName)])
+    experiment.run()
