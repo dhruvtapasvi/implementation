@@ -13,5 +13,4 @@ class LoadModelExperiment(Experiment):
         """
         Load the weights into a specified model
         """
-        print("Loading model " + self.__weightsPath)
         self.__variationalAutoencoder.loadWeights(self.__weightsPath)

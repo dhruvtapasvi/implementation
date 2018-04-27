@@ -18,3 +18,4 @@ def imagesArrayComparisonDisplay(arrays, fileName, startIndex=0, endIndex=None):
             num.get_xaxis().set_visible(False)
             num.get_yaxis().set_visible(False)
     plt.savefig(fileName, bbox_inches='tight', pad_inches=0)
+    plt.close()

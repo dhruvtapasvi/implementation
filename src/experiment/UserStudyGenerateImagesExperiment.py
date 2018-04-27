@@ -105,10 +105,6 @@ class UserStudyGenerateImagesExperiment(Experiment):
             combinedTestSelectionsReconstructionsList.append(value)
         combinedTestSelectionsReconstructions = np.concatenate(combinedTestSelectionsReconstructionsList)
 
-        print("combinedLeftSelectionsLength", len(combinedLeftSelections))
-        print("combinedNamesLength", len(combinedNames))
-        print("combinedTestSelectionsReconstructionsLength", len(combinedTestSelectionsReconstructions))
-
         self.__saveArrayPictures([combinedLeftSelections, combinedTestSelectionsReconstructions, combinedRightSelections], combinedNames, "interpolation")
 
     def __saveArrayPictures(self, arrays, names, dirName):
@@ -124,3 +120,5 @@ class UserStudyGenerateImagesExperiment(Experiment):
         namesRandomlyShuffled = [names[index]for index in randomShuffle]
 
         printRows(arraysRandomlyShuffled, arraysLength, fileNameStem)
+        with open(directory + "labels.p", "wb") as file:
+            pickle.dump(namesRandomlyShuffled, file)

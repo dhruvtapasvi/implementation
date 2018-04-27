@@ -17,3 +17,4 @@ def printRows(arrays, numElementsToPrint, fileStem):
             num.get_xaxis().set_visible(False)
             num.get_yaxis().set_visible(False)
         plt.savefig(fileStem + str(i), bbox_inches='tight', pad_inches=0)
+        plt.close()
