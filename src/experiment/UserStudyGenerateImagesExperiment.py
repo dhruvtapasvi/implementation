@@ -5,7 +5,6 @@ import os
 
 
 from config.routes import getUserStudyRoute
-from display.imagesArraysComparisonDisplay import imagesArrayComparisonDisplay
 from display.printRows import printRows
 from experiment.Experiment import Experiment
 from model.VariationalAutoencoder import VariationalAutoencoder

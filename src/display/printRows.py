@@ -3,9 +3,7 @@ import matplotlib.pyplot as plt
 
 def printRows(arrays, numElementsToPrint, fileStem):
     """
-    Display sample images from arrays side-by-side in a matrix format
-    Each array is a column
-    Each index is a row
+    Display each row (singular index cutting across each array in arrays) as a single image
     """
     numArrays = len(arrays)
     for i in range(0, numElementsToPrint):
