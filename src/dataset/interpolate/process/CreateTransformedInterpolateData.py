@@ -36,7 +36,6 @@ class CreateTransformedInterpolateData(InterpolateDatasetLoader):
         return [f(xTestPadded, yTestLabelled) for f in [self.__rotate, self.__shear, self.__stretch]]
 
     def __pad(self, X: np.ndarray):
-        print("Pad")
         XPadded = [pad(x, self.__padding, 'constant') for x in X]
         return np.array(XPadded)
 
@@ -48,16 +47,13 @@ class CreateTransformedInterpolateData(InterpolateDatasetLoader):
         return np.array(YLabelled)
 
     def __rotate(self, X, Y) -> InterpolateSubdataset:
-        print("Rotate")
-        return self.__transform(X, Y, "ROTATION", self.__rotationFactors, lambda f: AffineTransform(rotation=f), (1,))
+        return self.__transform(X, Y, "ROTATION", self.__rotationFactors, lambda f: AffineTransform(rotation=f, shear=self.__defaultShearFactor, scale=(2**self.__defaultLog2StretchFactor, 2**self.__defaultLog2StretchFactor)), (1,))
 
     def __shear(self, X, Y) -> InterpolateSubdataset:
-        print("Shear")
-        return self.__transform(X, Y, "SHEAR", self.__shearFactors, lambda f: AffineTransform(shear=f), (2,))
+        return self.__transform(X, Y, "SHEAR", self.__shearFactors, lambda f: AffineTransform(shear=f, rotation=self.__defaultRotationFactor, scale=(2**self.__defaultLog2StretchFactor, 2**self.__defaultLog2StretchFactor)), (2,))
 
     def __stretch(self, X, Y) -> InterpolateSubdataset:
-        print("Stretch")
-        return self.__transform(X, Y, "STRETCH", self.__log2StretchFactors, lambda f: AffineTransform(scale=(2**f, 2**f)), (3, 4))
+        return self.__transform(X, Y, "STRETCH", self.__log2StretchFactors, lambda f: AffineTransform(scale=(2**f, 2**f), rotation=self.__defaultRotationFactor, shear=self.__defaultShearFactor), (3, 4))
 
     def __transform(self, X, Y, interpolationFactorName, factors, transformFromFactor, yIndexOffsets):
         imageToOriginTransform = self.__imageToOriginTransform()

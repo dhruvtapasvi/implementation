@@ -16,7 +16,7 @@ class Test_MeanSquaredError(unittest.TestCase):
         first = np.array([[] for _ in range(numImages)])
         second = np.array([[] for _ in range(numImages)])
 
-        totalSquaredErrorByImage = self.__squaredError.compute(first, second)
+        totalSquaredErrorByImage = self.__squaredError.compute(first, second).allValues
 
         expectedTotalSquaredErrorByImage = np.zeros(numImages)
         np.testing.assert_array_almost_equal(expectedTotalSquaredErrorByImage, totalSquaredErrorByImage)
@@ -27,7 +27,7 @@ class Test_MeanSquaredError(unittest.TestCase):
         firstImages = np.array([np.full(imageSize, i) for i in range(numImages)])
         secondImages = np.array([np.full(imageSize, i) for i in range(numImages)])
 
-        totalSquaredErrorByImage = self.__squaredError.compute(firstImages, secondImages)
+        totalSquaredErrorByImage = self.__squaredError.compute(firstImages, secondImages).allValues
 
         expectedTotalSquaredErrorByImage = np.full((numImages,), 0.5 * np.prod(imageSize) * math.log(2 * math.pi))
         np.testing.assert_array_almost_equal(expectedTotalSquaredErrorByImage, totalSquaredErrorByImage)
@@ -38,7 +38,7 @@ class Test_MeanSquaredError(unittest.TestCase):
         firstImages = np.array([np.full(imageSize, i) for i in range(numImages)])
         secondImages = np.array([np.full(imageSize, i+1) for i in range(numImages)])
 
-        totalSquaredErrorByImage = self.__squaredError.compute(firstImages, secondImages)
+        totalSquaredErrorByImage = self.__squaredError.compute(firstImages, secondImages).allValues
 
         expectedTotalSquaredErrorByImage = np.full((numImages,), 0.5 * np.prod(imageSize) * (math.log(2 * math.pi) + 1))
         np.testing.assert_array_almost_equal(expectedTotalSquaredErrorByImage, totalSquaredErrorByImage)
@@ -51,7 +51,7 @@ class Test_MeanSquaredError(unittest.TestCase):
         firstImages = np.array([np.full(imageSize, i) for i in range(numImages)])
         secondImages = np.array([np.full(imageSize, i) for i in range(numImages)])
 
-        totalSquaredErrorByImage = squaredError.compute(firstImages, secondImages)
+        totalSquaredErrorByImage = squaredError.compute(firstImages, secondImages).allValues
 
         expectedTotalSquaredErrorByImage = np.full((numImages,), 0.5 * np.prod(imageSize) * (math.log(2 * math.pi) + math.log(variance)))
         np.testing.assert_array_almost_equal(expectedTotalSquaredErrorByImage, totalSquaredErrorByImage)
@@ -64,7 +64,7 @@ class Test_MeanSquaredError(unittest.TestCase):
         firstImages = np.array([np.full(imageSize, i) for i in range(numImages)])
         secondImages = np.array([np.full(imageSize, i+1) for i in range(numImages)])
 
-        totalSquaredErrorByImage = squaredError.compute(firstImages, secondImages)
+        totalSquaredErrorByImage = squaredError.compute(firstImages, secondImages).allValues
 
         expectedTotalSquaredErrorByImage = np.full((numImages,), 0.5 * np.prod(imageSize) * (math.log(2 * math.pi) + math.log(variance) + 1 / variance))
         np.testing.assert_array_almost_equal(expectedTotalSquaredErrorByImage, totalSquaredErrorByImage)

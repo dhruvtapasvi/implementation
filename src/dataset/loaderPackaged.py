@@ -13,6 +13,8 @@ from dataset.interpolate.basic.MnistTransformedInterpolateLoader import MnistTra
 from dataset.interpolate.basic.NorbInterpolateLoader import NorbInterpolateLoader
 from dataset.interpolate.basic.ShapesTransformedInterpolateLoader import ShapesTransformedInterpolateLoader
 from dataset.interpolate.process.ScaleBetweenZeroAndOneInterpolate import ScaleBetweenZeroAndOneInterpolate
+from dataset.interpolate.basic.MnistTransformedLimitedRotationInterpolateLoader import MnistTransformedLimitedRotationInterpolateLoader
+from dataset.interpolate.basic.ShapesTransformedLimitedRotationInterpolateLoader import ShapesTransformedLimitedRotationInterpolateLoader
 
 from config import routes
 
@@ -41,7 +43,7 @@ mnistTransformedLimitedRotationPackage = DatasetPackage(
         LoadFromFile(mnistTransformedInfoLimitedRotation.HOME_5, mnistTransformedInfoLimitedRotation.IMAGE_DIMENSIONS, mnistTransformedInfoLimitedRotation.LABEL_DIMENSIONS),
         *mnistTransformedInfoLimitedRotation.RANGE
     ),
-    ScaleBetweenZeroAndOneInterpolate(MnistTransformedInterpolateLoader(baseMnistLoader), *mnistTransformedInfo.RANGE)
+    ScaleBetweenZeroAndOneInterpolate(MnistTransformedLimitedRotationInterpolateLoader(baseMnistLoader), *mnistTransformedInfo.RANGE)
 )
 
 
@@ -70,5 +72,5 @@ shapesTransformedPackage = DatasetPackage(
 shapesTransformedLimitedRotationPackage = DatasetPackage(
     "shapesTransformedLimitedRotation",
     ScaleBetweenZeroAndOne(LoadFromFile(routes.RESOURCE_ROUTE + shapesInfoLimitedRotation.HOME, shapesInfoLimitedRotation.IMAGE_DIMENSIONS, shapesInfoLimitedRotation.LABEL_DIMENSIONS), *shapesInfoLimitedRotation.RANGE),
-    ScaleBetweenZeroAndOneInterpolate(ShapesTransformedInterpolateLoader(ShapesBase()), *shapesInfoLimitedRotation.RANGE)
+    ScaleBetweenZeroAndOneInterpolate(ShapesTransformedLimitedRotationInterpolateLoader(ShapesBase()), *shapesInfoLimitedRotation.RANGE)
 )

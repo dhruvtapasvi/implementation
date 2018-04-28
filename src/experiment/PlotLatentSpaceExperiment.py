@@ -30,7 +30,7 @@ class ReconstructionsExperiment(Experiment):
         _, _, (xTest, yTest) = self.__datasetLoader.loadData()
 
         # Draw where each test sample lies in the latent space
-        xTestEncoded = self.__encoder.predict(xTest, batch_size=1000)
+        xTestEncoded = self.__encoder.predict(xTest, batch_size=100)
         values = np.array([self.__labelToValue(label) for label in yTest])
         scatterPlotRoute = self.__resultRouteStem + "LatentSpacePlot.png"
         scatterPlotDisplay(xTestEncoded, values, scatterPlotRoute)
