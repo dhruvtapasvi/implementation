@@ -17,8 +17,5 @@ class SaveModelTrainingExperiment(Experiment):
         Save the model and the associated training history in the appropriate location
         """
         self.__model.saveWeights(routes.getModelWeightsRoute(self.__savePathStem))
-
-        pickle.dump(
-            self.__modelTrainingHistory,
-            open(routes.getModelTrainingHistoryRoute(self.__savePathStem), "wb")
-        )
+        with open(routes.getModelTrainingHistoryRoute(self.__savePathStem), "wb") as file:
+            pickle.dump(self.__modelTrainingHistory, file)

@@ -17,4 +17,5 @@ def imagesArrayComparisonDisplay(arrays, fileName, startIndex=0, endIndex=None):
             plt.gray()
             num.get_xaxis().set_visible(False)
             num.get_yaxis().set_visible(False)
-    plt.savefig(fileName)
+    plt.savefig(fileName, bbox_inches='tight', pad_inches=0)
+    plt.close()

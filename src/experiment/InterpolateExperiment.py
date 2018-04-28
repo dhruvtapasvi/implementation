@@ -96,14 +96,40 @@ class InterpolateExperiment(Experiment):
                 )
             )
 
+            self.__resultsStore.storeValue(
+                [self.__datasetName, self.__modelName, interpolateSubdataset.interpolatedFactorName, "left", "metricImageSpace"],
+                self.__imageSpaceComparisonMetric.compute(interpolateSubdataset.xCentre, interpolateSubdataset.xLeft)
+            )
+
+            self.__resultsStore.storeValue(
+                [self.__datasetName, self.__modelName, interpolateSubdataset.interpolatedFactorName, "left", "metricLatentSpace"],
+                self.__latentSpaceComparisonMetric.compute(
+                    xCentreEncoded,
+                    self.__autoencoder.encoder().predict(interpolateSubdataset.xLeft, batch_size=100),
+                )
+            )
+
+            self.__resultsStore.storeValue(
+                [self.__datasetName, self.__modelName, interpolateSubdataset.interpolatedFactorName, "right", "metricImageSpace"],
+                self.__imageSpaceComparisonMetric.compute(interpolateSubdataset.xCentre, interpolateSubdataset.xRight)
+            )
+
+            self.__resultsStore.storeValue(
+                [self.__datasetName, self.__modelName, interpolateSubdataset.interpolatedFactorName, "right", "metricLatentSpace"],
+                self.__latentSpaceComparisonMetric.compute(
+                    xCentreEncoded,
+                    self.__autoencoder.encoder().predict(interpolateSubdataset.xRight, batch_size=100),
+                )
+            )
+
             if interpolateSubdataset.outsideIsSpecified():
                 self.__resultsStore.storeValue(
-                    [self.__datasetName, self.__modelName, interpolateSubdataset.interpolatedFactorName, "control", "metricImageSpace"],
+                    [self.__datasetName, self.__modelName, interpolateSubdataset.interpolatedFactorName, "outside", "metricImageSpace"],
                     self.__imageSpaceComparisonMetric.compute(interpolateSubdataset.xCentre, interpolateSubdataset.xOutside)
                 )
 
                 self.__resultsStore.storeValue(
-                    [self.__datasetName, self.__modelName, interpolateSubdataset.interpolatedFactorName, "control", "metricLatentSpace"],
+                    [self.__datasetName, self.__modelName, interpolateSubdataset.interpolatedFactorName, "outside", "metricLatentSpace"],
                     self.__latentSpaceComparisonMetric.compute(
                         xCentreEncoded,
                         self.__autoencoder.encoder().predict(interpolateSubdataset.xOutside, batch_size=100)

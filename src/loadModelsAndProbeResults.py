@@ -10,9 +10,10 @@ from experiment.experimentalConfigTuples import experimentalConfigTuples as prep
 
 
 experimentalTuples = prepackagedExperimentalTuples
-
-NUM_RECONSTRUCTIONS = 100
-SQRT_NUM_SAMPLES = 10
+NUM_SAMPLE_RECONSTRUCTIONS = 10
+NUM_SAMPLES = 10
+NUM_SAMPLE_INTERPOLATIONS = 10
+NUM_INTERPOLATION_INTERVALS = 6
 
 
 for experimentalTuple in experimentalTuples:
@@ -30,10 +31,10 @@ for experimentalTuple in experimentalTuples:
     recordLossesExperiment = RecordLossesExperiment(dataSplits, dataSplitsName, variationalAutoencoder, configName, resultsStores.modelLossResults)
     recordLossesExperiment.run()
 
-    reconstructionsExperiment = ReconstructionsExperiment(dataSplits, variationalAutoencoder, 10, experimentalTuple.stringDescriptor)
+    reconstructionsExperiment = ReconstructionsExperiment(dataSplits, variationalAutoencoder, NUM_SAMPLE_RECONSTRUCTIONS, experimentalTuple.stringDescriptor)
     reconstructionsExperiment.run()
 
-    samplingExperiment = SamplingExperiment(dataSplits, experimentalTuple.config, variationalAutoencoder, 10, experimentalTuple.stringDescriptor)
+    samplingExperiment = SamplingExperiment(dataSplits, experimentalTuple.config, variationalAutoencoder, NUM_SAMPLES, experimentalTuple.stringDescriptor)
     samplingExperiment.run()
 
     interpolateExperiment = InterpolateExperiment(
@@ -45,7 +46,7 @@ for experimentalTuple in experimentalTuples:
         experimentalTuple.metricImageSpace,
         experimentalTuple.stringDescriptor,
         resultsStores.interpolationResults,
-        10,
-        6
+        NUM_SAMPLE_INTERPOLATIONS,
+        NUM_INTERPOLATION_INTERVALS
     )
     interpolateExperiment.run()

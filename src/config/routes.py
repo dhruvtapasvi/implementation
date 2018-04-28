@@ -23,3 +23,8 @@ def getConfigRoute(name):
 RESULTS_ROUTE = ROOT + "/results"
 def getRecordedResultsRoute(name):
     return RESULTS_ROUTE + "/" + name
+
+
+USER_STUDY_ROUTE = ROOT + "/userStudy"
+def getUserStudyRoute(name):
+    return USER_STUDY_ROUTE + "/" + name
