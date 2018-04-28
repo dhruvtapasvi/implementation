@@ -2,21 +2,10 @@ from experiment.BuildModelExperiment import BuildModelExperiment
 from experiment.TrainModelExperiment import TrainModelExperiment
 from experiment.SaveModelTrainingExperiment import SaveModelTrainingExperiment
 
-import dataset.loaderPackaged as loaders
-import config.packagedConfigs as modelConfigs
-from experiment.ExperimentalConfigTuple import ExperimentalConfigTuple
 from experiment.experimentalConfigTuples import experimentalConfigTuples as prepackagedExperimentalTuples
 
 
-experimentalTuples = [
-    ExperimentalConfigTuple(loaders.shapesTransformedLimitedRotationPackage,
-                            modelConfigs.conv_64x64_6_16_ENC_1024x3_DEC_1024x3_LAT_32_bce, 500, 100),
-    ExperimentalConfigTuple(loaders.mnistTransformedLimitedRotationPackage,
-                            modelConfigs.deepDense_64x64_ENC_1024x4_DEC_1024x4_LAT_32_bce, 500, 100),
-    ExperimentalConfigTuple(loaders.mnistTransformedLimitedRotationPackage,
-                            modelConfigs.conv_64x64_6_16_ENC_1024x3_DEC_1024x3_LAT_32_bce, 500, 100),
-    ExperimentalConfigTuple(loaders.norbPackage, modelConfigs.conv_96x96_6_16_ENC_1024x3_DEC_1024x3_LAT_32_bce, 250, 100)
-]
+experimentalTuples = prepackagedExperimentalTuples
 
 for experimentalTuple in experimentalTuples:
     buildModel = BuildModelExperiment(experimentalTuple.config)

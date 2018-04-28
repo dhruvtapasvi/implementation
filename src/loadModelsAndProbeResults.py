@@ -1,6 +1,3 @@
-import dataset.loaderPackaged as loaders
-import config.packagedConfigs as configs
-
 from experiment.BuildModelExperiment import BuildModelExperiment
 from experiment.LoadModelExperiment import LoadModelExperiment
 from experiment.ReconstructionsExperiment import ReconstructionsExperiment
@@ -8,14 +5,10 @@ from experiment.InterpolateExperiment import InterpolateExperiment
 
 from interpolate.InterpolateLatentSpace import InterpolateLatentSpace
 
-from experiment.ExperimentalConfigTuple import ExperimentalConfigTuple
 from experiment.experimentalConfigTuples import experimentalConfigTuples as prepackagedExperimentalTuples
 
 
-experimentalTuples = [
-    ExperimentalConfigTuple(loaders.shapesTransformedPackage, configs.conv_64x64_7_16_256_32_bce, 1000, 0)
-]
-
+experimentalTuples = prepackagedExperimentalTuples
 
 NUM_RECONSTRUCTIONS = 100
 SQRT_NUM_SAMPLES = 10
