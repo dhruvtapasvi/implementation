@@ -20,26 +20,16 @@ RECONSTRUCTION_CATEGORIES_MULTIPLICITY = 2
 INTERPOLATION_CATEGORIES_MULTIPLICITY = 2
 
 
-INTERPOLATION_CATEGORIES = [
-    "interpolateLatentSpace",
-    "interpolateImageSpace",
-    "positiveControl",
-    "outsideImage",
-    "randomPixels"
-]
-
-
-NUMBER_STUDIES_TO_MAKE = 2
-
-
 class UserStudyGenerateImagesExperiment(Experiment):
     def __init__(
             self,
+            numStudiesToMake,
             dataSplits,
             interpolationSubdatasets,
             datasetName: str,
             variationalAutoencoderConfigNamePairs: List[Tuple[VariationalAutoencoder, str]]
     ):
+        self.__numStudiesToMake = numStudiesToMake
         _, _, (self.__xTest, _) = dataSplits
         combineInterpolateLoaders = CombineInterpolateLoaders()
         self.__interpolationSubdataset = combineInterpolateLoaders.combine(interpolationSubdatasets, "Combined")
@@ -54,7 +44,7 @@ class UserStudyGenerateImagesExperiment(Experiment):
         self.__saveInterpolations()
 
     def __saveReconstructions(self):
-        numRandomTestSelections = NUMBER_STUDIES_TO_MAKE * RECONSTRUCTION_CATEGORIES_MULTIPLICITY
+        numRandomTestSelections = self.__numStudiesToMake * RECONSTRUCTION_CATEGORIES_MULTIPLICITY
         randomTestSelectionsIndices = np.random.choice(len(self.__xTest), numRandomTestSelections, replace=False)
         randomTestSelections = self.__xTest[randomTestSelectionsIndices]
 
@@ -77,7 +67,7 @@ class UserStudyGenerateImagesExperiment(Experiment):
         self.__saveArrayPictures([combinedTestSelections, combinedTestSelectionsReconstructions], combinedNames, "reconstruction")
 
     def __saveInterpolations(self):
-        numRandomInterpolationSelections = NUMBER_STUDIES_TO_MAKE * INTERPOLATION_CATEGORIES_MULTIPLICITY
+        numRandomInterpolationSelections = self.__numStudiesToMake * INTERPOLATION_CATEGORIES_MULTIPLICITY
         randomInterpolationSelectionsIndices = np.random.choice(len(self.__interpolationSubdataset.xLeft), numRandomInterpolationSelections, replace=False)
 
         randomInterpolationXLeft = self.__interpolationSubdataset.xLeft[randomInterpolationSelectionsIndices]

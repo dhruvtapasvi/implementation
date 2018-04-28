@@ -5,15 +5,15 @@ from experiment.ReconstructionsExperiment import ReconstructionsExperiment
 from experiment.InterpolateExperiment import InterpolateExperiment
 from experiment.RecordLossesExperiment import RecordLossesExperiment
 from experiment.SamplingExperiment import SamplingExperiment
-from experiment.UserStudyGenerateImagesExperiment import UserStudyGenerateImagesExperiment
 
 from experiment.experimentalConfigTuples import experimentalConfigTuples as prepackagedExperimentalTuples
 
 
 experimentalTuples = prepackagedExperimentalTuples
-
-NUM_RECONSTRUCTIONS = 100
-SQRT_NUM_SAMPLES = 10
+NUM_SAMPLE_RECONSTRUCTIONS = 10
+NUM_SAMPLES = 10
+NUM_SAMPLE_INTERPOLATIONS = 10
+NUM_INTERPOLATION_INTERVALS = 6
 
 
 for experimentalTuple in experimentalTuples:
@@ -28,28 +28,25 @@ for experimentalTuple in experimentalTuples:
     dataSplitsName = experimentalTuple.datasetPackage.name
     configName = experimentalTuple.config.stringDescriptor
 
-    # recordLossesExperiment = RecordLossesExperiment(dataSplits, dataSplitsName, variationalAutoencoder, configName, resultsStores.modelLossResults)
-    # recordLossesExperiment.run()
-    #
-    # reconstructionsExperiment = ReconstructionsExperiment(dataSplits, variationalAutoencoder, 10, experimentalTuple.stringDescriptor)
-    # reconstructionsExperiment.run()
+    recordLossesExperiment = RecordLossesExperiment(dataSplits, dataSplitsName, variationalAutoencoder, configName, resultsStores.modelLossResults)
+    recordLossesExperiment.run()
 
-    # samplingExperiment = SamplingExperiment(dataSplits, experimentalTuple.config, variationalAutoencoder, 10, experimentalTuple.stringDescriptor)
-    # samplingExperiment.run()
-    #
-    # interpolateExperiment = InterpolateExperiment(
-    #     interpolationSplits,
-    #     dataSplitsName,
-    #     variationalAutoencoder,
-    #     configName,
-    #     experimentalTuple.metricLatentSpace,
-    #     experimentalTuple.metricImageSpace,
-    #     experimentalTuple.stringDescriptor,
-    #     resultsStores.interpolationResults,
-    #     6,
-    #     6
-    # )
-    # interpolateExperiment.run()
+    reconstructionsExperiment = ReconstructionsExperiment(dataSplits, variationalAutoencoder, NUM_SAMPLE_RECONSTRUCTIONS, experimentalTuple.stringDescriptor)
+    reconstructionsExperiment.run()
 
-    experiment = UserStudyGenerateImagesExperiment(dataSplits, interpolationSplits, dataSplitsName, [(variationalAutoencoder, configName)])
-    experiment.run()
+    samplingExperiment = SamplingExperiment(dataSplits, experimentalTuple.config, variationalAutoencoder, NUM_SAMPLES, experimentalTuple.stringDescriptor)
+    samplingExperiment.run()
+
+    interpolateExperiment = InterpolateExperiment(
+        interpolationSplits,
+        dataSplitsName,
+        variationalAutoencoder,
+        configName,
+        experimentalTuple.metricLatentSpace,
+        experimentalTuple.metricImageSpace,
+        experimentalTuple.stringDescriptor,
+        resultsStores.interpolationResults,
+        NUM_SAMPLE_INTERPOLATIONS,
+        NUM_INTERPOLATION_INTERVALS
+    )
+    interpolateExperiment.run()
