@@ -139,7 +139,7 @@ class InterpolateExperiment(Experiment):
                 )
 
     def __visualInterpolation(self, interpolateSubdataset: InterpolateSubdataset):
-        randomSubset = np.random.choice(len(interpolateSubdataset.xLeft), self.__numSampleInterpolations, replace=False)
+        randomSubset = np.random.choice(len(interpolateSubdataset.xLeft), min(self.__numSampleInterpolations, len(interpolateSubdataset.xLeft)), replace=False)
         truncatedInterpolateSubdataset = InterpolateSubdataset(
             interpolateSubdataset.interpolatedFactorName,
             (interpolateSubdataset.xLeft[randomSubset], interpolateSubdataset.yLeft[randomSubset]),
