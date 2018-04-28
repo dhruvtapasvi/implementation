@@ -1,0 +1,39 @@
+{
+  "$schema": "file:config/schema/json-schema-draft-04.schema.json",
+  "title": "Dense Variational Autoencoder Parameters",
+  "description": "Parameters for a Dense Variational Autoencoder",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "file:config/schema/vae.schema.json"
+    },
+    {
+      "properties": {
+        "encoderDimensions": {
+          "description": "A list of the sizes of intermediate Dense layers, in the encoder",
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "exclusiveMinimum": true
+          },
+          "minItems": 1
+        },
+        "decoderDimensions": {
+          "description": "A list of the sizes of intermediate Dense layers, in the decoder",
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "exclusiveMinimum": true
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "encoderDimensions",
+        "decoderDimensions"
+      ]
+    }
+  ]
+}
