@@ -1,3 +1,7 @@
+import matplotlib
+matplotlib.use('Agg')
+
+
 from experiment.UserStudyGenerateImagesExperiment import UserStudyGenerateImagesExperiment
 from experiment.BuildModelExperiment import BuildModelExperiment
 from experiment.LoadModelExperiment import LoadModelExperiment

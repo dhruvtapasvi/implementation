@@ -1,3 +1,7 @@
+import matplotlib
+matplotlib.use('Agg')
+
+
 import evaluation.results.packageResults as resultsStores
 from experiment.BuildModelExperiment import BuildModelExperiment
 from experiment.LoadModelExperiment import LoadModelExperiment
