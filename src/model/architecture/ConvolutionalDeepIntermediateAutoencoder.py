@@ -5,7 +5,6 @@ from model.VariationalAutoencoder import VariationalAutoencoder
 
 
 class ConvolutionalDeepIntermediateAutoencoder(VariationalAutoencoder):
-    # Architecture from https://github.com/keras-team/keras/blob/master/examples/variational_autoencoder.py
     def __init__(
             self,
             reconstructionLossConstructor,
@@ -54,7 +53,6 @@ class ConvolutionalDeepIntermediateAutoencoder(VariationalAutoencoder):
         minImageSize = tuple(map(lambda x: x // (2 if self.__downsampleLast else 1), minImageSizeConv))
         convolutionalTransposeDimensions = minImageSize + (maxNumFilters,)
         totalNumberOfNodes = np.prod(convolutionalTransposeDimensions)
-        print(convolutionalTransposeDimensions)
         decoderLayersList = [
             BatchNormalization(),
             self.__denseLayersConstructor(self.__decoderDenseDimensions),
@@ -67,13 +65,6 @@ class ConvolutionalDeepIntermediateAutoencoder(VariationalAutoencoder):
         ]
 
         return self.collapseLayers(decoderLayersList)
-
-    def __buildDeepDeconvolutionalLayer(self, filters, kernelSize=(3, 3), strides=(1, 1)):
-        layersList =[
-            Deconv2D(filters, kernelSize, strides=strides, activation="relu", padding="same", kernel_initializer="he_normal"),
-            BatchNormalization(),
-        ]
-        return self.collapseLayers(layersList)
 
     def __encoderConvolutionsConstructor(self):
         numFilters = self.__baseConvolutionalDepth
