@@ -49,17 +49,19 @@ class InterpolateExperiment(Experiment):
             self.__visualInterpolation(combinedSubdatasets)
 
     def __numericalInterpolationMetrics(self, interpolateSubdataset: InterpolateSubdataset):
-        interpolated, interpolatedReconstructed = self.__interpolateLatentSpace.interpolateAll(interpolateSubdataset.xLeft, interpolateSubdataset.xRight, 2)
-        interpolatedReconstructed = interpolatedReconstructed[:, 1]
-        interpolated = interpolated[:, 1]
-
-        interpolatedImageSpace = self.__interpolate.interpolateAll(interpolateSubdataset.xLeft, interpolateSubdataset.xRight, 2)[:, 1]
-
-        randomImages = np.random.random_sample(interpolateSubdataset.xLeft.shape)
-
-        xCentreEncoded = self.__autoencoder.encoder().predict(interpolateSubdataset.xCentre, batch_size=100)
-
         if interpolateSubdataset.centreIsSpecified():
+            interpolated, interpolatedReconstructed = self.__interpolateLatentSpace.interpolateAll(
+                interpolateSubdataset.xLeft, interpolateSubdataset.xRight, 2)
+            interpolatedReconstructed = interpolatedReconstructed[:, 1]
+            interpolated = interpolated[:, 1]
+
+            interpolatedImageSpace = self.__interpolate.interpolateAll(interpolateSubdataset.xLeft,
+                                                                       interpolateSubdataset.xRight, 2)[:, 1]
+
+            randomImages = np.random.random_sample(interpolateSubdataset.xLeft.shape)
+
+            xCentreEncoded = self.__autoencoder.encoder().predict(interpolateSubdataset.xCentre, batch_size=100)
+
             self.__resultsStore.storeValue(
                 [self.__datasetName, self.__modelName, interpolateSubdataset.interpolatedFactorName, "interpolateLatentSpace", "metricImageSpace"],
                 self.__imageSpaceComparisonMetric.compute(interpolateSubdataset.xCentre, interpolatedReconstructed)
