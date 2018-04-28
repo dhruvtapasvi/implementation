@@ -1,0 +1,18 @@
+{
+  "$schema": "file:config/schema/convolutionalDeepIntermediate.schema.json",
+
+  "descriptor": "conv_96x96_6_16_ENC_1024x3_DEC_1024x3_LAT_32_bce",
+  "reconstructionLoss": "binaryCrossEntropy",
+  "klLossWeight": 1.0,
+  "inputRepresentationDimensions": [
+    96,
+    96
+  ],
+  "latentRepresentationDimension": 32,
+
+  "numberConvolutions": 6,
+  "downSampleLast": false,
+  "encoderIntermediateDimensions": [1024, 1024, 1024],
+  "decoderIntermediateDimensions": [1024, 1024, 1024],
+  "baseConvolutionalDepth": 16
+}

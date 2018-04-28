@@ -1,0 +1,58 @@
+{
+  "$schema": "file:config/schema/json-schema-draft-04.schema.json",
+  "title": "Convolutional Variational Autoencoder Parameters",
+  "description": "Parameters for a Convolutional Variational Autoencoder",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "file:config/schema/vae.schema.json"
+    },
+    {
+      "properties": {
+        "numberConvolutions": {
+          "description": "The number of triple convolutional blocks",
+          "type": "integer",
+          "minimum": 0,
+          "exclusiveMinimum": true
+        },
+        "downSampleLast": {
+          "description": "Whether or not the last convolutional module should perform a down sampling operation",
+          "type": "boolean"
+        },
+        "baseConvolutionalDepth": {
+          "description": "The default number of kernels of the first convolutional layers; doubled at every halving of image size",
+          "type": "integer",
+          "minimum": 0,
+          "exclusiveMinimum": true
+        },
+        "encoderIntermediateDimensions": {
+          "description": "A list of the sizes of intermediate Dense layers, in the encoder",
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "exclusiveMinimum": true
+          },
+          "minItems": 1
+        },
+        "decoderIntermediateDimensions": {
+          "description": "A list of the sizes of intermediate Dense layers, in the decoder",
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "exclusiveMinimum": true
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "numberConvolutions",
+        "downSampleLast",
+        "baseConvolutionalDepth",
+        "encoderIntermediateDimensions",
+        "decoderIntermediateDimensions"
+      ]
+    }
+  ]
+}

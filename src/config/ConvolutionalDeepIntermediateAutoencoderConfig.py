@@ -1,10 +1,10 @@
 import json
 from config.VaeConfig import VaeConfig
 
-from model.architecture.ConvolutionalAutoencoder import ConvolutionalAutoencoder
+from model.architecture.ConvolutionalDeepIntermediateAutoencoder import ConvolutionalDeepIntermediateAutoencoder
 
 
-class ConvolutionalAutoencoderConfig(VaeConfig):
+class ConvolutionalDeepIntermediateAutoencoderConfig(VaeConfig):
     def __init__(self, file):
         with open(file) as file:
             parameters = json.load(file)
@@ -14,7 +14,9 @@ class ConvolutionalAutoencoderConfig(VaeConfig):
     def __setParameters(self, parameters):
         self.__numberConvolutions = parameters["numberConvolutions"]
         self.__baseConvolutionalDepth = parameters["baseConvolutionalDepth"]
-        self.__intermediateRepresentationDimension = parameters["intermediateRepresentationDimension"]
+        self.__downsampleLast = parameters["downSampleLast"]
+        self.__encoderIntermediateDimensions = parameters["encoderIntermediateDimensions"]
+        self.__decoderIntermediateDimensions = parameters["decoderIntermediateDimensions"]
 
     @property
     def numberConvolutions(self):
@@ -25,16 +27,26 @@ class ConvolutionalAutoencoderConfig(VaeConfig):
         return self.__baseConvolutionalDepth
 
     @property
-    def intermediateRepresentationDimension(self):
-        return self.__intermediateRepresentationDimension
+    def downsampleLast(self):
+        return self.__downsampleLast
+
+    @property
+    def encoderIntermediateDimensions(self):
+        return self.__encoderIntermediateDimensions
+
+    @property
+    def decoderIntermediateDimensions(self):
+        return self.__decoderIntermediateDimensions
 
     def fromConfig(self):
-        return ConvolutionalAutoencoder(
+        return ConvolutionalDeepIntermediateAutoencoder(
             self.reconstructionLossConstructor,
             self.klLossWeight,
             self.inputRepresentationDimensions,
             self.numberConvolutions,
+            self.downsampleLast,
             self.baseConvolutionalDepth,
-            self.intermediateRepresentationDimension,
+            self.encoderIntermediateDimensions,
+            self.decoderIntermediateDimensions,
             self.latentRepresentationDimension
         )
