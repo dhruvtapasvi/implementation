@@ -1,7 +1,7 @@
 function generateUserStudy() {
     var PARTICIPANT_NUMBER = 0;
     var USER_STUDY_TITLE = "Survey (#".concat(PARTICIPANT_NUMBER.toString(), ")");
-    var WELCOME_TEXT = "Thank you for agreeing to participate in my survey!";
+    var WELCOME_TEXT = "Thank you for agreeing to participate in my survey! This study will involve rating a series of images on a scale of 1 to 5, according to criteria which will be explained.";
 
     var CONSENT_TEXT = "Please read the following instructions regarding consent before beginning the survey:\n" +
         "Participation in this survey is entirely voluntary. You may freely choose not to carry out this survey without justification or penalty.\n" +
