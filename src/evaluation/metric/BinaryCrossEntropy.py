@@ -12,7 +12,7 @@ class BinaryCrossEntropy(Metric):
         numElements = len(first)
         result = np.zeros((numElements,), dtype='float64')
 
-        for i in range(numElements/BLOCK_SIZE):
+        for i in range(numElements // BLOCK_SIZE):
             startIndex = BLOCK_SIZE * i
             endIndex = min(BLOCK_SIZE * (i+1), numElements)
 
