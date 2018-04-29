@@ -13,10 +13,10 @@ from interpolate.InterpolateLatentSpace import InterpolateLatentSpace
 from dataset.interpolate.process.CombineInterpolateLoaders import CombineInterpolateLoaders
 
 
-RECONSTRUCTION_CATEGORIES_MULTIPLICITY = 8
+RECONSTRUCTION_CATEGORIES_MULTIPLICITY = 4
 
 
-INTERPOLATION_CATEGORIES_MULTIPLICITY = 8
+INTERPOLATION_CATEGORIES_MULTIPLICITY = 4
 
 
 class UserStudyGenerateImagesExperiment(Experiment):
