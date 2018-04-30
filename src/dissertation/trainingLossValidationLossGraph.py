@@ -1,11 +1,11 @@
 import pickle
 import matplotlib.pyplot as plt
 
-from config.routes import getModelTrainingHistoryRoute, getResultRouteStem, OUT_ROUTE
+from config.routes import getModelTrainingHistoryRoute, getRecordedResultsRoute
 
 
 modelTrainingHistoryRoute = getModelTrainingHistoryRoute("shapesTransformedLimitedRotation_deepDense_64x64_ENC_1024x4_DEC_1024x4_LAT_32_bce")
-resultRoute = OUT_ROUTE + "/trainVsValidationLoss.png"
+resultRoute = getRecordedResultsRoute("/trainVsValidationLoss_dense_shapes.png")
 
 
 with open(modelTrainingHistoryRoute, "rb") as file:

@@ -6,6 +6,13 @@ DATASET_ORDER = [
 ]
 
 
+INTERPOLATION_DATASET_ORDER = [
+    "mnistTransformedLimitedRotation",
+    "shapesTransformedLimitedRotation",
+    "norb"
+]
+
+
 DATASET_NAMES = {
     "mnistTransformedLimitedRotation": "Transformed MNIST",
     "mnist": "MNIST",
@@ -42,3 +49,24 @@ LOSSES_CATEGORIES = [
     "reconstruction",
     "total"
 ]
+
+
+INTERPOLATION_TECHNIQUES = [
+    "interpolateLatentSpace",
+    "interpolateImageSpace",
+    "left",
+    "right",
+    "outside",
+    "randomImage"
+]
+
+
+INTERPOLATE_TECHNIQUE_NAMES = {
+    "interpolateLatentSpace": "Interpolate\nin the\nLatent\nSpace",
+    "interpolateImageSpace": "Interpolate\nin the\nImage\nSpace",
+    "left": "First\nimage",
+    "right": "Second\nimage",
+    "outside": "An image\nlying\noutside\ninterpolation\nrange",
+    "randomImage": "A random\nimage"
+}
+
