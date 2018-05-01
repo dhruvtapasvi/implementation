@@ -27,6 +27,12 @@ ARCH_TYPES = [
 ]
 
 
+ARCH_NAMES = {
+    "dense": "Dense",
+    "conv": "Convolutional"
+}
+
+
 DATASET_ARCH_NAMES = {
     "mnistTransformedLimitedRotation": {
         "dense": "deepDense_64x64_ENC_1024x4_DEC_1024x4_LAT_32_bce",
@@ -64,9 +70,9 @@ INTERPOLATION_TECHNIQUES = [
 INTERPOLATE_TECHNIQUE_NAMES = {
     "interpolateLatentSpace": "Interpolate\nin the\nLatent\nSpace",
     "interpolateImageSpace": "Interpolate\nin the\nImage\nSpace",
-    "left": "First\nimage",
-    "right": "Second\nimage",
-    "outside": "An image\nlying\noutside\ninterpolation\nrange",
-    "randomImage": "A random\nimage"
+    "left": "First\nimage\n(left)",
+    "right": "Second\nimage\n(right)",
+    "outside": "An image\nlying\noutside\ninterpolation\nrange (outside)",
+    "randomImage": "A random\nimage\n(random)"
 }
 
