@@ -3,25 +3,25 @@ function generateUserStudy() {
     var USER_STUDY_TITLE = "Survey (#".concat(PARTICIPANT_NUMBER.toString(), ")");
     var WELCOME_TEXT = "Thank you for agreeing to participate in my survey! This study will involve rating a series of images on a scale of 1 to 5, according to criteria which will be explained.";
 
-    var CONSENT_TEXT = "Please read the following instructions regarding consent before beginning the survey:\n" +
-        "Participation in this survey is entirely voluntary. You may freely choose not to carry out this survey without justification or penalty.\n" +
-        "Additionally, even after consenting to carry out the study, you may withdraw your consent at any time and stop doing the survey.\n" +
-        "At any time, if you wish to stop doing the survey, please close this browser window, and DO NOT submit answers or proceed further with the survey.\n" +
-        "This survey is designed to about 10 minutes. If at any stage your feel overstretched while carrying out the survey, " +
-        "or if the survey is taking a disproportionate amount of time (more than about 30 minutes) to complete, " +
-        "please feel free to withdraw from the survey.\n" +
-        "No private data will be collected during the course of the survey. The survey is entirely anonymous, and data collected will only relate to rating images.\n" +
+    var CONSENT_TEXT = "PLEASE READ THE FOLLOWING INSTRUCTIONS REGARDING CONSENT BEFORE BEGINNING THE SURVEY:\n" +
+        "1. Participation in this survey is entirely voluntary. You may freely choose not to carry out this survey without justification or penalty.\n" +
+        "2. Additionally, even after consenting to carry out the study, you may withdraw your consent at any time and stop doing the survey.\n" +
+        "3. At any time, if you wish to stop doing the survey, please close this browser window, and DO NOT submit answers or proceed further with the survey.\n" +
+        "4. This survey is designed to last about 15 minutes. If at any stage your feel overstretched while carrying out the survey, " +
+            "or if the survey is taking a disproportionate amount of time (more than about 30 minutes) to complete, " +
+            "please feel free to withdraw from the survey.\n" +
+        "5. No private data will be collected during the course of the survey. The survey is entirely anonymous, and data collected will only relate to rating images.\n" +
         "Please contact me by email at \"ddt21@cam.ac.uk\" if you have any further questions about this survey.";
     var CONSENT_AGREEMENT_TEXT = "I have read and understood the above instructions, and consent to carry out the user study.";
 
-    var INSTRUCTIONS_TEXT = "Please take the time to read these additional instructions before proceeding with the survey:\n" +
+    var INSTRUCTIONS_TEXT = "PLEASE TAKE THE TIME TO READ THESE ADDITIONAL INSTRUCTIONS BEFORE BEGINNING THE SURVEY:\n" +
         "There will be two types of questions in the survey. Both will involve carrying out a rating of scores between 1 and 5 inclusive. The explanations for each scoring category are specified in each question.\n" +
-        "The first type of question will ask you to rate a \"reconstruction\". There will be two pictures, side-by-side. The aim is to rate how well the second image (on the right) resembles the first image (on the left).\n" +
-        "The second type of question will ask you to rate an \"interpolation\". There will be three pictures arranged side-by-side in a horizontal line. The aim is to rate how well the middle image fits in a sequence between the image to the left and the image to the right.";
+        "1. The first type of question will ask you to rate a \"reconstruction\". There will be two pictures, side-by-side. The aim is to rate how well the second image (on the right) resembles the first image (on the left).\n" +
+        "2. The second type of question will ask you to rate an \"interpolation\". There will be three pictures arranged side-by-side in a horizontal line. The aim is to rate how well the middle image fits in a sequence between the image to the left and the image to the right.";
 
     var QUESTIONS_TEXT = "Please answer ALL questions.\n" +
-        "RECONSTRUCTION questions: There will be two pictures, side-by-side. The aim is to rate how well the second image (on the right) resembles the first image (on the left).\n" +
-        "INTERPOLATION questions: There will be three pictures arranged side-by-side in a horizontal line. The aim is to rate how well the middle image fits in a sequence between the image to the left and the image to the right.";
+        "1. RECONSTRUCTION questions: There will be two pictures, side-by-side. The aim is to rate how well the second image (on the right) resembles the first image (on the left).\n" +
+        "2. INTERPOLATION questions: There will be three pictures arranged side-by-side in a horizontal line. The aim is to rate how well the middle image fits in a sequence between the image to the left and the image to the right.";
     var RATE_RECONSTRUCTION_QUESTION = "Please rate the reconstruction out of 5:";
     var RATE_INTERPOLATION_QUESTION = "Please rate the interpolation out of 5:";
     var RECONSTRUCTION_OPTIONS = [
@@ -34,7 +34,7 @@ function generateUserStudy() {
     var INTERPOLATION_OPTIONS = [
         "1: The central image does not form any distinguishable sequence between the first and the last.",
         "2: The central image forms a barely distinguishable sequence between the first and the last.",
-        "3: The central image forms an somewhat distinguishable sequence between the first and the last.",
+        "3: The central image forms a somewhat distinguishable sequence between the first and the last.",
         "4: The central image forms a clearly distinguishable sequence between the first and the last.",
         "5: The central image forms a perfect sequence between the first and the last."
     ];
