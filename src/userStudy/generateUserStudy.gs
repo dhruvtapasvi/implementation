@@ -10,7 +10,7 @@ function generateUserStudy() {
         "4. This survey is designed to last about 15 minutes. If at any stage your feel overstretched while carrying out the survey, " +
             "or if the survey is taking a disproportionate amount of time (more than about 30 minutes) to complete, " +
             "please feel free to withdraw from the survey.\n" +
-        "5. No private data will be collected during the course of the survey. The survey is entirely anonymous, and data collected will only relate to rating images.\n" +
+        "5. No private data will be collected during the course of the survey. The survey is entirely anonymous, and data collected will only relate to rating images. Data collected will be used for evaluating the quality of various techniques used to generate the images.\n" +
         "Please contact me by email at \"ddt21@cam.ac.uk\" if you have any further questions about this survey.";
     var CONSENT_AGREEMENT_TEXT = "I have read and understood the above instructions, and consent to carry out the user study.";
 
