@@ -1,31 +1,47 @@
 function generateUserStudy() {
-    var USER_STUDY_TITLE = "User Study Survey";
-    var WELCOME_TEXT = "Thank you for agreeing to participate in my user study!";
-    var CONSENT_TEXT = "Before beginning the survey, please read the following consent constructions.";
-    var CONSENT_AGREEMENT_TEXT = "I have read the above instructions and consent to carry out the user study.";
-    var INSTRUCTIONS_TEXT = "Some Instructions";
-    var QUESTIONS_TEXT = "Please answer ALL questions.";
+    var PARTICIPANT_NUMBER = 0;
+    var USER_STUDY_TITLE = "Survey (#".concat(PARTICIPANT_NUMBER.toString(), ")");
+    var WELCOME_TEXT = "Thank you for agreeing to participate in my survey! This study will involve rating a series of images on a scale of 1 to 5, according to criteria which will be explained.";
+
+    var CONSENT_TEXT = "PLEASE READ THE FOLLOWING INSTRUCTIONS REGARDING CONSENT BEFORE BEGINNING THE SURVEY:\n" +
+        "1. Participation in this survey is entirely voluntary. You may freely choose not to carry out this survey without justification or penalty.\n" +
+        "2. Additionally, even after consenting to carry out the study, you may withdraw your consent at any time and stop doing the survey.\n" +
+        "3. At any time, if you wish to stop doing the survey, please close this browser window, and DO NOT submit answers or proceed further with the survey.\n" +
+        "4. This survey is designed to last about 15 minutes. If at any stage your feel overstretched while carrying out the survey, " +
+            "or if the survey is taking a disproportionate amount of time (more than about 30 minutes) to complete, " +
+            "please feel free to withdraw from the survey.\n" +
+        "5. No private data will be collected during the course of the survey. The survey is entirely anonymous, and data collected will only relate to rating images. Data collected will be used for evaluating the quality of various techniques used to generate the images.\n" +
+        "Please contact me by email at \"ddt21@cam.ac.uk\" if you have any further questions about this survey.";
+    var CONSENT_AGREEMENT_TEXT = "I have read and understood the above instructions, and consent to carry out the user study.";
+
+    var INSTRUCTIONS_TEXT = "PLEASE TAKE THE TIME TO READ THESE ADDITIONAL INSTRUCTIONS BEFORE BEGINNING THE SURVEY:\n" +
+        "There will be two types of questions in the survey. Both will involve carrying out a rating of scores between 1 and 5 inclusive. The explanations for each scoring category are specified in each question.\n" +
+        "1. The first type of question will ask you to rate a \"reconstruction\". There will be two pictures, side-by-side. The aim is to rate how well the second image (on the right) resembles the first image (on the left).\n" +
+        "2. The second type of question will ask you to rate an \"interpolation\". There will be three pictures arranged side-by-side in a horizontal line. The aim is to rate how well the middle image fits in a sequence between the image to the left and the image to the right.";
+
+    var QUESTIONS_TEXT = "Please answer ALL questions.\n" +
+        "1. RECONSTRUCTION questions: There will be two pictures, side-by-side. The aim is to rate how well the second image (on the right) resembles the first image (on the left).\n" +
+        "2. INTERPOLATION questions: There will be three pictures arranged side-by-side in a horizontal line. The aim is to rate how well the middle image fits in a sequence between the image to the left and the image to the right.";
     var RATE_RECONSTRUCTION_QUESTION = "Please rate the reconstruction out of 5:";
     var RATE_INTERPOLATION_QUESTION = "Please rate the interpolation out of 5:";
     var RECONSTRUCTION_OPTIONS = [
-        "1: ",
-        "2: ",
-        "3: ",
-        "4: ",
-        "5: "
+        "1: The second image does not resemble the first in any way.",
+        "2: The second image only vaguely resembles the first, e.g. has approximately the correct shape.",
+        "3: The second image somewhat resembles the first, possibly with faults of differences.",
+        "4: The second image clearly resembles the first, with some minor faults or differences.",
+        "5: The second image perfectly resembles the first."
     ];
     var INTERPOLATION_OPTIONS = [
-        "1: ",
-        "2: ",
-        "3: ",
-        "4: ",
-        "5: "
+        "1: The central image does not form any distinguishable sequence between the first and the last.",
+        "2: The central image forms a barely distinguishable sequence between the first and the last.",
+        "3: The central image forms a somewhat distinguishable sequence between the first and the last.",
+        "4: The central image forms a clearly distinguishable sequence between the first and the last.",
+        "5: The central image forms a perfect sequence between the first and the last."
     ];
-    var IMAGES_FOLDER = DriveApp.getFolderById('1MYrga5FwBAswPJRu0HC-9ATPURqIltFC');
+    var IMAGES_FOLDER = DriveApp.getFolderById('1LxmUULjAXlIeNyi4iBKmld6as5z2Q-qi');
 
-    var PARTICIPANT_NUMBER = 0;
-    var NUM_RECONSTRUCTION_QUESTIONS = 32;
-    var NUM_INTERPOLATION_QUESTIONS = 48;
+    var NUM_RECONSTRUCTION_QUESTIONS = 16;
+    var NUM_INTERPOLATION_QUESTIONS = 24;
 
     var START_INDEX_RECONSTRUCTIONS = PARTICIPANT_NUMBER * NUM_RECONSTRUCTION_QUESTIONS;
     var END_INDEX_RECONSTRUCTIONS = START_INDEX_RECONSTRUCTIONS + NUM_RECONSTRUCTION_QUESTIONS;

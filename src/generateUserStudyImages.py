@@ -9,7 +9,7 @@ from config import packagedConfigs as configs
 from dataset import loaderPackaged as loaders
 
 
-NUMBER_USER_STUDIES = 20
+NUMBER_USER_STUDIES = 40
 
 
 DATASET_MODELS_PAIRINGS = [
