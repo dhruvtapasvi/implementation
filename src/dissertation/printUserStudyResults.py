@@ -98,7 +98,7 @@ def plotBarChart(metricResultsByTechnique, dataset: str, task: str):
     plt.bar(x, means, yerr=stds, capsize=5)
 
     plt.xticks(x, techniqueLabels)
-    plt.xlabel("Interpolation Technique")
+    plt.xlabel("Interpolation Technique" if task == "interpolation" else "Reconstruction Technique")
 
     plt.ylabel("User Rating")
     plt.ylim(ymin=0)
