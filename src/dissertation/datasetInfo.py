@@ -76,3 +76,4 @@ INTERPOLATE_TECHNIQUE_NAMES = {
     "randomImage": "A random\nimage\n(random)"
 }
 
+

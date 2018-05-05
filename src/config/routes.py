@@ -28,3 +28,7 @@ def getRecordedResultsRoute(name):
 USER_STUDY_ROUTE = ROOT + "/userStudy"
 def getUserStudyRoute(name):
     return USER_STUDY_ROUTE + "/" + name
+
+USER_STUDY_RESPONSES_ROUTE = ROOT + "/userStudyResponses"
+def getUserStudyResponsesRoute(name):
+    return USER_STUDY_RESPONSES_ROUTE + "/" + name

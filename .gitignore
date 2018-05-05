@@ -8,3 +8,4 @@ res/norb/*
 *.p
 *.hdf5
 *.npy
+userStudyResponses/*
