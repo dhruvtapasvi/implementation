@@ -31,7 +31,7 @@ for dataset in datasetInfo.INTERPOLATION_DATASET_ORDER:
 
         plt.figure(figsize=(8, 6))
 
-        bars = plt.bar(x, means, yerr=stds)
+        bars = plt.bar(x, means, yerr=stds, capsize=5)
 
         plt.xticks(x, labels)
         plt.xlabel("Interpolation Technique")
@@ -73,7 +73,7 @@ for dataset in datasetInfo.INTERPOLATION_DATASET_ORDER:
 
             plt.figure(figsize=(8, 6))
 
-            bars = plt.bar(x, means, yerr=stds)
+            bars = plt.bar(x, means, yerr=stds, capsize=5)
 
             plt.xticks(x, labels)
             plt.xlabel("Interpolation Technique")
