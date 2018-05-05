@@ -105,7 +105,7 @@ def plotBarChart(metricResultsByTechnique, dataset: str, task: str):
 
     plt.tight_layout()
 
-    plt.savefig(getRecordedResultsRoute("dataset_" + dataset + "_" + task + "_userRatings.png"))
+    plt.savefig(getRecordedResultsRoute("userStudy_" + dataset + "_" + task + "_userRatings.png"))
     plt.close()
 
 
