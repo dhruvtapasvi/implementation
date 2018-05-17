@@ -17,8 +17,8 @@ TASKS = ["interpolation", "reconstruction"]
 
 
 TASKS_X_AXIS_TITLE = {
-    "interpolation": "Proposed Interpolation x",
-    "reconstruction": "Proposed Reconstruction x"
+    "interpolation": "Proposed Interpolation $\mathbf{x}$",
+    "reconstruction": "Proposed Reconstruction $\mathbf{x}$"
 }
 
 
@@ -27,21 +27,21 @@ def getTaskTechniqueOrder(dataset: str, task:str):
     denseSuffix = datasetInfo.DATASET_ARCH_NAMES[dataset]["dense"]
     if task == "interpolation":
         return [
-            ("positiveControl", "x_centre"),
-            ("interpolateLatentSpace_" + convSuffix, "x'_conv"),
-            ("interpolateLatentSpace_" + denseSuffix, "x'_dense"),
-            ("interpolateImageSpace", "x_interpIS"),
-            ("left", "x_left"),
-            ("randomImage", "x_random")
+            ("positiveControl", "$\mathbf{x}_{\mathrm{centre}}$"),
+            ("interpolateLatentSpace_" + convSuffix, "$\mathbf{x}'_{\mathrm{conv}}$"),
+            ("interpolateLatentSpace_" + denseSuffix, "$\mathbf{x}'_{\mathrm{dense}}$"),
+            ("interpolateImageSpace", "$\mathbf{x}_{\mathrm{interpIS}}$"),
+            ("left", "$\mathbf{x}_{\mathrm{left}}$"),
+            ("randomImage", "$\mathbf{x}_{\mathrm{random}}$")
         ]
     else:
         convSuffix = datasetInfo.DATASET_ARCH_NAMES[dataset]["conv"]
         denseSuffix = datasetInfo.DATASET_ARCH_NAMES[dataset]["dense"]
         return [
-            ("positiveControl", "x_orig"),
-            (convSuffix, "x_reconsConv"),
-            (denseSuffix, "x_reconsDense"),
-            ("randomImage", "x_random")
+            ("positiveControl", "$\mathbf{x}_{\mathrm{orig}}$"),
+            (convSuffix, "$\mathbf{x}_{\mathrm{reconsConv}}$"),
+            (denseSuffix, "$\mathbf{x}_{\mathrm{reconsDense}}$"),
+            ("randomImage", "$\mathbf{x}_{\mathrm{random}}$")
         ]
 
 
@@ -101,7 +101,7 @@ def plotBarChart(metricResultsByTechnique, dataset: str, task: str):
     plt.xticks(x, techniqueLabels, fontsize=FONTSIZE, rotation=90)
     plt.xlabel(TASKS_X_AXIS_TITLE[task], fontsize=FONTSIZE)
 
-    plt.ylabel("User Rating for x", fontsize=FONTSIZE)
+    plt.ylabel("User Rating for $\mathbf{x}$", fontsize=FONTSIZE)
     plt.ylim(ymin=0)
     plt.yticks(fontsize=FONTSIZE)
 

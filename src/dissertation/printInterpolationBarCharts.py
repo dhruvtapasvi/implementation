@@ -8,7 +8,7 @@ from config.routes import getRecordedResultsRoute
 
 
 MINI_FONTSIZE=10
-FONTSIZE = 14
+FONTSIZE = 14 * 4 / 3
 NUMBER_FORMAT = "{:.0f}"
 
 
@@ -28,19 +28,19 @@ for dataset in datasetInfo.INTERPOLATION_DATASET_ORDER:
         x = np.arange(len(datasetInfo.INTERPOLATION_TECHNIQUES) + 1)
         means = np.array(list(map(lambda x: x.mean, metricResults)))
         stds = np.array(list(map(lambda x: x.standardDeviation, metricResults)))
-        labels = [datasetInfo.INTERPOLATE_TECHNIQUE_NAMES["interpolateLatentSpace"] + "_conv"] + \
-                 [datasetInfo.INTERPOLATE_TECHNIQUE_NAMES[interpolationTechnique] + ("_dense" if interpolationTechnique == "interpolateLatentSpace" else "") for interpolationTechnique in datasetInfo.INTERPOLATION_TECHNIQUES]
+        labels = [datasetInfo.INTERPOLATE_TECHNIQUE_NAMES["interpolateLatentSpace"] + "_{\mathrm{conv}}$"] + \
+                 [datasetInfo.INTERPOLATE_TECHNIQUE_NAMES[interpolationTechnique] + ("_{\mathrm{dense}}$" if interpolationTechnique == "interpolateLatentSpace" else "") for interpolationTechnique in datasetInfo.INTERPOLATION_TECHNIQUES]
 
-        plt.figure(figsize=(4, 6))
+        plt.figure(figsize=(4, 8))
 
         bars = plt.bar(x, means, yerr=stds, capsize=5)
 
         plt.xticks(x, labels, fontsize=FONTSIZE, rotation=90)
-        plt.xlabel("Proposed Interpolation x", fontsize=FONTSIZE)
+        plt.xlabel("Proposed Interpolation $\mathbf{x}$", fontsize=FONTSIZE)
 
-        plt.ylabel("BCE(x_centre, x)", fontsize=FONTSIZE)
+        plt.ylabel("$\mathcal{BCE}[\mathbf{x}_{\mathrm{centre}}, \mathbf{x}]$", fontsize=FONTSIZE)
         plt.ylim(ymin=0)
-        plt.yticks(fontsize=FONTSIZE)
+        plt.yticks(fontsize=MINI_FONTSIZE)
 
         maxVal = max(map(lambda x: x.mean + x.standardDeviation, metricResults))
         extraHeight = 0.0125 * maxVal
@@ -80,7 +80,7 @@ for dataset in datasetInfo.INTERPOLATION_DATASET_ORDER:
             bars = plt.bar(x, means, yerr=stds, capsize=5)
 
             plt.xticks(x, labels, fontsize=FONTSIZE, rotation=90)
-            plt.xlabel("Proposed Interpolation x", fontsize=FONTSIZE)
+            plt.xlabel("Proposed Interpolation $\mathbf{x}$", fontsize=FONTSIZE)
 
             plt.ylabel("ED(enc(x_centre), enc(x)) in Latent Space", fontsize=FONTSIZE)
             plt.ylim(ymin=0)
