@@ -9,6 +9,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
+FONTSIZE = 14
 NUMBER_FORMAT = "{:.1f}"
 
 
@@ -16,8 +17,8 @@ TASKS = ["interpolation", "reconstruction"]
 
 
 TASKS_X_AXIS_TITLE = {
-    "interpolation": "Interpolation Technique",
-    "reconstruction": "Reconstruction Technique"
+    "interpolation": "Proposed Interpolation $\mathbf{x}$",
+    "reconstruction": "Proposed Reconstruction $\mathbf{x}$"
 }
 
 
@@ -26,21 +27,21 @@ def getTaskTechniqueOrder(dataset: str, task:str):
     denseSuffix = datasetInfo.DATASET_ARCH_NAMES[dataset]["dense"]
     if task == "interpolation":
         return [
-            ("positiveControl", "Ideal\nresult"),
-            ("interpolateLatentSpace_" + convSuffix, "Interpolate\nin the\nLatent\nSpace (conv)"),
-            ("interpolateLatentSpace_" + denseSuffix, "Interpolate\nin the\nLatent\nSpace (dense)"),
-            ("interpolateImageSpace", "Interpolate\nin the\nImage\nSpace"),
-            ("left", "First\nimage\n(left)"),
-            ("randomImage", "A random\nimage\n(random)")
+            ("positiveControl", "$\mathbf{x}_{\mathrm{centre}}$"),
+            ("interpolateLatentSpace_" + convSuffix, "$\mathbf{x}'_{\mathrm{conv}}$"),
+            ("interpolateLatentSpace_" + denseSuffix, "$\mathbf{x}'_{\mathrm{dense}}$"),
+            ("interpolateImageSpace", "$\mathbf{x}_{\mathrm{interpIS}}$"),
+            ("left", "$\mathbf{x}_{\mathrm{left}}$"),
+            ("randomImage", "$\mathbf{x}_{\mathrm{random}}$")
         ]
     else:
         convSuffix = datasetInfo.DATASET_ARCH_NAMES[dataset]["conv"]
         denseSuffix = datasetInfo.DATASET_ARCH_NAMES[dataset]["dense"]
         return [
-            ("positiveControl", "Ideal\nresult"),
-            (convSuffix, "Conv\narchitecture"),
-            (denseSuffix, "Dense\narchitecture"),
-            ("randomImage", "A random\nimage\n(random)")
+            ("positiveControl", "$\mathbf{x}_{\mathrm{orig}}$"),
+            (convSuffix, "$\mathbf{x}_{\mathrm{reconsConv}}$"),
+            (denseSuffix, "$\mathbf{x}_{\mathrm{reconsDense}}$"),
+            ("randomImage", "$\mathbf{x}_{\mathrm{random}}$")
         ]
 
 
@@ -93,15 +94,16 @@ def plotBarChart(metricResultsByTechnique, dataset: str, task: str):
     stds = np.array([metricResult.standardDeviation for metricResult in metricResults])
 
     # stds = np.array(list(map(lambda x: x.standardDeviation, metricResults)))
-    plt.figure(figsize=(8, 6))
+    plt.figure(figsize=(3, 6))
 
     plt.bar(x, means, yerr=stds, capsize=5)
 
-    plt.xticks(x, techniqueLabels)
-    plt.xlabel("Interpolation Technique" if task == "interpolation" else "Reconstruction Technique")
+    plt.xticks(x, techniqueLabels, fontsize=FONTSIZE, rotation=90)
+    plt.xlabel(TASKS_X_AXIS_TITLE[task], fontsize=FONTSIZE)
 
-    plt.ylabel("User Rating")
+    plt.ylabel("User Rating for $\mathbf{x}$", fontsize=FONTSIZE)
     plt.ylim(ymin=0)
+    plt.yticks(fontsize=FONTSIZE)
 
     plt.tight_layout()
 

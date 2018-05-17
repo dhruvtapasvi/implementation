@@ -15,19 +15,26 @@ def reconstructionSubfig(dataset, arch, reconstructionType):
     archDescription = datasetInfo.DATASET_ARCH_NAMES[dataset][arch]
     archName = datasetInfo.ARCH_NAMES[arch]
     reconstructionName = RECONSTRUCTION_TYPE_NAMES[reconstructionType]
-    return "\\subfloat[" \
-        + datasetName \
-        + ", " \
-        + archName \
-        + ", " \
-        + reconstructionName \
-        + "]{\\includegraphics[width=7cm]{vaeReconstructionResults/" \
-        + dataset \
-        + "_" \
-        + archDescription \
-        + "_" \
-        + reconstructionType \
-        + "Reconstructions.png}}\n"
+    string = \
+        "\\begin{subfigure}{\\linewidth}\n" +  \
+            "\centering\n" + \
+            "\\includegraphics[width=10cm]{vaeReconstructionResults/" + dataset + "_" + archDescription + "_" + reconstructionType + "Reconstructions.png}\n" + \
+            "\\caption{" + datasetName + ", " + archName + ", " + reconstructionName + "}\n" + \
+        "\\end{subfigure}\n"
+    return string
+    # return "\\subfloat[" \
+    #     + datasetName \
+    #     + ", " \
+    #     + archName \
+    #     + ", " \
+    #     + reconstructionName \
+    #     + "]{\\includegraphics[width=7cm]{vaeReconstructionResults/" \
+    #     + dataset \
+    #     + "_" \
+    #     + archDescription \
+    #     + "_" \
+    #     + reconstructionType \
+    #     + "Reconstructions.png}}\n"
 
 
 def reconstructionFig():
@@ -36,7 +43,7 @@ def reconstructionFig():
         for architecture in datasetInfo.ARCH_TYPES:
             for index, reconstructionType in enumerate(RECONSTRUCTION_TYPES):
                 output += reconstructionSubfig(dataset, architecture, reconstructionType)
-                output += "\n" if index == len(RECONSTRUCTION_TYPES) -1 else "\\hfill\n"
+                output += "\n"
     return output
 
 
@@ -44,15 +51,22 @@ def samplingSubfig(dataset, arch):
     datasetName = datasetInfo.DATASET_NAMES[dataset]
     archDescription = datasetInfo.DATASET_ARCH_NAMES[dataset][arch]
     archName = datasetInfo.ARCH_NAMES[arch]
-    return "\\subfloat[" \
-        + datasetName \
-        + ", " \
-        + archName \
-        + "]{\\includegraphics[width=7cm]{vaeSamplingResults/" \
-        + dataset \
-        + "_" \
-        + archDescription \
-        + "_randomSampling.png}}\n"
+    string = \
+        "\\begin{subfigure}{\\linewidth}\n" +  \
+            "\centering\n" + \
+            "\\includegraphics[width=14cm]{vaeSamplingResults/" + dataset + "_" + archDescription + "_randomSampling.png}\n" + \
+            "\\caption{" + datasetName + ", " + archName + "}\n" + \
+        "\\end{subfigure}\n"
+    return string
+    # return "\\subfloat[" \
+    #     + datasetName \
+    #     + ", " \
+    #     + archName \
+    #     + "]{\\includegraphics[width=7cm]{vaeSamplingResults/" \
+    #     + dataset \
+    #     + "_" \
+    #     + archDescription \
+    #     + "_randomSampling.png}}\n"
 
 
 def interpolationSubfig(dataset, arch):
@@ -75,11 +89,9 @@ def otherFig(filenameFunction):
     for dataset in datasetInfo.DATASET_ORDER:
         for index, architecture in enumerate(datasetInfo.ARCH_TYPES):
             output += filenameFunction(dataset, architecture)
-            if index < len(datasetInfo.ARCH_TYPES) - 1:
-                output += "\\hfill"
             output += "\n"
     return output
 
 
 
-print(otherFig(samplingSubfig))
+print(reconstructionFig())

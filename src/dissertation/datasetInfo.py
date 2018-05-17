@@ -68,12 +68,12 @@ INTERPOLATION_TECHNIQUES = [
 
 
 INTERPOLATE_TECHNIQUE_NAMES = {
-    "interpolateLatentSpace": "Interpolate\nin the\nLatent\nSpace",
-    "interpolateImageSpace": "Interpolate\nin the\nImage\nSpace",
-    "left": "First\nimage\n(left)",
-    "right": "Second\nimage\n(right)",
-    "outside": "An image\nlying\noutside\ninterpolation\nrange (outside)",
-    "randomImage": "A random\nimage\n(random)"
+    "interpolateLatentSpace": "$\mathbf{x}'",
+    "interpolateImageSpace": "$\mathbf{x}_{\mathrm{interpIS}}$",
+    "left": "$\mathbf{x}_{\mathrm{left}}$",
+    "right": "$\mathbf{x}_{\mathrm{right}}$",
+    "outside": "$\mathbf{x}_{\mathrm{outside}}$",
+    "randomImage": "$\mathbf{x}_{\mathrm{random}}$"
 }
 
 
